@@ -15,8 +15,6 @@ namespace Services.Tests
 {
     public class Test_DiskNotifier
     {
-        private TestScheduler _testScheduler;
-
         // These tests do not check that the service only returns removable disks
 
         [Test]
@@ -32,8 +30,8 @@ namespace Services.Tests
 
             Mock<IDiskService> diskService = CreateMockDiskService(initialDriveList);
 
-            _testScheduler = new TestScheduler();
-            var sut = new DriveNotifier(_testScheduler, diskService.Object);
+            var testScheduler = new TestScheduler();
+            var sut = new DriveNotifier(testScheduler, diskService.Object);
 
             IDriveInfoWrap result = null;
             sut.Subscribe((driveInfo) => { result = driveInfo; });
@@ -41,7 +39,7 @@ namespace Services.Tests
             diskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
 
             // Act
-            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+            testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
 
             // Assert
             Assert.AreEqual(removableDisk, result);
