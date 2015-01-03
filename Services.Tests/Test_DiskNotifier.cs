@@ -16,55 +16,72 @@ namespace Services.Tests
     public class Test_DiskNotifier
     {
         // These tests do not check that the service only returns removable disks
+        private IDriveInfoWrap _fixedDisk;
+        private IDriveInfoWrap _removableDisk;
+        private Mock<IDriveInfoService> _mockDiskService;
+        private TestScheduler _testScheduler;
 
         [Test]
         public void If_a_disk_is_added_after_subscribing_then_this_is_detected()
         {
             // Arrange
-            var builder = new FakeDriveInfoBuilder();
-            IDriveInfoWrap fixedDisk = builder.WithDriveType(DriveType.Fixed).Build();
-            IDriveInfoWrap removableDisk = builder.WithDriveType(DriveType.Removable).Build();
+            var sut = SetupSut();
 
-            var initialDriveList = new[] { fixedDisk };
-            var finalDriveList = new[] { fixedDisk, removableDisk };
+            var initialDriveList = new[] { _fixedDisk };
+            var finalDriveList = new[] { _fixedDisk, _removableDisk };
 
-            Mock<IDiskService> diskService = CreateMockDiskService(initialDriveList);
-
-            var testScheduler = new TestScheduler();
-            var sut = new DriveNotifier(testScheduler, diskService.Object);
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(initialDriveList);
 
             IDriveInfoWrap result = null;
             sut.Subscribe((driveInfo) => { result = driveInfo; });
 
-            diskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
 
             // Act
-            testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
 
             // Assert
-            Assert.AreEqual(removableDisk, result);
+            Assert.AreEqual(_removableDisk, result);
+        }
+
+        [Test]
+        public void If_a_disk_is_added_after_unsubscribing_then_this_is_not_detected()
+        {
+            // Arrange
+            var sut = SetupSut();
+
+            var initialDriveList = new[] { _fixedDisk };
+            var finalDriveList = new[] { _fixedDisk, _removableDisk };
+
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(initialDriveList);
+
+            IDriveInfoWrap result = null;
+            sut.Subscribe((driveInfo) => { result = driveInfo; });
+            sut.Unsubscribe();
+
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
+
+            // Act
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            // Assert
+            Assert.IsNull(result);
         }
 
         [Test]
         public void If_a_disk_exists_before_subscribing_then_this_is_not_detected()
         {
             // Arrange
-            var builder = new FakeDriveInfoBuilder();
-            IDriveInfoWrap fixedDisk = builder.WithDriveType(DriveType.Fixed).Build();
-            IDriveInfoWrap removableDisk = builder.WithDriveType(DriveType.Removable).Build();
-
-            var finalDriveList = new[] { fixedDisk, removableDisk };
-
-            Mock<IDiskService> diskService = CreateMockDiskService(finalDriveList);
-
-            var scheduler = new TestScheduler();
-            var sut = new DriveNotifier(scheduler, diskService.Object);
+            var finalDriveList = new[] { _fixedDisk, _removableDisk };
+            
+            var sut = SetupSut();
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
 
             IDriveInfoWrap result = null;
             sut.Subscribe((driveInfo) => { result = driveInfo; });
 
             // Act
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
 
             // Assert
             Assert.IsNull(result);
@@ -74,30 +91,30 @@ namespace Services.Tests
         public void If_no_disks_are_returned_by_the_diskService_then_no_detection_occurs()
         {
             // Arrange
-            var builder = new FakeDriveInfoBuilder();
-
             var driveList = Enumerable.Empty<IDriveInfoWrap>();
-            Mock<IDiskService> diskService = CreateMockDiskService(driveList);
 
-            var scheduler = new TestScheduler();
-            var sut = new DriveNotifier(scheduler, diskService.Object);
+            var sut = SetupSut();
 
             IDriveInfoWrap result = null;
             sut.Subscribe((driveInfo) => { result = driveInfo; });
 
             // Act
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
 
             // Assert
             Assert.IsNull(result);
         }
 
-        private Mock<IDiskService> CreateMockDiskService(IEnumerable<IDriveInfoWrap> drives) 
+        public DriveNotifier SetupSut()
         {
-            var mockDiskService = new Mock<IDiskService>();
-            mockDiskService.Setup(x => x.GetDrives()).Returns(drives);
+            _testScheduler = new TestScheduler();
+            _mockDiskService = new Mock<IDriveInfoService>();
+            var _builder = new FakeDriveInfoBuilder();
+            _fixedDisk = _builder.WithDriveType(DriveType.Fixed).Build();
+            _removableDisk = _builder.WithDriveType(DriveType.Removable).Build();
 
-            return mockDiskService;
+            return new DriveNotifier(_testScheduler, _mockDiskService.Object);
         }
+
     }
 }

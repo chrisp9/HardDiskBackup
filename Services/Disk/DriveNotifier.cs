@@ -16,10 +16,10 @@ namespace Services.Disk
     {
         private IDisposable _subscription;
         private IScheduler _scheduler;
-        private IDiskService _diskService;
+        private IDriveInfoService _diskService;
         private Action<IDriveInfoWrap> _onNewDisk;
 
-        public DriveNotifier(IScheduler scheduler, IDiskService diskService)
+        public DriveNotifier(IScheduler scheduler, IDriveInfoService diskService)
         {
             _scheduler = scheduler;
             _diskService = diskService;

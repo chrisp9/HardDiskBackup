@@ -9,12 +9,12 @@ using Queries;
 
 namespace Services.Disk
 {
-    public interface IDiskService
+    public interface IDriveInfoService
     {
         IEnumerable<IDriveInfoWrap> GetDrives();
     }
 
-    public class DriveInfoService : IDiskService
+    public class DriveInfoService : IDriveInfoService
     {
         private IDriveInfoQuery _driveInfoQuery;
 

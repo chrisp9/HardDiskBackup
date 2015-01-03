@@ -89,6 +89,10 @@
       <Project>{9F54DC56-B744-4929-840C-6998740BF011}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Queries\Queries.csproj">
+      <Project>{409662cd-a00e-48c4-975e-4f81eee39ec8}</Project>
+      <Name>Queries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{755e9f8b-0a19-4551-98f2-bda003d7499e}</Project>
       <Name>Services</Name>
