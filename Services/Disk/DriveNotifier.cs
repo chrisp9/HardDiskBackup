@@ -6,13 +6,13 @@ using System.Reactive.Linq;
 
 namespace Services.Disk
 {
-    public interface IDiskNotifier
+    public interface IDriveNotifier
     {
         void Subscribe(Action<IDriveInfoWrap> onNewDisk);
         void Unsubscribe();
     }
 
-    public class DriveNotifier : IDiskNotifier
+    public class DriveNotifier : IDriveNotifier
     {
         private IDisposable _subscription;
         private IScheduler _scheduler;
