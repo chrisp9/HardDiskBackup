@@ -46,7 +46,10 @@ namespace Services.Tests
             // Arrange
             var builder = new FakeDriveInfoBuilder();
 
-            var removableDisk = builder.WithDriveType(DriveType.Removable).WithIsReady(false).Build();
+            var removableDisk = builder.WithDriveType(DriveType.Removable)
+                .WithIsReady(false)
+                .Build();
+
             var fixedDisk = builder.WithDriveType(DriveType.Fixed).Build();
 
             var driveInfos = new[] 
