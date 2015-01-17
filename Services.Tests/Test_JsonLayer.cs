@@ -78,7 +78,5 @@ namespace Services.Tests
                 _mockDirectoryWrap.Object, 
                 _mockEnvironmentWrap.Object);
         }
-
-
     }
 }

@@ -13,15 +13,35 @@ namespace Services.BackupSchedule
 {
     public interface IJsonLayer
     {
-        void SerializeToFile<T>(T toSerialize);
+        bool FileExists { get; }
+        void SerializeToFile(IPersistedOptions toSerialize);
     }
 
     public class JsonLayer : IJsonLayer
     {
+        public bool FileExists()
+        {
+            var appData = _environmentWrapper.AppDataPath;
+            var directory = Path.Combine(appData, _backupToolDir);
+
+            return (_directoryWrapper.Exists(directory)
+                && _fileWrapper.Exists(Path.Combine(directory, _fileName)));
+         }
+
         private const string _fileName = "settings.json";
+        private const string _backupToolDir = "HdBackupTool";
         private readonly IFileWrap _fileWrapper;
         private readonly IDirectoryWrap _directoryWrapper;
         private readonly IEnvironmentWrap _environmentWrapper;
+
+        private readonly string _path
+        {
+            get
+            {
+                var appData = _environmentWrapper.AppDataPath;
+                return Path.Combine(appData, _backupToolDir);
+            }
+        }
 
         public JsonLayer(
             IFileWrap fileWrapper, 
@@ -33,13 +53,11 @@ namespace Services.BackupSchedule
             _environmentWrapper = environmentWrapper;
         }
 
-        public void SerializeToFile<T>(T toSerialize)
+        public void SerializeToFile(IPersistedOptions toSerialize)
         {
             var serialized = JsonConvert.SerializeObject(toSerialize);
 
-            var appData = _environmentWrapper.AppDataPath;
-
-            var backupToolDir = Path.Combine(appData, "HdBackupTool");
+            var backupToolDir = _path;
 
             if (!_directoryWrapper.Exists(backupToolDir))
                 _directoryWrapper.CreateDirectory(backupToolDir);
@@ -53,5 +71,10 @@ namespace Services.BackupSchedule
             _fileWrapper.WriteAllText(persistenceFile, serialized);
         }
 
+        public IPersistedOptions DeserializeFromFile()
+        {
+            var serialized = _fileWrapper.ReadAllText(_path);
+            return JsonConvert.DeserializeObject<PersistedOptions>(serialized);
+        }
     }
 }
