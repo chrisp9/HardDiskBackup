@@ -64,6 +64,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupSchedule\BackupScheduleService.cs" />
     <Compile Include="Disk\DriveObserver.cs" />
     <Compile Include="Disk\DriveNotifier.cs" />
     <Compile Include="Disk\DriveInfoService.cs" />

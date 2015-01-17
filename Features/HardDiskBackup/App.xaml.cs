@@ -33,7 +33,6 @@ namespace HardDiskBackup
             RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();
 
             _container = _containerBuilder.Build();
-
             _container.Resolve<IDriveInfoService>();
         }
 
