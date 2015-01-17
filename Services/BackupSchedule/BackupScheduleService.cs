@@ -15,12 +15,11 @@ namespace Services.DiskSchedule
             IDateTimeProvider dateTimeProvider)
         {
             _dateTimeProvider = dateTimeProvider;
-
         }
 
-        public void ScheduleNextBackup(DateTime backupTime)
+        public void ScheduleNextBackup(BackupDateTime backupTime)
         {
-
+            
         }
     }
 }
