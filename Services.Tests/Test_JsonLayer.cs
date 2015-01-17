@@ -28,7 +28,7 @@ namespace Services.Tests
                 .Returns(true);
 
             // Act
-            _sut.SerializeToFile("");
+            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Delete(It.IsAny<string>()), Times.Once());
@@ -43,7 +43,7 @@ namespace Services.Tests
                 .Returns(false);
 
             // Act
-            _sut.SerializeToFile("");
+            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Delete(It.IsAny<string>()), Times.Never());
@@ -58,7 +58,7 @@ namespace Services.Tests
                 .Returns(false);
 
             // Act
-            _sut.SerializeToFile("");
+            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());

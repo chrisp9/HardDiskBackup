@@ -19,13 +19,16 @@ namespace Services.BackupSchedule
 
     public class JsonLayer : IJsonLayer
     {
-        public bool FileExists()
+        public bool FileExists
         {
-            var appData = _environmentWrapper.AppDataPath;
-            var directory = Path.Combine(appData, _backupToolDir);
+            get
+            {
+                var appData = _environmentWrapper.AppDataPath;
+                var directory = Path.Combine(appData, _backupToolDir);
 
-            return (_directoryWrapper.Exists(directory)
-                && _fileWrapper.Exists(Path.Combine(directory, _fileName)));
+                return (_directoryWrapper.Exists(directory)
+                    && _fileWrapper.Exists(Path.Combine(directory, _fileName)));
+            }
          }
 
         private const string _fileName = "settings.json";
@@ -34,7 +37,7 @@ namespace Services.BackupSchedule
         private readonly IDirectoryWrap _directoryWrapper;
         private readonly IEnvironmentWrap _environmentWrapper;
 
-        private readonly string _path
+        private string _path
         {
             get
             {
