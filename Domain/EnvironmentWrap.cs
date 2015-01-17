@@ -8,7 +8,7 @@ namespace Domain
 {
     public interface IEnvironmentWrap
     {
-        public string AppDataPath { get; }
+        string AppDataPath { get; }
     }
 
     public class EnvironmentWrap

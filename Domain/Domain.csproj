@@ -42,8 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupDateTime.cs" />
     <Compile Include="DateTimeProvider.cs" />
     <Compile Include="DriveInfoWrap.cs" />
+    <Compile Include="EnvironmentWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,19 +5,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Services.BackupSchedule;
 
 namespace Services
 {
     public interface IPersistedOptions 
     {
-        BackupDateTime NextBackup;
-        IEnumerable<string> BackupDirectories;
+        BackupDateTime NextBackup { get; set; }
+        IEnumerable<string> BackupDirectories { get; set; }
+
+        void Persist();
     }
 
     public class PersistedOptions : IPersistedOptions
     {
-        public BackupDateTime NextBackup;
-        public IEnumerable<string> BackupDirectories;
+        public BackupDateTime NextBackup { get; set; }
+        public IEnumerable<string> BackupDirectories { get; set; }
 
+        private readonly IJsonLayer _jsonLayer;
+
+        public PersistedOptions(IJsonLayer jsonLayer)
+        {
+            _jsonLayer = jsonLayer;
+        }
+
+        public void Persist()
+        {
+            // meh...
+            _jsonLayer.SerializeToFile(this);
+        }
     }
 }

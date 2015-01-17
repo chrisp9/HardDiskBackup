@@ -11,7 +11,12 @@ using Domain;
 
 namespace Services.BackupSchedule
 {
-    public class JsonLayer
+    public interface IJsonLayer
+    {
+        void SerializeToFile<T>(T toSerialize);
+    }
+
+    public class JsonLayer : IJsonLayer
     {
         private const string _fileName = "settings.json";
         private readonly IFileWrap _fileWrapper;
@@ -28,7 +33,7 @@ namespace Services.BackupSchedule
             _environmentWrapper = environmentWrapper;
         }
 
-        public void Serialize<T>(T toSerialize)
+        public void SerializeToFile<T>(T toSerialize)
         {
             var serialized = JsonConvert.SerializeObject(toSerialize);
 
