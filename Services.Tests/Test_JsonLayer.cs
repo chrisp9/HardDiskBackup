@@ -64,6 +64,23 @@ namespace Services.Tests
             _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());
         }
 
+        [Test]
+        public void Deserialize_returns_correct_data()
+        {
+            // Arrange
+            SetupSut();
+
+            var mockPersistedOptions = new Mock<IPersistedOptions>();
+            mockPersistedOptions.Setup(x => x.BackupDirectories).Returns(new[] {"c:\\stuff"});
+            mockPersistedOptions.Setup(x => x.NextBackup).Returns(new BackupDateTime(DateTime.Now));
+
+            // Act
+            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
+
+            //Assert
+            _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());
+        }
+
         private void SetupSut()
         {
             _mockFileWrap = new Mock<IFileWrap>();

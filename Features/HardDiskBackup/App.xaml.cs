@@ -10,6 +10,7 @@ using Domain;
 using System.Reactive.Concurrency;
 using Services.Disk;
 using Queries;
+using HardDiskBackup.ViewModel;
 
 namespace HardDiskBackup
 {
@@ -18,36 +19,16 @@ namespace HardDiskBackup
     /// </summary>
     public partial class App : Application
     {
-        private ContainerBuilder _containerBuilder;
-        private IContainer _container;
+        private Bootstrapper _bootstrapper;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            _containerBuilder = new ContainerBuilder();
+            _bootstrapper = new Bootstrapper();
+            _bootstrapper.RegisterDependencies();
 
-            RegisterTransient<DriveInfoWrap, IDriveInfoWrap>();
-            RegisterTransient<DefaultScheduler, IScheduler>();
-
-            RegisterSingle<DriveInfoService, IDriveInfoService>();
-            RegisterSingle<DriveNotifier, IDriveNotifier>();
-            RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();
-
-            _container = _containerBuilder.Build();
-            _container.Resolve<IDriveInfoService>();
+            var window = new MainWindow();
+            window.Show();
         }
 
-        private void RegisterSingle<T, U>()
-        {
-            _containerBuilder.RegisterType<T>()
-                .As<U>()
-                .SingleInstance();
-        }
-
-        private void RegisterTransient<T, U>()
-        {
-            _containerBuilder.RegisterType<T>()
-                .As<U>()
-                .InstancePerDependency();
-        }
     }
 }
