@@ -13,14 +13,17 @@ namespace Services
     {
         BackupDateTime NextBackup { get; set; }
         IEnumerable<string> BackupDirectories { get; set; }
+        bool HasPersistedOptions { get; }
 
         void Persist();
+        void ReadExisting();
     }
 
     public class PersistedOptions : IPersistedOptions
     {
         public BackupDateTime NextBackup { get; set; }
         public IEnumerable<string> BackupDirectories { get; set; }
+        public bool HasPersistedOptions { get { return _jsonLayer.FileExists; } }
 
         private readonly IJsonLayer _jsonLayer;
 
@@ -33,6 +36,11 @@ namespace Services
         {
             // meh...
             _jsonLayer.SerializeToFile(this);
+        }
+
+        public void ReadExisting()
+        {
+            var persisted = _jsonLayer.DeserializeFromFile();
         }
     }
 }

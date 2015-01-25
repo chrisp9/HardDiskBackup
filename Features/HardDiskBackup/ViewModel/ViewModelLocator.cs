@@ -28,7 +28,6 @@ namespace HardDiskBackup.ViewModel
         public ViewModelLocator()
         {
             Ioc.ContainerBuilder.RegisterType<MainWindowViewModel>();
-
             Ioc.Build();
         }
 

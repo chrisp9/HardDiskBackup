@@ -11,6 +11,7 @@ using System.Reactive.Concurrency;
 using Services.Disk;
 using Queries;
 using HardDiskBackup.ViewModel;
+using HardDiskBackup.View;
 
 namespace HardDiskBackup
 {
@@ -26,7 +27,7 @@ namespace HardDiskBackup
             _bootstrapper = new Bootstrapper();
             _bootstrapper.RegisterDependencies();
 
-            var window = new MainWindow();
+            var window = new HardDiskBackup.View.MainWindow();
             window.Show();
         }
 

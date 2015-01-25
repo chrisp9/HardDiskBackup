@@ -11,6 +11,9 @@ using System.Reactive.Concurrency;
 using Services.Disk;
 using Queries;
 using Autofac.Core;
+using Services;
+using Services.BackupSchedule;
+using SystemWrapper.IO;
 
 namespace HardDiskBackup
 {
@@ -18,8 +21,14 @@ namespace HardDiskBackup
     {
         public void RegisterDependencies()
         {
+            RegisterTransient<FileWrap, IFileWrap>();
+            RegisterTransient<DirectoryWrap, IDirectoryWrap>();
             RegisterTransient<DriveInfoWrap, IDriveInfoWrap>();
+            RegisterTransient<EnvironmentWrap, IEnvironmentWrap>();
             RegisterTransient<DefaultScheduler, IScheduler>();
+            RegisterTransient<DateTimeProvider, IDateTimeProvider>();
+            RegisterTransient<JsonLayer, IJsonLayer>();
+            RegisterTransient<PersistedOptions, IPersistedOptions>();
 
             RegisterSingle<DriveInfoService, IDriveInfoService>();
             RegisterSingle<DriveNotifier, IDriveNotifier>();

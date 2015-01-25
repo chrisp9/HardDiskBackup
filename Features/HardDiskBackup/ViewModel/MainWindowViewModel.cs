@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using Domain;
+using Services;
 
 namespace HardDiskBackup
 {
@@ -23,10 +25,26 @@ namespace HardDiskBackup
 
     public class MainWindowViewModel : ViewModelBase
     {
-        public MainWindowViewModel()
+        public bool IsFirstStartup
         {
-
+            get
+            {
+                return !_persistedOptions.HasPersistedOptions;
+            }
         }
+
+        private IDateTimeProvider _dateTimeProvider;
+        private IPersistedOptions _persistedOptions;
+
+        public MainWindowViewModel(
+            IDateTimeProvider dateTimeProvider,
+            IPersistedOptions persistedOptions)
+        {
+            _dateTimeProvider = dateTimeProvider;
+            _persistedOptions = persistedOptions;
+        }
+
+
 
     }
 }

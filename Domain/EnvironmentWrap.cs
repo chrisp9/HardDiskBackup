@@ -11,7 +11,7 @@ namespace Domain
         string AppDataPath { get; }
     }
 
-    public class EnvironmentWrap
+    public class EnvironmentWrap : IEnvironmentWrap
     {
         public string AppDataPath
         {

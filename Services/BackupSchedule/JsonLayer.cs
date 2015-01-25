@@ -15,6 +15,7 @@ namespace Services.BackupSchedule
     {
         bool FileExists { get; }
         void SerializeToFile(IPersistedOptions toSerialize);
+        IPersistedOptions DeserializeFromFile();
     }
 
     public class JsonLayer : IJsonLayer
