@@ -4,12 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer>
         <StackPanel>
-            <TextBlock Text="First Launch" Style="{StaticResource Heading2}" />
-            <TextBlock Text="Please set your desired backup schedule" />
+            <TextBlock Text="Set your schedule" Style="{StaticResource Heading2}" />
+            <TextBlock Text="Please set your desired backup schedule:" />
+            <RadioButton GroupName="Frequency" Content="Daily" Margin="10"/>
+            <RadioButton GroupName="Frequency" Content="Weekly" Margin="10"/>
+            <RadioButton GroupName="Frequency" Content="Monthly" Margin="10"/>
+            
+            <xctk:TimePicker Margin="10"/>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
