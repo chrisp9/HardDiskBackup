@@ -6,18 +6,40 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <ScrollViewer>
-        <StackPanel>
+             d:DesignHeight="900" d:DesignWidth="300">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
             <TextBlock Text="Set your schedule" Style="{StaticResource Heading2}" />
             <TextBlock Text="Please set your desired backup schedule:" />
             <RadioButton GroupName="Frequency" Content="Daily" Margin="10"/>
             <RadioButton GroupName="Frequency" Content="Weekly" Margin="10"/>
             <RadioButton GroupName="Frequency" Content="Monthly" Margin="10"/>
-            
+
             <xctk:TimePicker Margin="10"/>
 
             <TextBlock Text="Set your backup directories" Style="{StaticResource Heading2}" />
         </StackPanel>
-    </ScrollViewer>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Margin="10" TextWrapping="Wrap" Text="TextBox" AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+
+            <Button Margin="10" Width="40" Grid.Row="1">v</Button>
+            <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" BorderThickness="1">
+                <ListBoxItem>
+                    <Button></Button></ListBoxItem>
+                <ListBoxItem>Placeholder</ListBoxItem>
+                <ListBoxItem>Placeholder</ListBoxItem>
+            </ListBox>
+        </Grid>
+    </DockPanel>
 </UserControl>
