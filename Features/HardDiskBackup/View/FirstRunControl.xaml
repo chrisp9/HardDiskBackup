@@ -16,6 +16,8 @@
             <RadioButton GroupName="Frequency" Content="Monthly" Margin="10"/>
             
             <xctk:TimePicker Margin="10"/>
+
+            <TextBlock Text="Set your backup directories" Style="{StaticResource Heading2}" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>
