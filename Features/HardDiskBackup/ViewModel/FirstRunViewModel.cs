@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Domain;
 using Services;
+using Services.Disk;
 
 namespace HardDiskBackup
 {
@@ -23,25 +24,22 @@ namespace HardDiskBackup
     /// </summary>
     /// 
 
-    public class MainWindowViewModel : ViewModelBase
+    public class FirstRunViewModel : ViewModelBase
     {
-        public bool IsFirstStartup
-        {
-            get
-            {
-                return !_persistedOptions.HasPersistedOptions;
-            }
-        }
+        public IEnumerable<BackupDirectory> BackupDirectories { get; set; }
 
         private IDateTimeProvider _dateTimeProvider;
         private IPersistedOptions _persistedOptions;
+        private IBackupDirectoryService _backupDirectoryService;
 
-        public MainWindowViewModel(
+        public FirstRunViewModel(
             IDateTimeProvider dateTimeProvider,
-            IPersistedOptions persistedOptions)
+            IPersistedOptions persistedOptions,
+            IBackupDirectoryService backupDirectoryService)
         {
             _dateTimeProvider = dateTimeProvider;
             _persistedOptions = persistedOptions;
+            _backupDirectoryService = backupDirectoryService;
         }
     }
 }

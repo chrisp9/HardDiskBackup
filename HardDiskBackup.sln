@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{52
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardDiskBackup", "Features\HardDiskBackup\HardDiskBackup.csproj", "{E048ACBB-46CD-4565-9488-9F27410B7A8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Domain", "Domain.Tests\Test_Domain.csproj", "{11403AA7-3D8E-4E99-A57E-A9E89B6FC2F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{E048ACBB-46CD-4565-9488-9F27410B7A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E048ACBB-46CD-4565-9488-9F27410B7A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E048ACBB-46CD-4565-9488-9F27410B7A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11403AA7-3D8E-4E99-A57E-A9E89B6FC2F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11403AA7-3D8E-4E99-A57E-A9E89B6FC2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11403AA7-3D8E-4E99-A57E-A9E89B6FC2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11403AA7-3D8E-4E99-A57E-A9E89B6FC2F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

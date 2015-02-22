@@ -28,6 +28,7 @@ namespace HardDiskBackup.ViewModel
         public ViewModelLocator()
         {
             Ioc.ContainerBuilder.RegisterType<MainWindowViewModel>();
+            Ioc.ContainerBuilder.RegisterType<FirstRunViewModel>();
             Ioc.Build();
         }
 
@@ -36,6 +37,14 @@ namespace HardDiskBackup.ViewModel
             get
             {
                 return Ioc.Container.Resolve<MainWindowViewModel>();
+            }
+        }
+
+        public FirstRunViewModel FirstRun
+        {
+            get
+            {
+                return Ioc.Container.Resolve<FirstRunViewModel>();
             }
         }
         

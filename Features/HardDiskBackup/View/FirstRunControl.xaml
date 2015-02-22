@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             DataContext="{Binding Source={StaticResource Locator}, Path=FirstRun}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="300">
     <DockPanel>
@@ -31,10 +32,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Margin="10" TextWrapping="Wrap" Text="TextBox" AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            <TextBox Margin="10" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
 
-            <Button Margin="10" Width="40" Grid.Row="1">v</Button>
+            <Button Margin="10" Width="40" Grid.Row="1" Click="Button_Click">v</Button>
             <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" BorderThickness="1">
+                
                 <ListBoxItem>
                     <Button></Button></ListBoxItem>
                 <ListBoxItem>Placeholder</ListBoxItem>

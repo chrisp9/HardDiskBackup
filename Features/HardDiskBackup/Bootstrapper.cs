@@ -14,10 +14,11 @@ using Autofac.Core;
 using Services;
 using Services.BackupSchedule;
 using SystemWrapper.IO;
+using Services.Factories;
 
 namespace HardDiskBackup
 {
-    public class Bootstrapper
+    public class Bootstrapper // TODO: Split bootstrapper into modules
     {
         public void RegisterDependencies()
         {
@@ -29,6 +30,8 @@ namespace HardDiskBackup
             RegisterTransient<DateTimeProvider, IDateTimeProvider>();
             RegisterTransient<JsonLayer, IJsonLayer>();
             RegisterTransient<PersistedOptions, IPersistedOptions>();
+            RegisterTransient<BackupDirectoryFactory, IBackupDirectoryFactory>();
+            RegisterTransient<BackupDirectoryService, IBackupDirectoryService>();
 
             RegisterSingle<DriveInfoService, IDriveInfoService>();
             RegisterSingle<DriveNotifier, IDriveNotifier>();

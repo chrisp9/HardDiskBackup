@@ -112,6 +112,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Ioc.cs" />
+    <Compile Include="ViewModel\FirstRunViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="View\FirstRunControl.xaml">
       <SubType>Designer</SubType>
