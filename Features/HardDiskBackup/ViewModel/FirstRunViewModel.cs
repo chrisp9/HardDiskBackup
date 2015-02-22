@@ -7,6 +7,10 @@ using GalaSoft.MvvmLight;
 using Domain;
 using Services;
 using Services.Disk;
+using System.ComponentModel;
+using GalaSoft.MvvmLight.CommandWpf;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace HardDiskBackup
 {
@@ -24,9 +28,11 @@ namespace HardDiskBackup
     /// </summary>
     /// 
 
-    public class FirstRunViewModel : ViewModelBase
+    public class FirstRunViewModel : ViewModelBase, IDataErrorInfo
     {
-        public IEnumerable<BackupDirectory> BackupDirectories { get; set; }
+        public IEnumerable<BackupDirectory> BackupDirectories { get; private set; }
+        public ICommand AddPathCommand { get; private set; }
+        public string DirectoryPath { get; set; }
 
         private IDateTimeProvider _dateTimeProvider;
         private IPersistedOptions _persistedOptions;
@@ -40,6 +46,24 @@ namespace HardDiskBackup
             _dateTimeProvider = dateTimeProvider;
             _persistedOptions = persistedOptions;
             _backupDirectoryService = backupDirectoryService;
+
+            AddPathCommand = new RelayCommand(() => { }, () => { return _backupDirectoryService.IsValidPath(DirectoryPath); });
+        }
+
+        public string Error
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public string this[string columnName]
+        {
+            get 
+            {
+                if (columnName != "DirectoryPath")
+                    throw new Exception("FirstRunViewModel only supports validation for DirectoryPath, but you tried to validate: " + columnName);
+
+                return _backupDirectoryService.IsValidPath(DirectoryPath) ? null : "Invalid Path";
+            }
         }
     }
 }

@@ -32,9 +32,17 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Margin="10" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            <TextBox Margin="10" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <TextBox.Text>
+                    <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged"> <!-- TODO: This is S.L.O.W! Need some sort of polling -->
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>        
+            </TextBox>
 
-            <Button Margin="10" Width="40" Grid.Row="1" Click="Button_Click">v</Button>
+            <Button Margin="10" Width="40" Grid.Row="1" Click="Button_Click" Command="{Binding Path=AddPathCommand }">v</Button>
             <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" BorderThickness="1">
                 
                 <ListBoxItem>

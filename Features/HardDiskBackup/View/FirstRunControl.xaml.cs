@@ -27,7 +27,9 @@ namespace HardDiskBackup.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            var dc = (FirstRunViewModel)DataContext;
+            //dc.BackupDirectories.Add
         }
     }
 }
+ 
