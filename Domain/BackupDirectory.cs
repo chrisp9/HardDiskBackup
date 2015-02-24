@@ -16,9 +16,6 @@ namespace Domain
             if (directory == null)
                 throw new ArgumentNullException("You passed a null directory when instantiating a BackupDirectory");
 
-            if (!directory.Exists)
-                throw new ArgumentException("You instantiated BackupDirectory with a directory which doesn't exist");
-
             Directory = directory;
         }
 

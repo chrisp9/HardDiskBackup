@@ -12,7 +12,6 @@ namespace Services.Disk
 {
     public interface IBackupDirectoryService
     {
-        bool IsValidPath(string path);
         BackupDirectory GetDirectoryFor(string path);
     }
 
@@ -30,11 +29,6 @@ namespace Services.Disk
 
             _directoryWrap = directoryWrap;
             _backupDirectoryFactory = factory;
-        }
-
-        public bool IsValidPath(string path)
-        {
-            return _directoryWrap.Exists(path); //TODO: Can this throw? Check documentation.
         }
 
         public BackupDirectory GetDirectoryFor(string path)

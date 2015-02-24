@@ -32,6 +32,7 @@ namespace HardDiskBackup
             RegisterTransient<PersistedOptions, IPersistedOptions>();
             RegisterTransient<BackupDirectoryFactory, IBackupDirectoryFactory>();
             RegisterTransient<BackupDirectoryService, IBackupDirectoryService>();
+            RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();
 
             RegisterSingle<DriveInfoService, IDriveInfoService>();
             RegisterSingle<DriveNotifier, IDriveNotifier>();

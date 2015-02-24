@@ -23,8 +23,9 @@ namespace HardDiskBackup.ViewModel
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
     /// </summary>
-    public class ViewModelLocator
+    public class ViewModelLocator // TODO: I don't like this class.
     {
+        //TODO: Remove this.
         public ViewModelLocator()
         {
             Ioc.ContainerBuilder.RegisterType<MainWindowViewModel>();

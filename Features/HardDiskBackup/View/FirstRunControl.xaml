@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:HardDiskBackup.ViewModel;assembly="  
              DataContext="{Binding Source={StaticResource Locator}, Path=FirstRun}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="300">
@@ -34,7 +35,7 @@
 
             <TextBox Margin="10" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <TextBox.Text>
-                    <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged"> <!-- TODO: This is S.L.O.W! Need some sort of polling -->
+                    <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
                             <DataErrorValidationRule/>
                         </Binding.ValidationRules>
@@ -42,14 +43,33 @@
                 </TextBox.Text>        
             </TextBox>
 
-            <Button Margin="10" Width="40" Grid.Row="1" Click="Button_Click" Command="{Binding Path=AddPathCommand }">v</Button>
-            <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" BorderThickness="1">
-                
-                <ListBoxItem>
-                    <Button></Button></ListBoxItem>
-                <ListBoxItem>Placeholder</ListBoxItem>
-                <ListBoxItem>Placeholder</ListBoxItem>
+            <Button Margin="10" Width="40" Grid.Row="1" Click="Button_Click" Command="{Binding Path=AddPathCommand}">v</Button>
+            <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" BorderThickness="1" ItemsSource="{Binding Path=BackupDirectories, Mode=TwoWay , NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+               
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="{Binding Directory.FullName}" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <Button Grid.Column="1" HorizontalAlignment="Right" Content="X"/> <!-- TODO: Make this look prettier-->
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
+
         </Grid>
     </DockPanel>
 </UserControl>

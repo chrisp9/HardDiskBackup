@@ -11,47 +11,45 @@ using System.ComponentModel;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 
 namespace HardDiskBackup
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    /// 
-
-    public class FirstRunViewModel : ViewModelBase, IDataErrorInfo
+    public class FirstRunViewModel : ViewModelBase, IDataErrorInfo, INotifyPropertyChanged
     {
-        public IEnumerable<BackupDirectory> BackupDirectories { get; private set; }
+        public ObservableCollection<BackupDirectory> BackupDirectories { get; private set; }
         public ICommand AddPathCommand { get; private set; }
         public string DirectoryPath { get; set; }
 
         private IDateTimeProvider _dateTimeProvider;
         private IPersistedOptions _persistedOptions;
         private IBackupDirectoryService _backupDirectoryService;
+        private IBackupDirectoryValidator _backupDirectoryValidator;
 
         public FirstRunViewModel(
             IDateTimeProvider dateTimeProvider,
             IPersistedOptions persistedOptions,
-            IBackupDirectoryService backupDirectoryService)
+            IBackupDirectoryService backupDirectoryService,
+            IBackupDirectoryValidator backupDirectoryValidator)
         {
             _dateTimeProvider = dateTimeProvider;
             _persistedOptions = persistedOptions;
             _backupDirectoryService = backupDirectoryService;
+            _backupDirectoryValidator = backupDirectoryValidator;
+            BackupDirectories = new ObservableCollection<BackupDirectory>();
 
-            AddPathCommand = new RelayCommand(() => { }, () => { return _backupDirectoryService.IsValidPath(DirectoryPath); });
+            AddPathCommand = new RelayCommand(
+                () => 
+                {          
+                    BackupDirectories.Add(
+                        _backupDirectoryService.GetDirectoryFor(DirectoryPath));
+                },
+                () => { return Validate(); });
         }
 
         public string Error
         {
+            // WPF does not use this implementation. Best to fail fast if this property is accessed.
             get { throw new NotImplementedException(); }
         }
 
@@ -60,10 +58,15 @@ namespace HardDiskBackup
             get 
             {
                 if (columnName != "DirectoryPath")
-                    throw new Exception("FirstRunViewModel only supports validation for DirectoryPath, but you tried to validate: " + columnName);
+                    throw new InvalidOperationException("FirstRunViewModel only supports validation for DirectoryPath, but you tried to validate: " + columnName);
 
-                return _backupDirectoryService.IsValidPath(DirectoryPath) ? null : "Invalid Path";
+                return Validate() ? null : "This path is not valid";
             }
+        }
+
+        private bool Validate()
+        {
+            return _backupDirectoryValidator.IsValidDirectory(DirectoryPath);
         }
     }
 }
