@@ -13,11 +13,9 @@ namespace Services.Tests
 {    
     public class Test_BackupDirectoryValidator
     {
-        [Test]
         [TestCase(@"c:\", true, true)]
         [TestCase(@"c:/", true, true)]
         [TestCase(@"c:\stuff/stuff", true, true)]
-
         [TestCase("c:", true, false)] // Edge case - should be considered invalid even though it exists
         public void Path_is_only_valid_if_it_exists(string path, bool exists, bool shouldReturn)
         {

@@ -19,6 +19,7 @@ namespace HardDiskBackup
     {
         public ObservableCollection<BackupDirectory> BackupDirectories { get; private set; }
         public ICommand AddPathCommand { get; private set; }
+        public ICommand RemovePathCommand { get; private set; }
         public string DirectoryPath { get; set; }
 
         private IDateTimeProvider _dateTimeProvider;
@@ -45,12 +46,19 @@ namespace HardDiskBackup
                         _backupDirectoryService.GetDirectoryFor(DirectoryPath));
                 },
                 () => { return Validate(); });
+
+            RemovePathCommand = new RelayCommand<BackupDirectory>(
+                (selected) =>
+                {
+                    BackupDirectories.Remove(selected);
+                },
+                _ => { return true; });
         }
 
         public string Error
         {
-            // WPF does not use this implementation. Best to fail fast if this property is accessed.
-            get { throw new NotImplementedException(); }
+            // This isn't supported by WPF but can be invoked externally e.g. by Snoop.
+            get { return string.Empty; }
         }
 
         public string this[string columnName]

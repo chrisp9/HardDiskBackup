@@ -15,6 +15,20 @@ namespace HardDiskBackup.Tests
 {
     public class Test_FirstRunViewModel
     {
+        private FirstRunViewModel _sut;
+        private BackupDirectory _backupDirectory;
+
+        [SetUp]
+        public void Setup()
+        {
+            // Arrange
+            _backupDirectory = new BackupDirectory(Mock.Of<IDirectoryInfoWrap>());
+
+            _sut = SetupSut(
+                backupDirectoryValidator: SetupValidator(true),
+                backupService: SetupService(_backupDirectory));
+        }
+
         [Test]
         public void AddPathCommand_cannot_execute_when_path_is_invalid()
         {
@@ -60,19 +74,45 @@ namespace HardDiskBackup.Tests
 
         [Test]
         public void A_new_BackupDirectory_is_added_when_AddPathCommand_is_executed()
-        {
-            // Arrange
-            var backupDirectory = new BackupDirectory(Mock.Of<IDirectoryInfoWrap>());
-
-            var sut = SetupSut(
-                backupDirectoryValidator: SetupValidator(true),
-                backupService: SetupService(backupDirectory));
-            
+        {            
             // Act
-            sut.AddPathCommand.Execute(null);
+            _sut.AddPathCommand.Execute(null);
 
             // Assert
-            Assert.Contains(backupDirectory, sut.BackupDirectories.ToArray());
+            Assert.Contains(_backupDirectory, _sut.BackupDirectories.ToArray());
+        }
+
+        [Test]
+        public void Removing_a_BackupDirectory_which_does_not_exist()
+        {
+            // Act
+            _sut.RemovePathCommand.Execute(_backupDirectory);
+
+            // Assert
+            Assert.AreEqual(0, _sut.BackupDirectories.Count);
+        }
+
+        [Test]
+        public void Adding_then_removing_a_BackupDirectory()
+        {
+            // Act
+            _sut.AddPathCommand.Execute(_backupDirectory);
+            _sut.RemovePathCommand.Execute(_backupDirectory);
+
+            // Assert
+            Assert.AreEqual(0, _sut.BackupDirectories.Count);
+        }
+
+        [Test]
+        public void Adding_multiple_BackupDirectories_then_removing_one()
+        {
+            // Act
+            _sut.AddPathCommand.Execute(_backupDirectory);
+            _sut.AddPathCommand.Execute(new BackupDirectory(_backupDirectory.Directory));
+            _sut.RemovePathCommand.Execute(_backupDirectory);
+
+            // Assert
+            Assert.AreEqual(1, _sut.BackupDirectories.Count);
         }
 
         [Test]
