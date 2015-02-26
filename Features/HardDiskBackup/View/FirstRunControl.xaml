@@ -34,9 +34,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Margin="10" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <TextBox Name="BackupDirectoryInput" Margin="10" MaxLength="255" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <TextBox.Text>
-                    <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">                        
                         <Binding.ValidationRules>
                             <DataErrorValidationRule/>
                         </Binding.ValidationRules>
@@ -44,9 +44,8 @@
                 </TextBox.Text>        
             </TextBox>
 
-            <Button Margin="10" Width="40" Grid.Row="1" Click="Button_Click" Command="{Binding Path=AddPathCommand}">v</Button>
-            <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" BorderThickness="1" ItemsSource="{Binding Path=BackupDirectories, Mode=TwoWay , NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
-
+            <Button Margin="10" Width="40" Grid.Row="1" Command="{Binding Path=AddPathCommand}">v</Button>
+            <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" Binding.TargetUpdated="Binding_TargetUpdated" BorderThickness="1" ItemsSource="{Binding Path=BackupDirectoryModel.BackupDirectories, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>

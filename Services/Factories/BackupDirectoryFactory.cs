@@ -18,7 +18,8 @@ namespace Services.Factories
     {
         public BackupDirectory Create(string path)
         {
-            var directoryInfo = new DirectoryInfoWrap(path);
+            var sanitisedPath = path.Replace('/', '\\');
+            var directoryInfo = new DirectoryInfoWrap(sanitisedPath);
             return new BackupDirectory(directoryInfo);
         }
     }

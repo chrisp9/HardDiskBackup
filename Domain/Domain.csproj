@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BackupDateTime.cs" />
     <Compile Include="BackupDirectory.cs" />
+    <Compile Include="BackupDirectoryModel.cs" />
     <Compile Include="DateTimeProvider.cs" />
     <Compile Include="DriveInfoWrap.cs" />
     <Compile Include="EnvironmentWrap.cs" />

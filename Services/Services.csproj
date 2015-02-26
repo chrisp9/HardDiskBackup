@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="BackupSchedule\BackupScheduleService.cs" />
     <Compile Include="BackupSchedule\JsonLayer.cs" />
-    <Compile Include="Disk\BackupDirectoryService.cs" />
     <Compile Include="Disk\BackupDirectoryValidator.cs" />
     <Compile Include="Disk\DriveObserver.cs" />
     <Compile Include="Disk\DriveNotifier.cs" />

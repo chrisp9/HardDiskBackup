@@ -31,12 +31,12 @@ namespace HardDiskBackup
             RegisterTransient<JsonLayer, IJsonLayer>();
             RegisterTransient<PersistedOptions, IPersistedOptions>();
             RegisterTransient<BackupDirectoryFactory, IBackupDirectoryFactory>();
-            RegisterTransient<BackupDirectoryService, IBackupDirectoryService>();
             RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();
 
             RegisterSingle<DriveInfoService, IDriveInfoService>();
             RegisterSingle<DriveNotifier, IDriveNotifier>();
             RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();
+            RegisterSingle<BackupDirectoryModel, IBackupDirectoryModel>();
         }
 
         private void RegisterSingle<T, U>()
