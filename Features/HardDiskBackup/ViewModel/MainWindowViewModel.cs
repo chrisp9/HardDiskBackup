@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Domain;
 using Services;
+using Services.Persistence;
 
 namespace HardDiskBackup
 {
@@ -29,19 +30,19 @@ namespace HardDiskBackup
         {
             get
             {
-                return !_persistedOptions.HasPersistedOptions;
+                return !_persistedOptions.FileExists;
             }
         }
 
         private IDateTimeProvider _dateTimeProvider;
-        private IPersistedOptions _persistedOptions;
+        private IJsonSerializer _persistedOptions;
 
         public MainWindowViewModel(
             IDateTimeProvider dateTimeProvider,
-            IPersistedOptions persistedOptions)
+            IJsonSerializer jsonSerializer)
         {
             _dateTimeProvider = dateTimeProvider;
-            _persistedOptions = persistedOptions;
+            _persistedOptions = jsonSerializer;
         }
     }
 }

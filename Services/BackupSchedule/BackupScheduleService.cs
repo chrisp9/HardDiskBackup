@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Services.BackupSchedule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +15,11 @@ namespace Services.DiskSchedule
     public class BackupScheduleService
     {
         private IDateTimeProvider _dateTimeProvider;
-        private IPersistedOptions _persistedOptions;
+        private IBackupSettings _persistedOptions;
 
         public BackupScheduleService(
             IDateTimeProvider dateTimeProvider,
-            IPersistedOptions persistedOptions)
+            IBackupSettings persistedOptions)
         {
             _dateTimeProvider = dateTimeProvider;
             _persistedOptions = persistedOptions;

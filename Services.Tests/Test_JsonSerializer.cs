@@ -1,7 +1,7 @@
 ﻿using Domain;
 using Moq;
 using NUnit.Framework;
-using Services.BackupSchedule;
+using Services.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +11,13 @@ using SystemWrapper.IO;
 
 namespace Services.Tests
 {
-    public class Test_JsonLayer
+    public class Test_JsonSerializer
     {
         private const string _fileName = "settings.json";
         private Mock<IFileWrap> _mockFileWrap;
         private Mock<IDirectoryWrap> _mockDirectoryWrap;
         private Mock<IEnvironmentWrap> _mockEnvironmentWrap;
-        private IJsonLayer _sut;
+        private IJsonSerializer _sut;
         
         [Test]
         public void File_is_deleted_if_it_already_exists()
@@ -28,7 +28,7 @@ namespace Services.Tests
                 .Returns(true);
 
             // Act
-            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
+            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Delete(It.IsAny<string>()), Times.Once());
@@ -43,7 +43,7 @@ namespace Services.Tests
                 .Returns(false);
 
             // Act
-            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
+            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Delete(It.IsAny<string>()), Times.Never());
@@ -58,7 +58,7 @@ namespace Services.Tests
                 .Returns(false);
 
             // Act
-            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
+            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());
@@ -70,15 +70,23 @@ namespace Services.Tests
             // Arrange
             SetupSut();
 
-            var mockPersistedOptions = new Mock<IPersistedOptions>();
-            mockPersistedOptions.Setup(x => x.BackupDirectories).Returns(new[] {"c:\\stuff"});
+            var mockPersistedOptions = new Mock<IBackupSettings>();
+            mockPersistedOptions.Setup(x => x.BackupDirectories).Returns(new[] { CreateBackupDirectory("c:\\stuff") });
             mockPersistedOptions.Setup(x => x.NextBackup).Returns(new BackupDateTime(DateTime.Now));
 
             // Act
-            _sut.SerializeToFile(Mock.Of<IPersistedOptions>());
+            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
 
             //Assert
             _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());
+        }
+
+        private BackupDirectory CreateBackupDirectory(string path)
+        {
+            var mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
+            mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(path);
+
+            return new BackupDirectory(mockDirectoryInfoWrap.Object);
         }
 
         private void SetupSut()
@@ -90,7 +98,7 @@ namespace Services.Tests
             _mockFileWrap.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
             _mockEnvironmentWrap.Setup(x => x.AppDataPath).Returns(@"c:\");
 
-            _sut = new JsonLayer(
+            _sut = new JsonSerializer(
                 _mockFileWrap.Object, 
                 _mockDirectoryWrap.Object, 
                 _mockEnvironmentWrap.Object);

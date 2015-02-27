@@ -70,13 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupSchedule\BackupScheduleService.cs" />
-    <Compile Include="BackupSchedule\JsonLayer.cs" />
+    <Compile Include="Persistence\JsonSerializer.cs" />
     <Compile Include="Disk\BackupDirectoryValidator.cs" />
     <Compile Include="Disk\DriveObserver.cs" />
     <Compile Include="Disk\DriveNotifier.cs" />
     <Compile Include="Disk\DriveInfoService.cs" />
     <Compile Include="Factories\BackupDirectoryFactory.cs" />
-    <Compile Include="Persistence\PersistedOptions.cs" />
+    <Compile Include="Persistence\BackupSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

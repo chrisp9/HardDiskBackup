@@ -12,9 +12,9 @@ using Services.Disk;
 using Queries;
 using Autofac.Core;
 using Services;
-using Services.BackupSchedule;
 using SystemWrapper.IO;
 using Services.Factories;
+using Services.Persistence;
 
 namespace HardDiskBackup
 {
@@ -28,8 +28,8 @@ namespace HardDiskBackup
             RegisterTransient<EnvironmentWrap, IEnvironmentWrap>();
             RegisterTransient<DefaultScheduler, IScheduler>();
             RegisterTransient<DateTimeProvider, IDateTimeProvider>();
-            RegisterTransient<JsonLayer, IJsonLayer>();
-            RegisterTransient<PersistedOptions, IPersistedOptions>();
+            RegisterTransient<JsonSerializer, IJsonSerializer>();
+            RegisterTransient<BackupSettings, IBackupSettings>();
             RegisterTransient<BackupDirectoryFactory, IBackupDirectoryFactory>();
             RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();
 

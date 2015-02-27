@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class BackupDateTime
+    public interface IBackupDateTime
+    {
+        DateTime DateTime { get; }
+    }
+
+    public class BackupDateTime : IBackupDateTime
     {
         public DateTime DateTime { get; private set; }
 

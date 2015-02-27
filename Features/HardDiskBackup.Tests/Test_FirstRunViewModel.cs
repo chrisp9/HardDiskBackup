@@ -11,6 +11,7 @@ using Moq;
 using NUnit.Framework;
 using SystemWrapper.IO;
 using Services.Factories;
+using Services.Persistence;
 
 namespace HardDiskBackup.Tests
 {
@@ -121,7 +122,7 @@ namespace HardDiskBackup.Tests
 
         private FirstRunViewModel SetupSut(
             IDateTimeProvider dateTimeProvider = null,
-            IPersistedOptions persistedOptions = null,
+            IJsonSerializer jsonSerializer = null,
             IBackupDirectoryValidator backupDirectoryValidator = null,
             IBackupDirectoryFactory backupDirectoryFactory = null,
             IBackupDirectoryModel backupDirectoryModel = null
@@ -129,7 +130,7 @@ namespace HardDiskBackup.Tests
         {
             return new FirstRunViewModel(
                 dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
-                persistedOptions ?? Mock.Of<IPersistedOptions>(),
+                jsonSerializer ?? Mock.Of<IJsonSerializer>(),
                 backupDirectoryValidator ?? Mock.Of<IBackupDirectoryValidator>(),
                 backupDirectoryFactory ?? Mock.Of<IBackupDirectoryFactory>(),
                 backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>()

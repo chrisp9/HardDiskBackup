@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
 using Moq;
 using NUnit.Framework;
-using Services.Disk;
-using Domain;
-using TestHelpers;
-using System.IO;
-using SystemWrapper;
+using System;
 using SystemWrapper.IO;
 
 namespace Test_Domain
@@ -26,10 +18,23 @@ namespace Test_Domain
             Assert.Throws<ArgumentException>(() => SetupSut(exists: false));
         }
 
-        public BackupDirectory SetupSut(bool exists)
+        [TestCase(@"c:/program files", @"c:\program files")]
+        [TestCase(@"c:///program files", @"c:\\\program files")]
+        [TestCase(@"c:/Program Files", @"c:\program files")]
+        public void String_representation_is_correct(string input, string expected)
+        {
+            var sut = SetupSut(exists: true, path: input);
+
+            Assert.AreEqual(expected, sut.ToString());
+        }
+
+        public BackupDirectory SetupSut(bool exists, string path = null)
         {
             var directoryInfoWrap = new Mock<IDirectoryInfoWrap>();
             directoryInfoWrap.Setup(x => x.Exists).Returns(exists);
+
+            if (path != null)
+                directoryInfoWrap.Setup(x => x.FullName).Returns(path);
 
             return new BackupDirectory(directoryInfoWrap.Object);
         }

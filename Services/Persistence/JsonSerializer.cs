@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 using SystemWrapper.IO;
 using Domain;
 
-namespace Services.BackupSchedule
+namespace Services.Persistence
 {
-    public interface IJsonLayer
+    public interface IJsonSerializer
     {
         bool FileExists { get; }
-        void SerializeToFile(IPersistedOptions toSerialize);
-        IPersistedOptions DeserializeFromFile();
+        void SerializeToFile(IBackupSettings toSerialize);
+        IBackupSettings DeserializeFromFile();
     }
 
-    public class JsonLayer : IJsonLayer
+    public class JsonSerializer : IJsonSerializer
     {
         public bool FileExists
         {
@@ -47,7 +47,7 @@ namespace Services.BackupSchedule
             }
         }
 
-        public JsonLayer(
+        public JsonSerializer(
             IFileWrap fileWrapper, 
             IDirectoryWrap directoryWrapper,
             IEnvironmentWrap environmentWrapper)
@@ -57,7 +57,7 @@ namespace Services.BackupSchedule
             _environmentWrapper = environmentWrapper;
         }
 
-        public void SerializeToFile(IPersistedOptions toSerialize)
+        public void SerializeToFile(IBackupSettings toSerialize)
         {
             var serialized = JsonConvert.SerializeObject(toSerialize);
 
@@ -75,10 +75,10 @@ namespace Services.BackupSchedule
             _fileWrapper.WriteAllText(persistenceFile, serialized);
         }
 
-        public IPersistedOptions DeserializeFromFile()
+        public IBackupSettings DeserializeFromFile()
         {
             var serialized = _fileWrapper.ReadAllText(_path);
-            return JsonConvert.DeserializeObject<PersistedOptions>(serialized);
+            return JsonConvert.DeserializeObject<BackupSettings>(serialized);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Linq;
+using Services.Persistence;
 
 namespace HardDiskBackup
 {
@@ -20,19 +21,19 @@ namespace HardDiskBackup
         public IBackupDirectoryModel BackupDirectoryModel { get; private set; }
 
         private IDateTimeProvider _dateTimeProvider;
-        private IPersistedOptions _persistedOptions;
+        private IJsonSerializer _jsonSerializer;
         private IBackupDirectoryValidator _backupDirectoryValidator;
         private IBackupDirectoryFactory _backupDirectoryFactory;
 
         public FirstRunViewModel(
             IDateTimeProvider dateTimeProvider,
-            IPersistedOptions persistedOptions,
+            IJsonSerializer jsonSerializer,
             IBackupDirectoryValidator backupDirectoryValidator,
             IBackupDirectoryFactory backupDirectoryFactory,
             IBackupDirectoryModel backupDirectoryModel)
         {
             _dateTimeProvider = dateTimeProvider;
-            _persistedOptions = persistedOptions;
+            _jsonSerializer = jsonSerializer;
             _backupDirectoryValidator = backupDirectoryValidator;
             _backupDirectoryFactory = backupDirectoryFactory;
             BackupDirectoryModel = backupDirectoryModel;
@@ -63,7 +64,7 @@ namespace HardDiskBackup
                 if (columnName != "DirectoryPath")
                     throw new InvalidOperationException("FirstRunViewModel only supports validation for DirectoryPath, but you tried to validate: " + columnName);
 
-
+                // TODO: Move to validator?
                 switch (_backupDirectoryValidator.CanAdd(DirectoryPath))
                 {
                     case ValidationResult.InvalidPath:
