@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
+using Moq;
 using NUnit.Framework;
 using Services.Disk;
 using SystemWrapper.IO;
-using Moq;
-using Domain;
-
 
 namespace Services.Tests
 {    

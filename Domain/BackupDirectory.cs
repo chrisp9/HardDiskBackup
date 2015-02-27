@@ -21,7 +21,7 @@ namespace Domain
 
         public override string ToString()
         {
-            return Directory.ToString();
+            return Directory.FullName.ToLower().Replace('/', '\\');
         }
     }
 }

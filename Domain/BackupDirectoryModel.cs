@@ -57,16 +57,14 @@ namespace Domain
             var newPath = backupDirectory.ToLower().Replace('/','\\');
 
             return _backupDirectories
-                .Where(x => newPath.Contains(x.Directory.FullName.ToLower()))
+                .Where(x => newPath.Contains(x.ToString()))
                 .Any();
         }
 
         private IEnumerable<BackupDirectory> ExistingSubdirectoriesOf(BackupDirectory backupDirectory)
         {
-            var newPath = backupDirectory.Directory.FullName.ToLower().Replace('/','\\');
-
             return _backupDirectories
-                .Where(x => x.Directory.FullName.ToLower().Replace('/','\\').Contains(newPath));
+                .Where(x => x.ToString().Contains(backupDirectory.ToString()));
         }
 
         private void OnPropertyChanged()
