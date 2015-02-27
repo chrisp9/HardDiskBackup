@@ -88,15 +88,54 @@ namespace Domain.Tests
                 Assert.AreEqual(0, _sut.BackupDirectories.Count);
             }
 
-            private IBackupDirectoryFactory SetupFactory(BackupDirectory backupDirectory)
+            [TestCase(@"c:\blah", @"c:\blah\test", true)]
+            [TestCase(@"c:\blah", @"c:/blah/foo", true)]
+            [TestCase(@"c:\blah", @"c:/blah/foo/bar\fizz/buzz", true)]
+            [TestCase(@"c:\blah\", @"c:/blah/test\foo/bar\fizz/buzz", true)]
+            [TestCase(@"c:/blah/test\foo/bar\fizz/buzz", @"c:\blah\", false)]
+            [TestCase(@"c:\blah\test", @"c:\blah", false)]
+            [TestCase(@"c:/blah/foo", @"c:\blah", false)]
+            [TestCase(@"c:/blah/foo/bar\fizz/buzz", @"c:\blah", false)]
+            [TestCase(@"c:/foo", @"c:/bar", false)]
+            [TestCase(@"c:/foo", @"c:/foo", false)]
+            public void Subdirectory_check_is_correct(string directory1, string directory2, bool expected)
             {
-                var mockBackupDirectoryFactory = new Mock<IBackupDirectoryFactory>();
+                // Arrange
+                _sut.Add(CreateBackupDirectory(directory1));
 
-                mockBackupDirectoryFactory
-                    .Setup(x => x.Create(It.IsAny<string>()))
-                    .Returns(backupDirectory);
+                // Act
+                var isSubDirectory =_sut.IsSubdirectoryOfExisting(directory2);
 
-                return mockBackupDirectoryFactory.Object;
+                // Assert
+                Assert.AreEqual(expected, isSubDirectory);
+            }
+
+            [TestCase(@"c:\foo\bar", @"c:\foo")]
+            [TestCase(@"c:\blah\test", @"c:\blah")]
+            [TestCase(@"c:/blah/foo", @"c:\blah")]
+            [TestCase(@"c:/blah/foo/bar\fizz/buzz", @"c:\blah")]
+            [TestCase(@"c:/blah/test\foo/bar\fizz/buzz", @"c:\blah\")]
+            public void Subdirectory_is_removed_if_parent_directory_is_added(string directory1, string directory2)
+            {
+                // Arrange
+                var backupDirectory1 = CreateBackupDirectory(directory1);
+                var backupDirectory2 = CreateBackupDirectory(directory2);
+
+                // Act
+                _sut.Add(backupDirectory1);
+                _sut.Add(backupDirectory2);
+
+                //Assert
+                Assert.Contains(backupDirectory2, _sut.BackupDirectories);
+                Assert.AreEqual(_sut.BackupDirectories.Count, 1);
+            }
+
+            private BackupDirectory CreateBackupDirectory(string path)
+            {
+                var mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
+                mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(path);
+
+                return new BackupDirectory(mockDirectoryInfoWrap.Object);
             }
         }
     }

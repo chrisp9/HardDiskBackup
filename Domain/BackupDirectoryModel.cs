@@ -63,10 +63,10 @@ namespace Domain
 
         private IEnumerable<BackupDirectory> ExistingSubdirectoriesOf(BackupDirectory backupDirectory)
         {
-            var newPath = backupDirectory.Directory.FullName.ToLower();
+            var newPath = backupDirectory.Directory.FullName.ToLower().Replace('/','\\');
 
             return _backupDirectories
-                .Where(x => x.Directory.FullName.ToLower().Contains(newPath));
+                .Where(x => x.Directory.FullName.ToLower().Replace('/','\\').Contains(newPath));
         }
 
         private void OnPropertyChanged()
