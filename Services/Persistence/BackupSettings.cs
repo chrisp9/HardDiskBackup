@@ -10,16 +10,16 @@ namespace Services
 {
     public interface IBackupSettings 
     {
-        IBackupDateTime NextBackup { get; set; }
+        NextBackupDateTime NextBackup { get; set; }
         IEnumerable<BackupDirectory> BackupDirectories { get; set; }
     }
 
     public class BackupSettings : IBackupSettings
     {
-        public IBackupDateTime NextBackup { get; set; }
+        public NextBackupDateTime NextBackup { get; set; }
         public IEnumerable<BackupDirectory> BackupDirectories { get; set; }
 
-        public BackupSettings(IBackupDateTime nextBackup, IEnumerable<BackupDirectory> backupDirectories)
+        public BackupSettings(NextBackupDateTime nextBackup, IEnumerable<BackupDirectory> backupDirectories)
         {
             NextBackup = nextBackup;
             BackupDirectories = backupDirectories;

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemWrapper;
 
 namespace Domain
 {
     public interface IDateTimeProvider 
     {
-        DateTime Now { get; }
-        DateTime UtcNow { get; }
+        IDateTimeWrap Now { get; }
+        IDateTimeWrap UtcNow { get; }
     }
 
     public class DateTimeProvider : IDateTimeProvider
     {
-        public DateTime Now { get { return DateTime.Now; } }
-        public DateTime UtcNow { get { return DateTime.UtcNow; } }
+        public IDateTimeWrap Now { get { return new DateTimeWrap(DateTime.Now); } }
+        public IDateTimeWrap UtcNow { get { return new DateTimeWrap(DateTime.UtcNow); } }
     }
 }
