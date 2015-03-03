@@ -1,15 +1,12 @@
-﻿using System;
-using Domain;
+﻿using Domain;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using Services;
 using Services.Disk;
 using Services.Factories;
-using System.Collections.ObjectModel;
+using Services.Persistence;
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
-using System.Linq;
-using Services.Persistence;
 
 namespace HardDiskBackup
 {
@@ -34,6 +31,7 @@ namespace HardDiskBackup
         {
             _dateTimeProvider = dateTimeProvider;
             _jsonSerializer = jsonSerializer;
+            
             _backupDirectoryValidator = backupDirectoryValidator;
             _backupDirectoryFactory = backupDirectoryFactory;
             BackupDirectoryModel = backupDirectoryModel;
@@ -57,7 +55,7 @@ namespace HardDiskBackup
             get { return string.Empty; }
         }
 
-        public string this[string columnName] // Check if directory is a subdirectory of.
+        public string this[string columnName]
         {
             get 
             {

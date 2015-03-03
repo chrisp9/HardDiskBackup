@@ -72,7 +72,7 @@ namespace Services.Tests
 
             var mockPersistedOptions = new Mock<IBackupSettings>();
             mockPersistedOptions.Setup(x => x.BackupDirectories).Returns(new[] { CreateBackupDirectory("c:\\stuff") });
-            mockPersistedOptions.Setup(x => x.NextBackup).Returns(new BackupDateTime(DateTime.Now));
+            mockPersistedOptions.Setup(x => x.NextBackup).Returns(new NextBackupDateTime(DateTime.Now));
 
             // Act
             _sut.SerializeToFile(Mock.Of<IBackupSettings>());

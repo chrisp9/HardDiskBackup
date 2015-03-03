@@ -9,7 +9,7 @@ namespace Services.DiskSchedule
 {
     public interface IBackupScheduleService
     {
-        void ScheduleNextBackup(BackupDateTime backupTime);
+        void ScheduleNextBackup(NextBackupDateTime backupTime);
     }
 
     public class BackupScheduleService
@@ -25,7 +25,7 @@ namespace Services.DiskSchedule
             _persistedOptions = persistedOptions;
         }
 
-        public void ScheduleNextBackup(BackupDateTime backupTime)
+        public void ScheduleNextBackup(NextBackupDateTime backupTime)
         {
             _persistedOptions.NextBackup = backupTime;
         }

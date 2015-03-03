@@ -6,25 +6,17 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:HardDiskBackup.ViewModel;assembly="  
+             xmlns:controls="clr-namespace:HardDiskBackup.View;assembly=" 
              xmlns:disk="clr-namespace:Domain;assembly=Domain" 
              DataContext="{Binding Source={StaticResource Locator}, Path=FirstRun}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="300">
+    
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
-            <TextBlock Text="Set your schedule" Style="{StaticResource Heading2}" />
-            <TextBlock Text="Please set your desired backup schedule:" />
-            <RadioButton GroupName="Frequency" Content="Daily" Margin="10"/>
-            <RadioButton GroupName="Frequency" Content="Weekly" Margin="10"/>
-            <RadioButton GroupName="Frequency" Content="Monthly" Margin="10"/>
-
-            <xctk:TimePicker Margin="10"/>
-
-            <TextBlock Text="Set your backup directories" Style="{StaticResource Heading2}" />
-        </StackPanel>
-
+        <controls:ScheduleControl DockPanel.Dock="Top"/>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -34,7 +26,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Name="BackupDirectoryInput" Margin="10" MaxLength="255" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <TextBlock Text="Set your backup directories" Grid.Row="0" Style="{StaticResource Heading2}" />
+            <TextBox Name="BackupDirectoryInput" Grid.Row="1" Margin="10" MaxLength="255" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <TextBox.Text>
                     <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">                        
                         <Binding.ValidationRules>
@@ -44,8 +37,8 @@
                 </TextBox.Text>        
             </TextBox>
 
-            <Button Margin="10" Width="40" Grid.Row="1" Command="{Binding Path=AddPathCommand}">v</Button>
-            <ListBox Margin="10" Grid.Row="2" BorderBrush="#FFCCCCCC" Binding.TargetUpdated="Binding_TargetUpdated" BorderThickness="1" ItemsSource="{Binding Path=BackupDirectoryModel.BackupDirectories, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+            <Button Margin="10" Width="40" Grid.Row="2" Command="{Binding Path=AddPathCommand}">v</Button>
+            <ListBox Margin="10" Grid.Row="3" BorderBrush="#FFCCCCCC" Binding.TargetUpdated="Binding_TargetUpdated" BorderThickness="1" ItemsSource="{Binding Path=BackupDirectoryModel.BackupDirectories, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>

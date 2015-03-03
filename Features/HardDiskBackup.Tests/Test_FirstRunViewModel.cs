@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HardDiskBackup;
-using Domain;
-using Services;
-using Services.Disk;
+﻿using Domain;
 using Moq;
 using NUnit.Framework;
-using SystemWrapper.IO;
+using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
+using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
 {
