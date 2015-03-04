@@ -30,10 +30,19 @@ namespace Domain.BackupSchedule
         {
             int start = (int) from.DayOfWeek;
             int target = (int) _dayOfWeek;
-            if (target <= start)
+
+            if (start == target && new BackupTime(from.TimeOfDay) < BackupTime)
+            {
+                // We're on the same day as the target, but before the scheduled time
+                // so we schedule for the current day
+                return new BackupDate(from.Year, from.Month, start+1);
+            }
+
+            if (target <= start) 
                 target += 7;
 
-            return new BackupDate(from.AddDays(target - start));
+            var nextWeek = from.AddDays(target - start);
+            return new BackupDate(nextWeek.Year, nextWeek.Month, nextWeek.Day);
         }
     }
 }

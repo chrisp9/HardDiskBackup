@@ -29,6 +29,16 @@ namespace Domain
             return _time == other._time;
         }
 
+        public static bool operator < (BackupTime a, BackupTime b) 
+        {
+            return a._time < b._time;
+        }
+
+        public static bool operator >(BackupTime a, BackupTime b)
+        {
+            return a._time > b._time;
+        }
+
         public override int GetHashCode()
         {
             return _time.GetHashCode();
