@@ -26,12 +26,13 @@ namespace Domain.BackupSchedule
             return NextBackupDateTimeFactory.Create(next, BackupTime);
         }
 
-        private BackupDate Next(IDateTimeWrap from)
+        private BackupDate Next(DateTime from)
         {
             int start = (int) from.DayOfWeek;
             int target = (int) _dayOfWeek;
             if (target <= start)
                 target += 7;
+
             return new BackupDate(from.AddDays(target - start));
         }
     }

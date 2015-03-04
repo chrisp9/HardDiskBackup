@@ -17,7 +17,7 @@ namespace Domain
         public NextBackupDateTime Create(BackupDate date, BackupTime time)
         {
             return new NextBackupDateTime(
-                new DateTimeWrap(
+                new DateTime(
                         date.Day,
                         date.Month, 
                         date.Year, 

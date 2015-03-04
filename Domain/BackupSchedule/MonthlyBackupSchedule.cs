@@ -26,13 +26,13 @@ namespace Domain.BackupSchedule
             return NextBackupDateTimeFactory.Create(next, BackupTime);
         }
 
-        private BackupDate Next(IDateTimeWrap from)
+        private BackupDate Next(DateTime from)
         {
             int start = from.Day;
             int target = _dayOfMonth;
 
             return (start <= target)
-                ? new BackupDate(new DateTimeWrap(from.Year, from.Month, _dayOfMonth))
+                ? new BackupDate(new DateTime(from.Year, from.Month, _dayOfMonth))
                 : new BackupDate(from.AddMonths(1).AddDays(target - start));
         }
     }

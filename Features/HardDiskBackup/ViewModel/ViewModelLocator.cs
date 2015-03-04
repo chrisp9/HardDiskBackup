@@ -30,6 +30,7 @@ namespace HardDiskBackup.ViewModel
         {
             Ioc.ContainerBuilder.RegisterType<MainWindowViewModel>();
             Ioc.ContainerBuilder.RegisterType<FirstRunViewModel>();
+            Ioc.ContainerBuilder.RegisterType<SetScheduleViewModel>();
             Ioc.Build();
         }
 
@@ -46,6 +47,14 @@ namespace HardDiskBackup.ViewModel
             get
             {
                 return Ioc.Container.Resolve<FirstRunViewModel>();
+            }
+        }
+
+        public SetScheduleViewModel SetSchedule
+        {
+            get
+            {
+                return Ioc.Container.Resolve<SetScheduleViewModel>();
             }
         }
         

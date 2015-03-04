@@ -45,6 +45,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeWrapFactory.cs" />
+    <Compile Include="FakeDateTimeProvider.cs" />
     <Compile Include="FakeDriveInfoBuilder.cs" />
     <Compile Include="FakeDirectoryInfoWrap.cs" />
     <Compile Include="FakeDriveInfoWrap.cs" />

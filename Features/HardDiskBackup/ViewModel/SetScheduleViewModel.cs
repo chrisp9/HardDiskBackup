@@ -1,20 +1,20 @@
 ﻿using Domain;
 using GalaSoft.MvvmLight;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Services.Factories;
 
 namespace HardDiskBackup.ViewModel
 {
     public class SetScheduleViewModel : ViewModelBase
     {
         private IDateTimeProvider _dateTimeProvider;
+        private IBackupScheduleFactory _backupScheduleFactory;
 
-        public SetScheduleViewModel(IDateTimeProvider dateTimeProvider)
+        public SetScheduleViewModel(
+            IDateTimeProvider dateTimeProvider, 
+            IBackupScheduleFactory backupScheduleFactory)
         {
             _dateTimeProvider = dateTimeProvider;
+            _backupScheduleFactory = backupScheduleFactory;
         }
     }
 }

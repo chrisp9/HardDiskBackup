@@ -9,15 +9,33 @@ namespace Domain
 {
     public class BackupTime
     {
-        private IDateTimeWrap _dateTimeWrap;
+        private TimeSpan _time;
 
-        public BackupTime(IDateTimeWrap dateTimeWrap)
+        public BackupTime(TimeSpan dateTime)
         {
-            _dateTimeWrap = dateTimeWrap;
+            _time = dateTime;
         }
 
-        public int Hours { get { return _dateTimeWrap.Hour; } }
-        public int Minutes { get { return _dateTimeWrap.Minute; } }
-        public int Seconds { get { return _dateTimeWrap.Second; } }
+        public BackupTime(int hours, int minutes, int seconds)
+        {
+            _time = new TimeSpan(hours, minutes, seconds);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as BackupTime;
+            if (other == null) return false;
+
+            return _time == other._time;
+        }
+
+        public override int GetHashCode()
+        {
+            return _time.GetHashCode();
+        }
+
+        public int Hours { get { return _time.Hours; } }
+        public int Minutes { get { return _time.Minutes; } }
+        public int Seconds { get { return _time.Seconds; } }
     }
 }

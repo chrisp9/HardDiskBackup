@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupSchedule\BackupScheduleService.cs" />
+    <Compile Include="Factories\BackupScheduleFactory.cs" />
     <Compile Include="Persistence\JsonSerializer.cs" />
     <Compile Include="Disk\BackupDirectoryValidator.cs" />
     <Compile Include="Disk\DriveObserver.cs" />
