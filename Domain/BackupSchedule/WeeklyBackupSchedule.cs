@@ -28,6 +28,7 @@ namespace Domain.BackupSchedule
 
         private BackupDate Next(DateTime from)
         {
+            // Yes the casts suck, but DayOfWeek is unlikely to change
             int start = (int) from.DayOfWeek;
             int target = (int) _dayOfWeek;
 

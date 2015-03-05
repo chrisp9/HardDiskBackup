@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupSchedule\BackupScheduleTestBase.cs" />
+    <Compile Include="BackupSchedule\Test_DailyBackupSchedule.cs" />
     <Compile Include="BackupSchedule\Test_MonthlyBackupSchedule.cs" />
     <Compile Include="BackupSchedule\Test_WeeklyBackupSchedule.cs" />
     <Compile Include="Test_BackupDirectory.cs" />

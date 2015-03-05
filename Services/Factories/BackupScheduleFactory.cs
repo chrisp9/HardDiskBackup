@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
 using Domain.BackupSchedule;
-using Domain;
+using System;
 
 namespace Services.Factories
 {
@@ -26,7 +22,10 @@ namespace Services.Factories
             _dateTimeProvider = dateTimeProvider;
         }
 
-        public BackupSchedule Create(BackupScheduleType backupScheduleType, BackupTime backupTime, int param)
+        public BackupSchedule Create(
+            BackupScheduleType backupScheduleType, 
+            BackupTime backupTime, 
+            int param)
         {
             switch (backupScheduleType)
             {
@@ -34,6 +33,8 @@ namespace Services.Factories
                     return new WeeklyBackupSchedule(_nextBackupDateTimeFactory, _dateTimeProvider, (DayOfWeek) param, backupTime);
                 case BackupScheduleType.Monthly:
                     return new MonthlyBackupSchedule(_nextBackupDateTimeFactory, _dateTimeProvider, param, backupTime);
+                case BackupScheduleType.Daily:
+                    return new DailyBackupSchedule(_nextBackupDateTimeFactory, _dateTimeProvider, backupTime);
                 default:
                     throw new InvalidOperationException("Invalid backupScheduleType was specified. Did you add a new one?");
             }

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BackupDate.cs" />
     <Compile Include="BackupSchedule\BackupScheduleType.cs" />
+    <Compile Include="BackupSchedule\DailyBackupSchedule.cs" />
     <Compile Include="NextBackupDateTimeFactory.cs" />
     <Compile Include="BackupSchedule\BackupSchedule.cs" />
     <Compile Include="BackupSchedule\MonthlyBackupSchedule.cs" />
