@@ -1,31 +1,38 @@
-﻿using System;
+﻿using Domain.Scheduling;
+using Services.Factories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.BackupSchedule
+namespace Services.Scheduling
 {
-    public interface ISetScheduleModel
+    public interface ISetScheduleModel : IDataErrorInfo
     {
         TimeSpan? Time { get; set; }
         int? DayOfMonth { get; set; }
         DayOfWeek? DayOfWeek { get; set; }
 
+        BackupSchedule CreateSchedule();
         bool IsScheduleValid();
+        void SetScheduleType(BackupScheduleType backupScheduleType);
     }
 
-    public class SetScheduleModel : ISetScheduleModel, IDataErrorInfo
+    public class SetScheduleModel : ISetScheduleModel
     {
         public TimeSpan? Time { get; set; }
         public int? DayOfMonth { get; set; }
         public DayOfWeek? DayOfWeek { get; set; }
 
-        public BackupScheduleType ScheduleType { get; private set; }
+        public BackupScheduleType? ScheduleType { get; private set; }
 
-        public SetScheduleModel()
+        private IBackupScheduleFactory _backupScheduleFactory;
+
+        public SetScheduleModel(IBackupScheduleFactory factory)
         {
+            _backupScheduleFactory = factory;
         }
 
         public void SetScheduleType(BackupScheduleType backupScheduleType) 
@@ -33,8 +40,15 @@ namespace Domain.BackupSchedule
             ScheduleType = backupScheduleType;
         }
 
+        public BackupSchedule CreateSchedule()
+        {
+            return _backupScheduleFactory.Create(ScheduleType.Value, new Domain.BackupTime(Time.Value));
+        }
+
         public bool IsScheduleValid()
         {
+            if (ScheduleType == null) return false;
+
             if (ScheduleType == BackupScheduleType.Daily)
                 return ValidateTimeOfDay() == null;
             if (ScheduleType == BackupScheduleType.Weekly)
@@ -58,7 +72,7 @@ namespace Domain.BackupSchedule
                     return ValidateDayOfMonth();
                 else if (columnName == "DayOfWeek")
                     return ValidateDayOfWeek();
-                else if (columnName == "TimeOfDay")
+                else if (columnName == "Time")
                     return ValidateTimeOfDay();
 
                 throw new ArgumentException("Invalid columnName: " + columnName);

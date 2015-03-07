@@ -32,21 +32,46 @@
 
                 <Label VerticalAlignment="Center" Margin="5">Every (Day of week):</Label>
                 <ComboBox Margin="5" VerticalContentAlignment="Center">
+                    <ComboBox.SelectedIndex>
+                        <Binding Path="DayOfWeek" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedIndex>
+
+                    <ComboBoxItem>Sunday</ComboBoxItem>
                     <ComboBoxItem>Monday</ComboBoxItem>
                     <ComboBoxItem>Tuesday</ComboBoxItem>
                     <ComboBoxItem>Wednesday</ComboBoxItem>
                     <ComboBoxItem>Thursday</ComboBoxItem>
                     <ComboBoxItem>Friday</ComboBoxItem>
                     <ComboBoxItem>Saturday</ComboBoxItem>
-                    <ComboBoxItem>Sunday</ComboBoxItem>
                 </ComboBox>
             </DockPanel>
 
             <DockPanel Grid.Row="2" Grid.Column="1" Visibility="{Binding Path=IsChecked, ElementName=Monthly, Converter={StaticResource BoolToVis}}">
                 <Label VerticalAlignment="Center" Margin="5">Every (day of month):</Label>
-                <xctk:IntegerUpDown VerticalAlignment="Center" Margin="5" Minimum="1" Maximum="28" TextAlignment="Center" Value="{Binding DayOfMonth}"/>                 
+                <xctk:IntegerUpDown VerticalAlignment="Center" Margin="5" Minimum="1" Maximum="28" TextAlignment="Center">
+                    <xctk:IntegerUpDown.Value>
+                        <Binding Path="DayOfMonth" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </xctk:IntegerUpDown.Value>
+                </xctk:IntegerUpDown>
+                
             </DockPanel>
         </Grid>
-        <xctk:TimePicker Margin="10"/>
+        <xctk:TimePicker Margin="10">
+            <xctk:TimePicker.Value>
+                <Binding Path="TimeOfDay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <DataErrorValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </xctk:TimePicker.Value>
+        </xctk:TimePicker>
     </StackPanel>
 </UserControl>

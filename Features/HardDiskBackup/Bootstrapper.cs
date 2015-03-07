@@ -15,6 +15,7 @@ using Services;
 using SystemWrapper.IO;
 using Services.Factories;
 using Services.Persistence;
+using Services.Scheduling;
 
 namespace HardDiskBackup
 {
@@ -35,6 +36,7 @@ namespace HardDiskBackup
             RegisterTransient<BackupScheduleFactory, IBackupScheduleFactory>();
             RegisterTransient<NextBackupDateTimeFactory, INextBackupDateTimeFactory>();
 
+            RegisterSingle<SetScheduleModel, ISetScheduleModel>();
             RegisterSingle<DriveInfoService, IDriveInfoService>();
             RegisterSingle<DriveNotifier, IDriveNotifier>();
             RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();

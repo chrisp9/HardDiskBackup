@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemWrapper;
 
-namespace Services.DiskSchedule
+namespace Services.Scheduling
 {
     public interface IBackupScheduleService
     {

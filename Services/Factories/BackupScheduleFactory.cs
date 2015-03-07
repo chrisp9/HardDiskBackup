@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.BackupSchedule;
+using Domain.Scheduling;
 using System;
 
 namespace Services.Factories

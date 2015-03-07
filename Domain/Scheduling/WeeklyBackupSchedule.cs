@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemWrapper;
 
-namespace Domain.BackupSchedule
+namespace Domain.Scheduling
 {
     public class WeeklyBackupSchedule : BackupSchedule
     {
