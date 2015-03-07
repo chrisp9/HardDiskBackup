@@ -21,10 +21,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <RadioButton Name="Daily" GroupName="Frequency" Grid.Row="0" Content="Daily" Margin="10"/>
-            <RadioButton Name="Weekly" GroupName="Frequency" Grid.Row="1" Content="Weekly" Margin="10"/>
-            <RadioButton Name="Monthly" GroupName="Frequency" Grid.Row="2" Content="Monthly" Margin="10"/>
-
+            <RadioButton Name="Daily" GroupName="Frequency" Grid.Row="0" Content="Daily" Margin="10" IsChecked="{Binding Path=IsDaily}"/>
+            <RadioButton Name="Weekly" GroupName="Frequency" Grid.Row="1" Content="Weekly" Margin="10" IsChecked="{Binding Path=IsWeekly}"/>
+            <RadioButton Name="Monthly" GroupName="Frequency" Grid.Row="2" Content="Monthly" Margin="10" IsChecked="{Binding Path=IsMonthly}"/>
+            
             <DockPanel
                     Grid.Row="1"
                     Grid.Column="1"
@@ -44,7 +44,7 @@
 
             <DockPanel Grid.Row="2" Grid.Column="1" Visibility="{Binding Path=IsChecked, ElementName=Monthly, Converter={StaticResource BoolToVis}}">
                 <Label VerticalAlignment="Center" Margin="5">Every (day of month):</Label>
-                <xctk:IntegerUpDown VerticalAlignment="Center" Margin="5" Minimum="1" Maximum="28" TextAlignment="Center"/>
+                <xctk:IntegerUpDown VerticalAlignment="Center" Margin="5" Minimum="1" Maximum="28" TextAlignment="Center" Value="{Binding DayOfMonth}"/>                 
             </DockPanel>
         </Grid>
         <xctk:TimePicker Margin="10"/>

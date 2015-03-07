@@ -42,5 +42,15 @@ namespace Services.Disk
                 ? ValidationResult.PathAlreadyExists
                 : ValidationResult.Success;
         }
+
+        public string Error
+        {
+            get { return string.Empty; }
+        }
+
+        public string this[string columnName]
+        {
+            get { throw new System.NotImplementedException(); }
+        }
     }
 }
