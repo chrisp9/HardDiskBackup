@@ -49,12 +49,15 @@ namespace Services.Scheduling
         {
             if (ScheduleType == null) return false;
 
-            if (ScheduleType == BackupScheduleType.Daily)
-                return ValidateTimeOfDay() == null;
-            if (ScheduleType == BackupScheduleType.Weekly)
-                return ValidateDayOfWeek() == null && ValidateTimeOfDay() == null;
-            if (ScheduleType == BackupScheduleType.Monthly)
-                return ValidateDayOfMonth() == null && ValidateTimeOfDay() == null;
+            switch (ScheduleType)
+            {
+                case BackupScheduleType.Daily:
+                    return ValidateTimeOfDay() == null;
+                case BackupScheduleType.Weekly:
+                    return ValidateDayOfWeek() == null && ValidateTimeOfDay() == null;
+                case BackupScheduleType.Monthly:
+                    return ValidateDayOfMonth() == null && ValidateTimeOfDay() == null;
+            }
 
             throw new InvalidOperationException("Unknown schedule type");
         }
