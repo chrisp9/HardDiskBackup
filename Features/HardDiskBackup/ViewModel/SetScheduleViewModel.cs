@@ -83,10 +83,6 @@ namespace HardDiskBackup.ViewModel
             _setScheduleModel = setScheduleModel;
         }
 
-        /// <summary>
-        /// Returns a BackupSchedule if the requires parameters have
-        /// been supplied. Throws an InvalidOperationException if not
-        /// </summary>
         public BackupSchedule CreateSchedule()
         {
             return _setScheduleModel.CreateSchedule();
