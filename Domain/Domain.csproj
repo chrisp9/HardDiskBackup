@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backup.cs" />
     <Compile Include="BackupDate.cs" />
     <Compile Include="Scheduling\BackupScheduleType.cs" />
     <Compile Include="Scheduling\DailyBackupSchedule.cs" />

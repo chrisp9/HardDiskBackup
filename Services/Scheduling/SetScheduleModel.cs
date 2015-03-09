@@ -14,7 +14,7 @@ namespace Services.Scheduling
         TimeSpan? Time { get; set; }
         int? DayOfMonth { get; set; }
         DayOfWeek? DayOfWeek { get; set; }
-
+        BackupScheduleType? ScheduleType { get; }
         BackupSchedule CreateSchedule();
         bool IsScheduleValid();
         void SetScheduleType(BackupScheduleType backupScheduleType);

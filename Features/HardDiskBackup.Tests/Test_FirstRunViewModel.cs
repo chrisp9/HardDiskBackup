@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
+using Services.Scheduling;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
@@ -118,7 +119,8 @@ namespace HardDiskBackup.Tests
             IJsonSerializer jsonSerializer = null,
             IBackupDirectoryValidator backupDirectoryValidator = null,
             IBackupDirectoryFactory backupDirectoryFactory = null,
-            IBackupDirectoryModel backupDirectoryModel = null
+            IBackupDirectoryModel backupDirectoryModel = null,
+            ISetScheduleModel setScheduleModel = null
             )
         {
             return new FirstRunViewModel(
@@ -126,7 +128,8 @@ namespace HardDiskBackup.Tests
                 jsonSerializer ?? Mock.Of<IJsonSerializer>(),
                 backupDirectoryValidator ?? Mock.Of<IBackupDirectoryValidator>(),
                 backupDirectoryFactory ?? Mock.Of<IBackupDirectoryFactory>(),
-                backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>()
+                backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>(),
+                setScheduleModel ?? Mock.Of<ISetScheduleModel>()
                 );
         }
     }

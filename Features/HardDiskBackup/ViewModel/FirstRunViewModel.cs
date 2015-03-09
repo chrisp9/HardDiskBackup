@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
+using Services.Scheduling;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -14,6 +15,10 @@ namespace HardDiskBackup
     {
         public ICommand AddPathCommand { get; private set; }
         public ICommand RemovePathCommand { get; private set; }
+        public ICommand ScheduleBackupCommand { get; private set; }
+
+        public Backup Backup { get; private set; }
+
         public string DirectoryPath { get; set; }
         public IBackupDirectoryModel BackupDirectoryModel { get; private set; }
 
@@ -21,13 +26,15 @@ namespace HardDiskBackup
         private IJsonSerializer _jsonSerializer;
         private IBackupDirectoryValidator _backupDirectoryValidator;
         private IBackupDirectoryFactory _backupDirectoryFactory;
+        private ISetScheduleModel _setScheduleModel;
 
-        public FirstRunViewModel(
+        public FirstRunViewModel( // TODO: Factor out commands.
             IDateTimeProvider dateTimeProvider,
             IJsonSerializer jsonSerializer,
             IBackupDirectoryValidator backupDirectoryValidator,
             IBackupDirectoryFactory backupDirectoryFactory,
-            IBackupDirectoryModel backupDirectoryModel)
+            IBackupDirectoryModel backupDirectoryModel,
+            ISetScheduleModel setScheduleModel)
         {
             _dateTimeProvider = dateTimeProvider;
             _jsonSerializer = jsonSerializer;
@@ -36,6 +43,7 @@ namespace HardDiskBackup
             _backupDirectoryFactory = backupDirectoryFactory;
             BackupDirectoryModel = backupDirectoryModel;
 
+            // Yeah, this looks horrible and needs to be changed.
             AddPathCommand = new RelayCommand(
                 () => 
                     {
@@ -47,6 +55,20 @@ namespace HardDiskBackup
             RemovePathCommand = new RelayCommand<BackupDirectory>(
                 (item) => { BackupDirectoryModel.Remove(item); },
                 _      => { return true; });
+
+            ScheduleBackupCommand = new RelayCommand(
+                () =>
+                    {
+                        var schedule = _setScheduleModel.CreateSchedule();
+                        var directories = BackupDirectoryModel.BackupDirectories;
+
+                        Backup = Backup.Create(directories, schedule);
+                    },
+                () =>
+                    {
+                        return backupDirectoryModel.BackupDirectories.Count > 0
+                            && _setScheduleModel.IsScheduleValid();
+                    });
         }
 
         public string Error

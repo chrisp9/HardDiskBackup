@@ -7,6 +7,7 @@ namespace Domain
 {
     public interface IBackupDirectoryModel : INotifyPropertyChanged
     {
+        ReadOnlyCollection<BackupDirectory> BackupDirectories { get; }
         void Add(BackupDirectory backupDirectory);
         void Remove(BackupDirectory backupDirectory);
 
