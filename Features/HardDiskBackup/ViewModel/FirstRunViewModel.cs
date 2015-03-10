@@ -25,14 +25,14 @@ namespace HardDiskBackup
         private IDateTimeProvider _dateTimeProvider;
         private IJsonSerializer _jsonSerializer;
         private IBackupDirectoryValidator _backupDirectoryValidator;
-        private IBackupDirectoryFactory _backupDirectoryFactory;
+        private IDirectoryFactory _directoryFactory;
         private ISetScheduleModel _setScheduleModel;
 
         public FirstRunViewModel( // TODO: Factor out commands.
             IDateTimeProvider dateTimeProvider,
             IJsonSerializer jsonSerializer,
             IBackupDirectoryValidator backupDirectoryValidator,
-            IBackupDirectoryFactory backupDirectoryFactory,
+            IDirectoryFactory backupDirectoryFactory,
             IBackupDirectoryModel backupDirectoryModel,
             ISetScheduleModel setScheduleModel)
         {
@@ -40,7 +40,7 @@ namespace HardDiskBackup
             _jsonSerializer = jsonSerializer;
             
             _backupDirectoryValidator = backupDirectoryValidator;
-            _backupDirectoryFactory = backupDirectoryFactory;
+            _directoryFactory = backupDirectoryFactory;
             _setScheduleModel = setScheduleModel;
 
             BackupDirectoryModel = backupDirectoryModel;
@@ -49,7 +49,7 @@ namespace HardDiskBackup
             AddPathCommand = new RelayCommand(
                 () => 
                     {
-                        var backupDirectory = _backupDirectoryFactory.Create(DirectoryPath);
+                        var backupDirectory = _directoryFactory.CreateBackupDirectory(DirectoryPath);
                         BackupDirectoryModel.Add(backupDirectory); 
                     },
                 () => { return _backupDirectoryValidator.CanAdd(DirectoryPath) == ValidationResult.Success; });
