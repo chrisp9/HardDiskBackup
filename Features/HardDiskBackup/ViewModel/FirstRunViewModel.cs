@@ -41,6 +41,8 @@ namespace HardDiskBackup
             
             _backupDirectoryValidator = backupDirectoryValidator;
             _backupDirectoryFactory = backupDirectoryFactory;
+            _setScheduleModel = setScheduleModel;
+
             BackupDirectoryModel = backupDirectoryModel;
 
             // Yeah, this looks horrible and needs to be changed.
