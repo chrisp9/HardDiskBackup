@@ -24,7 +24,7 @@ namespace HardDiskBackup.Tests
 
             _sut = SetupSut(
                 backupDirectoryValidator: SetupValidator(ValidationResult.Success),
-                backupDirectoryFactory: SetupFactory(_backupDirectory),
+                directoryFactory: SetupFactory(_backupDirectory),
                 backupDirectoryModel: _mockBackupDirectoryModel.Object);
         }
 
@@ -103,12 +103,12 @@ namespace HardDiskBackup.Tests
             return mockBackupDirectoryValidator.Object;
         }
 
-        private IBackupDirectoryFactory SetupFactory(BackupDirectory backupDirectory)
+        private IDirectoryFactory SetupFactory(BackupDirectory backupDirectory)
         {
-            var mockBackupDirectoryFactory = new Mock<IBackupDirectoryFactory>();
+            var mockBackupDirectoryFactory = new Mock<IDirectoryFactory>();
 
             mockBackupDirectoryFactory
-                .Setup(x => x.Create(It.IsAny<string>()))
+                .Setup(x => x.CreateBackupDirectory(It.IsAny<string>()))
                 .Returns(backupDirectory);
 
             return mockBackupDirectoryFactory.Object;
@@ -118,7 +118,7 @@ namespace HardDiskBackup.Tests
             IDateTimeProvider dateTimeProvider = null,
             IJsonSerializer jsonSerializer = null,
             IBackupDirectoryValidator backupDirectoryValidator = null,
-            IBackupDirectoryFactory backupDirectoryFactory = null,
+            IDirectoryFactory directoryFactory = null,
             IBackupDirectoryModel backupDirectoryModel = null,
             ISetScheduleModel setScheduleModel = null
             )
@@ -127,7 +127,7 @@ namespace HardDiskBackup.Tests
                 dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
                 jsonSerializer ?? Mock.Of<IJsonSerializer>(),
                 backupDirectoryValidator ?? Mock.Of<IBackupDirectoryValidator>(),
-                backupDirectoryFactory ?? Mock.Of<IBackupDirectoryFactory>(),
+                directoryFactory ?? Mock.Of<IDirectoryFactory>(),
                 backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>(),
                 setScheduleModel ?? Mock.Of<ISetScheduleModel>()
                 );

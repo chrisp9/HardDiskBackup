@@ -31,7 +31,7 @@ namespace HardDiskBackup
             RegisterTransient<DateTimeProvider, IDateTimeProvider>();
             RegisterTransient<JsonSerializer, IJsonSerializer>();
             RegisterTransient<BackupSettings, IBackupSettings>();
-            RegisterTransient<BackupDirectoryFactory, IBackupDirectoryFactory>();
+            RegisterTransient<IDirectoryFactory, IDirectoryFactory>();
             RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();
             RegisterTransient<BackupScheduleFactory, IBackupScheduleFactory>();
             RegisterTransient<NextBackupDateTimeFactory, INextBackupDateTimeFactory>();
