@@ -13,6 +13,7 @@ namespace Services.Disk.FileSystem
     public interface IBackupFileSystem
     {
         void Copy(IEnumerable<BackupDirectory> backupDirectories);
+        long CalculateTotalSize(IEnumerable<BackupDirectory> backupDirectories);
     }
 
     public class BackupFileSystem
@@ -37,11 +38,42 @@ namespace Services.Disk.FileSystem
         public void Copy(IEnumerable<BackupDirectory> backupDirectories)
         {
             foreach (var backupDirectory in backupDirectories)
-                PerformCopy(backupDirectory);
+                Copy(backupDirectory);
         }
 
+        public long CalculateTotalSize(IEnumerable<BackupDirectory> directories)
+        {
+            var currentSize = 0L;
+            // Add file sizes.
+
+            foreach (var directory in directories)
+            {
+                currentSize += CalculateSize(directory.Directory);
+            }
+
+            return currentSize;
+        }
+
+        private long CalculateSize(IDirectoryInfoWrap directory)
+        {
+            long currentSize = 0L;
+            var fis = directory.GetFiles();
+            foreach (var fi in fis)
+            {
+                currentSize += fi.Length;
+            }
+            // Add subdirectory sizes.
+            var dis = directory.GetDirectories();
+            foreach (var di in dis)
+            {
+                currentSize += CalculateSize(di);
+            }
+            return (currentSize);
+        }
+
+
         // Recursively copy source -> destination
-        private void PerformCopy(BackupDirectory source)
+        private void Copy(BackupDirectory source)
         {
             var files = source.Directory.GetFiles();
             var directories = source.Directory.GetDirectories();
@@ -53,10 +85,10 @@ namespace Services.Disk.FileSystem
 
                 foreach(var file in directory.GetFiles()) 
                 {
-                    _fileWrap.Copy(file.FullName, mirroredDirectory.ToString()+@"\"+file.Name);
+                    _fileWrap.Copy(file.FullName, Path.Combine(mirroredDirectory.ToString(), file.Name));
                 }
 
-                PerformCopy(backupDirectory);
+                Copy(backupDirectory);
             }
         }
 
@@ -77,7 +109,7 @@ namespace Services.Disk.FileSystem
 
         private string ReplaceRootWith(string path, string newRoot)
         {
-            var endPart = path.Substring(3);
+            var endPart = path.Substring(3); //TODO: Will this be flaky?
             return Path.Combine(newRoot, endPart);
         }
     }
