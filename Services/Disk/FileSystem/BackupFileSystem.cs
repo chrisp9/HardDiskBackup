@@ -21,44 +21,52 @@ namespace Services.Disk.FileSystem
         private IDirectoryWrap _directoryWrap;
         private IDictionary<BackupDirectory, MirroredDirectory> _mappings;
         private IDirectoryFactory _directoryFactory;
+        private IFileWrap _fileWrap;
 
         public BackupFileSystem(
             BackupRootDirectory directory,
             IDirectoryWrap directoryWrap,
+            IFileWrap fileWrap,
             IDirectoryFactory directoryFactory)
         {
             _backupRootDirectory = directory;
             _directoryWrap = directoryWrap;
             _directoryFactory = directoryFactory;
+            _fileWrap = fileWrap;
             _mappings = new Dictionary<BackupDirectory, MirroredDirectory>();
         }
 
-        public void CreateMirroredDirectories(IEnumerable<BackupDirectory> backupDirectories)
+        public void Copy(IEnumerable<BackupDirectory> backupDirectories)
+        {
+            CreateMirroredDirectories(backupDirectories);
+
+            foreach (var backupDirectory in backupDirectories)
+                PerformCopy(backupDirectory);
+        }
+
+        private void CreateMirroredDirectories(IEnumerable<BackupDirectory> backupDirectories)
         {
             foreach (var directory in backupDirectories)
                 _mappings.Add(directory, CreateMirroredDirectory(directory));
         }
 
-        public void Copy(IEnumerable<BackupDirectory> backupDirectories)
-        {
-            foreach (var backupDirectory in backupDirectories)
-                PerformCopy(backupDirectory, _mappings[backupDirectory]);
-        }
-
         // Recursively copy source -> destination
-        private void PerformCopy(BackupDirectory source, MirroredDirectory target)
+        private void PerformCopy(BackupDirectory source)
         {
             var files = source.Directory.GetFiles();
             var directories = source.Directory.GetDirectories();
-
-            foreach (var file in files)
-                file.CopyTo(target.ToString());
 
             foreach (var directory in directories)
             {
                 var backupDirectory = new BackupDirectory(directory);
                 var mirroredDirectory = CreateMirroredDirectory(backupDirectory);
-                PerformCopy(backupDirectory, mirroredDirectory);
+
+                foreach(var file in directory.GetFiles()) 
+                {
+                    _fileWrap.Copy(file.FullName, mirroredDirectory.ToString()+@"\"+file.Name);
+                }
+
+                PerformCopy(backupDirectory);
             }
         }
 
