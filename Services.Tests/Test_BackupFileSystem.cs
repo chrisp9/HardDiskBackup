@@ -31,17 +31,25 @@ namespace Services.Tests
             _fileWrap.Verify(x => x.Copy(sourceFileName, destFileName), Times.Once());
         }
 
+        [Test]
+        public void Total_size_is_calculated_correctly()
+        {
+            var totalSize = _sut.CalculateTotalSize(new[] {_testDirectory});
+
+            Assert.AreEqual(450L, totalSize);
+        }
+
         private Mock<IDirectoryInfoWrap> CreateDirectoryStructure()
         {
             var root = FakeDirectoryInfoBuilder.Create(@"c:\");
             var foo = FakeDirectoryInfoBuilder.Create(@"c:\foo");
-            foo.WithFiles("amazing.txt");
+            foo.WithFiles(new Tuple<string, long>("amazing.txt", 250L));
 
             var fizz = FakeDirectoryInfoBuilder.Create(@"c:\foo\fizz");
             var bar = FakeDirectoryInfoBuilder.Create(@"c:\bar");
             
-            bar.WithFiles("test.txt");
-            bar.WithFiles("buzz.txt");
+            bar.WithFiles(new Tuple<string, long>("test.txt", 150L));
+            bar.WithFiles(new Tuple<string, long>("buzz.txt", 50L));
 
             foo.WithSubDirectories(fizz);
             root.WithSubDirectories(new[] { foo, bar });

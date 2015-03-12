@@ -2,6 +2,7 @@
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,14 +31,15 @@ namespace TestHelpers
             return parent;
         }
 
-        public static Mock<IDirectoryInfoWrap> WithFiles(this Mock<IDirectoryInfoWrap> parent, params string[] children)
+        public static Mock<IDirectoryInfoWrap> WithFiles(this Mock<IDirectoryInfoWrap> parent, params Tuple<string, long>[] children)
         {
             var files = parent.Object.GetFiles().ToList() ?? new List<IFileInfoWrap>();
             foreach (var child in children)
             {
                 var mockFileInfoWrap = new Mock<IFileInfoWrap>();
-                mockFileInfoWrap.Setup(x => x.FullName).Returns(parent.Object.FullName + @"\" + child);
-                mockFileInfoWrap.Setup(x => x.Name).Returns(child);
+                mockFileInfoWrap.Setup(x => x.FullName).Returns(Path.Combine(parent.Object.FullName, child.Item1).ToString());
+                mockFileInfoWrap.Setup(x => x.Name).Returns(child.Item1);
+                mockFileInfoWrap.Setup(x => x.Length).Returns(child.Item2);
                 files.Add(mockFileInfoWrap.Object);
             }
 

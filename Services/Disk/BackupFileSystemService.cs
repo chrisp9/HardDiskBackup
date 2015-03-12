@@ -33,15 +33,11 @@ namespace Services.Disk
 
         private const string DiskBackup = "DiskBackupApp";
         private IDateTimeProvider _dateTimeProvider;
-        private IDiskDriver _diskService;
-        //private long _currentSize = 0L;
 
         public BackupFileSystemService(
-            IDateTimeProvider provider,
-            IDiskDriver diskService) 
+            IDateTimeProvider provider) 
         {
             _dateTimeProvider = provider;
-            _diskService = diskService;
         }
 
         public bool IsFormatted(IDriveInfoWrap backupMedium)

@@ -71,7 +71,6 @@ namespace Services.Disk.FileSystem
             return (currentSize);
         }
 
-
         // Recursively copy source -> destination
         private void Copy(BackupDirectory source)
         {
