@@ -19,7 +19,6 @@ namespace Services.Disk.FileSystem
     {
         private BackupRootDirectory _backupRootDirectory;
         private IDirectoryWrap _directoryWrap;
-        private IDictionary<BackupDirectory, MirroredDirectory> _mappings;
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
 
@@ -33,21 +32,12 @@ namespace Services.Disk.FileSystem
             _directoryWrap = directoryWrap;
             _directoryFactory = directoryFactory;
             _fileWrap = fileWrap;
-            _mappings = new Dictionary<BackupDirectory, MirroredDirectory>();
         }
 
         public void Copy(IEnumerable<BackupDirectory> backupDirectories)
         {
-            CreateMirroredDirectories(backupDirectories);
-
             foreach (var backupDirectory in backupDirectories)
                 PerformCopy(backupDirectory);
-        }
-
-        private void CreateMirroredDirectories(IEnumerable<BackupDirectory> backupDirectories)
-        {
-            foreach (var directory in backupDirectories)
-                _mappings.Add(directory, CreateMirroredDirectory(directory));
         }
 
         // Recursively copy source -> destination
