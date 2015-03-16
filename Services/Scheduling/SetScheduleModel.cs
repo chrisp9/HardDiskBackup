@@ -23,12 +23,38 @@ namespace Services.Scheduling
     public class SetScheduleModel : ISetScheduleModel
     {
         public TimeSpan? Time { get; set; }
-        public int? DayOfMonth { get; set; }
-        public DayOfWeek? DayOfWeek { get; set; }
+        public int? DayOfMonth 
+        {
+            get 
+            {
+                return _dayOfMonth; 
+            } 
+            set 
+            { 
+                _dayOfMonth = value;
+                _backupScheduleFactory.DayOfMonth = value;
+            } 
+        }
+
+        public DayOfWeek? DayOfWeek
+        {
+            get
+            {
+                return _dayOfWeek;
+            }
+            set
+            {
+                _dayOfWeek = value;
+                _backupScheduleFactory.DayOfWeek = value;
+            }
+        }
 
         public BackupScheduleType? ScheduleType { get; private set; }
 
         private IBackupScheduleFactory _backupScheduleFactory;
+
+        private int? _dayOfMonth;
+        private DayOfWeek? _dayOfWeek;
 
         public SetScheduleModel(IBackupScheduleFactory factory)
         {

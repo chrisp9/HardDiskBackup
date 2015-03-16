@@ -1,4 +1,5 @@
 ﻿using Domain;
+using HardDiskBackup.Commands;
 using Moq;
 using NUnit.Framework;
 using Services.Disk;
@@ -120,7 +121,8 @@ namespace HardDiskBackup.Tests
             IBackupDirectoryValidator backupDirectoryValidator = null,
             IDirectoryFactory directoryFactory = null,
             IBackupDirectoryModel backupDirectoryModel = null,
-            ISetScheduleModel setScheduleModel = null
+            ISetScheduleModel setScheduleModel = null,
+            IScheduleBackupCommand scheduleBackupCommand = null
             )
         {
             return new FirstRunViewModel(
@@ -129,7 +131,8 @@ namespace HardDiskBackup.Tests
                 backupDirectoryValidator ?? Mock.Of<IBackupDirectoryValidator>(),
                 directoryFactory ?? Mock.Of<IDirectoryFactory>(),
                 backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>(),
-                setScheduleModel ?? Mock.Of<ISetScheduleModel>()
+                setScheduleModel ?? Mock.Of<ISetScheduleModel>(),
+                scheduleBackupCommand ?? Mock.Of<IScheduleBackupCommand>()
                 );
         }
     }

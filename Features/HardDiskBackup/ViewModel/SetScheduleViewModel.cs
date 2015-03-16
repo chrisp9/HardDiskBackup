@@ -46,19 +46,19 @@ namespace HardDiskBackup.ViewModel
         public bool IsDaily 
         { 
             get { return _isDaily; }
-            set { _isDaily = value; _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
+            set { _isDaily = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
         }
 
         public bool IsWeekly
         {
             get { return _isWeekly; }
-            set { _isWeekly = value; _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
+            set { _isWeekly = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
         }
 
         public bool IsMonthly
         {
             get { return _isMonthly; }
-            set { _isMonthly = value; _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
+            set { _isMonthly = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
         }
 
         private int? _dayOfMonth;

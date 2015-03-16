@@ -16,6 +16,7 @@ using SystemWrapper.IO;
 using Services.Factories;
 using Services.Persistence;
 using Services.Scheduling;
+using HardDiskBackup.Commands;
 
 namespace HardDiskBackup
 {
@@ -23,6 +24,8 @@ namespace HardDiskBackup
     {
         public void RegisterDependencies()
         {
+            //var x = new DefaultScheduler()
+
             RegisterTransient<FileWrap, IFileWrap>();
             RegisterTransient<DirectoryWrap, IDirectoryWrap>();
             RegisterTransient<DriveInfoWrap, IDriveInfoWrap>();
@@ -31,9 +34,10 @@ namespace HardDiskBackup
             RegisterTransient<DateTimeProvider, IDateTimeProvider>();
             RegisterTransient<JsonSerializer, IJsonSerializer>();
             RegisterTransient<BackupSettings, IBackupSettings>();
-            RegisterTransient<IDirectoryFactory, IDirectoryFactory>();
+            RegisterTransient<BackupFactory, IDirectoryFactory>();
             RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();
             RegisterTransient<BackupScheduleFactory, IBackupScheduleFactory>();
+            RegisterTransient<BackupScheduleService, IBackupScheduleService>();
             RegisterTransient<NextBackupDateTimeFactory, INextBackupDateTimeFactory>();
 
             RegisterSingle<SetScheduleModel, ISetScheduleModel>();
@@ -41,6 +45,9 @@ namespace HardDiskBackup
             RegisterSingle<DriveNotifier, IDriveNotifier>();
             RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();
             RegisterSingle<BackupDirectoryModel, IBackupDirectoryModel>();
+            RegisterSingle<ScheduleBackupCommand, IScheduleBackupCommand>();
+
+            Ioc.ContainerBuilder.RegisterInstance<DefaultScheduler>(DefaultScheduler.Instance).As<IScheduler>();
         }
 
         private void RegisterSingle<T, U>()

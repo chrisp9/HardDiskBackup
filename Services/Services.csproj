@@ -69,12 +69,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackupScheduleService.cs" />
+    <Compile Include="Scheduling\BackupScheduleService.cs" />
     <Compile Include="Disk\BackupFileSystemService.cs" />
     <Compile Include="Disk\FailedBackupReportingService.cs" />
     <Compile Include="Disk\FileSystem\BackupFileSystem.cs" />
     <Compile Include="Disk\FileSystem\IDirectoryInfo.cs" />
-    <Compile Include="Scheduling\BackupScheduleService.cs" />
     <Compile Include="Scheduling\SetScheduleModel.cs" />
     <Compile Include="Factories\BackupScheduleFactory.cs" />
     <Compile Include="Persistence\JsonSerializer.cs" />

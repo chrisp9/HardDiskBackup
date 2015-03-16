@@ -1,6 +1,7 @@
 ﻿using Domain;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using HardDiskBackup.Commands;
 using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
@@ -34,7 +35,8 @@ namespace HardDiskBackup
             IBackupDirectoryValidator backupDirectoryValidator,
             IDirectoryFactory backupDirectoryFactory,
             IBackupDirectoryModel backupDirectoryModel,
-            ISetScheduleModel setScheduleModel)
+            ISetScheduleModel setScheduleModel,
+            IScheduleBackupCommand scheduleBackupCommand)
         {
             _dateTimeProvider = dateTimeProvider;
             _jsonSerializer = jsonSerializer;
@@ -43,34 +45,20 @@ namespace HardDiskBackup
             _directoryFactory = backupDirectoryFactory;
             _setScheduleModel = setScheduleModel;
 
+            ScheduleBackupCommand = scheduleBackupCommand;
             BackupDirectoryModel = backupDirectoryModel;
 
-            // Yeah, this looks horrible and needs to be changed.
             AddPathCommand = new RelayCommand(
                 () => 
                     {
                         var backupDirectory = _directoryFactory.CreateBackupDirectory(DirectoryPath);
-                        BackupDirectoryModel.Add(backupDirectory); 
+                        BackupDirectoryModel.Add(backupDirectory);
                     },
                 () => { return _backupDirectoryValidator.CanAdd(DirectoryPath) == ValidationResult.Success; });
 
             RemovePathCommand = new RelayCommand<BackupDirectory>(
                 (item) => { BackupDirectoryModel.Remove(item); },
                 _      => { return true; });
-
-            ScheduleBackupCommand = new RelayCommand(
-                () =>
-                    {
-                        var schedule = _setScheduleModel.CreateSchedule();
-                        var directories = BackupDirectoryModel.BackupDirectories;
-
-                        Backup = Backup.Create(directories, schedule);
-                    },
-                () =>
-                    {
-                        return backupDirectoryModel.BackupDirectories.Count > 0
-                            && _setScheduleModel.IsScheduleValid();
-                    });
         }
 
         public string Error
@@ -83,6 +71,7 @@ namespace HardDiskBackup
         {
             get 
             {
+                CommandManager.InvalidateRequerySuggested();
                 if (columnName != "DirectoryPath")
                     throw new InvalidOperationException("FirstRunViewModel only supports validation for DirectoryPath, but you tried to validate: " + columnName);
 

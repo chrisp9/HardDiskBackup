@@ -20,6 +20,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -64,6 +65,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <Button Grid.Row="4" Margin="10" Command="{Binding Path=ScheduleBackupCommand}">Schedule Backup</Button>
         </Grid>
     </DockPanel>
+    
 </UserControl>

@@ -210,5 +210,35 @@ namespace Services.Tests
         {
             Assert.AreEqual("Time of Day must be set", _sut["Time"]);
         }
+
+        [Test]
+        public void Day_of_month_is_set_on_factory()
+        {
+            _sut.DayOfMonth = 5;
+            _mockBackupScheduleFactory.VerifySet(x => x.DayOfMonth = 5);
+        }
+
+        [Test]
+        public void Day_of_week_is_set_on_factory()
+        {
+            _sut.DayOfWeek = (DayOfWeek?)5;
+            _mockBackupScheduleFactory.VerifySet(x => x.DayOfWeek = DayOfWeek.Friday);
+        }
+
+        [Test]
+        public void Day_of_week_returns_correct_day()
+        {
+            var friday = (DayOfWeek?)5;
+
+            _sut.DayOfWeek = friday;
+            Assert.AreEqual(friday, _sut.DayOfWeek);
+        }
+
+        [Test]
+        public void Day_of_month_returns_correct_day()
+        {
+            _sut.DayOfMonth = 6;
+            Assert.AreEqual(6, _sut.DayOfMonth);
+        }
     }
 }

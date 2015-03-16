@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Services.Disk.FileSystem;
 using Services.Factories;
 using System;
-using System.Linq;
 using SystemWrapper.IO;
 using TestHelpers;
 
@@ -75,7 +74,11 @@ namespace Services.Tests
 
             _testDirectory = new BackupDirectory(_root.Object);
 
-            _sut = new BackupFileSystem(_backupRootDirectory, _directoryWrap.Object, _fileWrap.Object, _directoryFactory.Object);
+            _sut = new BackupFileSystem(
+                _backupRootDirectory, 
+                _directoryWrap.Object,
+                _fileWrap.Object,
+                _directoryFactory.Object);
         }
 
         private BackupFileSystem _sut;

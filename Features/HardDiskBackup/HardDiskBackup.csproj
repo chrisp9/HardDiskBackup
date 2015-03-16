@@ -111,13 +111,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\ScheduleBackupCommand.cs" />
     <Compile Include="Ioc.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
     <Compile Include="ViewModel\SetScheduleViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\BackupView.xaml.cs">
+      <DependentUpon>BackupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ScheduleControl.xaml.cs">
       <DependentUpon>ScheduleControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\BackupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\FirstRunControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

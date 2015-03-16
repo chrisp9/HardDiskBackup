@@ -2,33 +2,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
-using SystemWrapper;
 
 namespace Services.Scheduling
 {
     public interface IBackupScheduleService
     {
-        void ScheduleNextBackup(NextBackupDateTime backupTime);
+        void ScheduleNextBackup(Backup backup, Action action);
+        void TriggerImmediateBackup(IEnumerable<BackupDirectory> backupDirectories);
     }
 
-    public class BackupScheduleService
+    /// <summary>
+    /// Maintains the Date/Time of the next backup
+    /// Notifies subscribers when a Backup is due
+    /// </summary>
+    public class BackupScheduleService : IBackupScheduleService
     {
-        private IDateTimeProvider _dateTimeProvider;
-        private IBackupSettings _persistedOptions;
+        private IScheduler _scheduler;
+        private Backup _next;
 
-        public BackupScheduleService(
-            IDateTimeProvider dateTimeProvider,
-            IBackupSettings persistedOptions)
+        public BackupScheduleService(IScheduler scheduler)
         {
-            _dateTimeProvider = dateTimeProvider;
-            _persistedOptions = persistedOptions;
+            _scheduler = scheduler;
         }
 
-        public void ScheduleNextBackup(NextBackupDateTime backupTime)
+        public void ScheduleNextBackup(Backup backup, Action action)
         {
-            _persistedOptions.NextBackup = backupTime;
+           // _scheduler.Schedule(
+              //  backup.BackupSchedule.CalculateNextBackupDateTime().DateTime,
+             //   (_, __) => { backup);
+        }
+
+
+        public void TriggerImmediateBackup(IEnumerable<BackupDirectory> backupDirectories)
+        {
+            throw new NotImplementedException();
         }
     }
 }

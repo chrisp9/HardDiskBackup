@@ -108,6 +108,28 @@ namespace HardDiskBackup.Tests
         }
 
         [Test]
+        public void Unsetting_daily_sets_correct_BackupScheduleType_on_model()
+        {
+            _sut.IsDaily = false;
+            _mockSetScheduleModel.Verify(x => x.SetScheduleType(BackupScheduleType.Daily), Times.Never());
+        }
+
+        [Test]
+        public void Unsetting_weekly_sets_correct_BackupScheduleType_on_model()
+        {
+            _sut.IsWeekly = false;
+            _mockSetScheduleModel.Verify(x => x.SetScheduleType(BackupScheduleType.Weekly), Times.Never());
+        }
+
+        [Test]
+        public void Unsetting_monthly_sets_correct_BackupScheduleType_on_model()
+        {
+            _sut.IsMonthly = false;
+            _mockSetScheduleModel.Verify(x => x.SetScheduleType(BackupScheduleType.Monthly), Times.Never());
+        }
+
+
+        [Test]
         public void CreateSchedule_asks_model_for_schedule()
         {
             _sut.CreateSchedule();
