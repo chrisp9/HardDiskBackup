@@ -33,7 +33,6 @@ namespace HardDiskBackup.Commands
 
         public bool CanExecute(object parameter)
         {
-
             var canExecute = _backupDirectoryModel.BackupDirectories.Count > 0
                 && _setScheduleModel.IsScheduleValid();
 
