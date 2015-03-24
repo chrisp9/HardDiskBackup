@@ -5,8 +5,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             DataContext="{Binding Source={StaticResource Locator}, Path=SetSchedule}">
+             d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel DockPanel.Dock="Top">
         <TextBlock Text="Set your schedule" Style="{StaticResource Heading2}" />
         <TextBlock Text="Please set your desired backup schedule:" />

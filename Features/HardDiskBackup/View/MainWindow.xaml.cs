@@ -1,4 +1,5 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,15 @@ using System.Windows.Shapes;
 
 namespace HardDiskBackup.View
 {
+    public interface IMainWindowView : IView { }
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : ModernWindow
+    public partial class MainWindow : ModernWindow, IMainWindowView
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();         
         }
     }
 }

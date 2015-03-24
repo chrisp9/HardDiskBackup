@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FirstFloor.ModernUI.Windows.Controls;
+using Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +17,14 @@ using System.Windows.Shapes;
 
 namespace HardDiskBackup.View
 {
+    public interface IBackupView : IView
+    {
+
+    }
     /// <summary>
     /// Interaction logic for BackupView.xaml
     /// </summary>
-    public partial class BackupView : UserControl
+    public partial class BackupView : ModernWindow, IBackupView
     {
         public BackupView()
         {

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using HardDiskBackup.Commands;
+using HardDiskBackup.ViewModel;
 using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
@@ -21,6 +22,8 @@ namespace HardDiskBackup
         public Backup Backup { get; private set; }
 
         public string DirectoryPath { get; set; }
+
+        public SetScheduleViewModel SetScheduleViewModel { get; private set; }
         public IBackupDirectoryModel BackupDirectoryModel { get; private set; }
 
         private IDateTimeProvider _dateTimeProvider;
@@ -36,7 +39,8 @@ namespace HardDiskBackup
             IDirectoryFactory backupDirectoryFactory,
             IBackupDirectoryModel backupDirectoryModel,
             ISetScheduleModel setScheduleModel,
-            IScheduleBackupCommand scheduleBackupCommand)
+            IScheduleBackupCommand scheduleBackupCommand,
+            Func<SetScheduleViewModel> setScheduleViewModel)
         {
             _dateTimeProvider = dateTimeProvider;
             _jsonSerializer = jsonSerializer;
@@ -44,6 +48,7 @@ namespace HardDiskBackup
             _backupDirectoryValidator = backupDirectoryValidator;
             _directoryFactory = backupDirectoryFactory;
             _setScheduleModel = setScheduleModel;
+            SetScheduleViewModel = setScheduleViewModel();
 
             ScheduleBackupCommand = scheduleBackupCommand;
             BackupDirectoryModel = backupDirectoryModel;

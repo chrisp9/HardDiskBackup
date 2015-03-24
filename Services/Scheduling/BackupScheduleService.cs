@@ -16,12 +16,11 @@ namespace Services.Scheduling
 
     /// <summary>
     /// Maintains the Date/Time of the next backup
-    /// Notifies subscribers when a Backup is due
+    /// Schedules an action to occur when the backup is due.
     /// </summary>
     public class BackupScheduleService : IBackupScheduleService
     {
         private IScheduler _scheduler;
-        private Backup _next;
 
         public BackupScheduleService(IScheduler scheduler)
         {
@@ -30,11 +29,9 @@ namespace Services.Scheduling
 
         public void ScheduleNextBackup(Backup backup, Action action)
         {
-           // _scheduler.Schedule(
-              //  backup.BackupSchedule.CalculateNextBackupDateTime().DateTime,
-             //   (_, __) => { backup);
+            var scheduledTime = backup.BackupSchedule.CalculateNextBackupDateTime().DateTime;
+            _scheduler.Schedule(scheduledTime.DateTimeInstance, action);
         }
-
 
         public void TriggerImmediateBackup(IEnumerable<BackupDirectory> backupDirectories)
         {

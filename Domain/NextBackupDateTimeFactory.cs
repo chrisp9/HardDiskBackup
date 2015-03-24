@@ -18,9 +18,9 @@ namespace Domain
         {
             return new NextBackupDateTime(
                 new DateTime(
-                        date.Day,
+                        date.Year,
                         date.Month, 
-                        date.Year, 
+                        date.Day, 
                         time.Hours, 
                         time.Minutes, 
                         time.Seconds));

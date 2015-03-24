@@ -26,10 +26,12 @@ namespace HardDiskBackup
         {
             _bootstrapper = new Bootstrapper();
             _bootstrapper.RegisterDependencies();
+            Ioc.Build();
 
-            var window = new HardDiskBackup.View.MainWindow();
+            var main = Ioc.Container.Resolve<IWindowPresenter<MainWindowViewModel, IMainWindowView>>();
+
+            var window = main.Present();
             window.Show();
         }
-
     }
 }

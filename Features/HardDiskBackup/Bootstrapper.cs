@@ -17,6 +17,8 @@ using Services.Factories;
 using Services.Persistence;
 using Services.Scheduling;
 using HardDiskBackup.Commands;
+using HardDiskBackup.View;
+using HardDiskBackup.ViewModel;
 
 namespace HardDiskBackup
 {
@@ -24,8 +26,7 @@ namespace HardDiskBackup
     {
         public void RegisterDependencies()
         {
-            //var x = new DefaultScheduler()
-
+            //TODO: THIS IS A MESS - use autowiring.
             RegisterTransient<FileWrap, IFileWrap>();
             RegisterTransient<DirectoryWrap, IDirectoryWrap>();
             RegisterTransient<DriveInfoWrap, IDriveInfoWrap>();
@@ -46,6 +47,21 @@ namespace HardDiskBackup
             RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();
             RegisterSingle<BackupDirectoryModel, IBackupDirectoryModel>();
             RegisterSingle<ScheduleBackupCommand, IScheduleBackupCommand>();
+            RegisterSingle<BackupView, IBackupView>();
+            RegisterSingle<MainWindow, IMainWindowView>();
+            Ioc.ContainerBuilder.RegisterType<MainWindowViewModel>();
+            Ioc.ContainerBuilder.RegisterType<SetScheduleViewModel>();
+            Ioc.ContainerBuilder.RegisterType<BackupViewModel>();
+
+
+            Ioc.ContainerBuilder.RegisterType<FirstRunViewModel>();
+            Ioc.ContainerBuilder.RegisterType<Dispatcher>().As<IDispatcher>().SingleInstance();
+
+            Ioc.ContainerBuilder.RegisterType<WindowPresenter<MainWindowViewModel, IMainWindowView>>()
+                .As<IWindowPresenter<MainWindowViewModel, IMainWindowView>>();
+
+            Ioc.ContainerBuilder.RegisterType <WindowPresenter<BackupViewModel, IBackupView>>()
+                .As <IWindowPresenter<BackupViewModel, IBackupView>>();
 
             Ioc.ContainerBuilder.RegisterInstance<DefaultScheduler>(DefaultScheduler.Instance).As<IScheduler>();
         }
@@ -69,7 +85,5 @@ namespace HardDiskBackup
             Ioc.ContainerBuilder.RegisterType<T>()
                 .InstancePerDependency();
         }
-
     }
-
 }

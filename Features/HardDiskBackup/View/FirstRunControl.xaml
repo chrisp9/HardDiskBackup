@@ -8,12 +8,10 @@
              xmlns:local="clr-namespace:HardDiskBackup.ViewModel;assembly="  
              xmlns:controls="clr-namespace:HardDiskBackup.View;assembly=" 
              xmlns:disk="clr-namespace:Domain;assembly=Domain" 
-             DataContext="{Binding Source={StaticResource Locator}, Path=FirstRun}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="300">
-    
     <DockPanel>
-        <controls:ScheduleControl DockPanel.Dock="Top"/>
+        <controls:ScheduleControl DockPanel.Dock="Top" DataContext="{Binding Path=SetScheduleViewModel}"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -65,8 +63,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Grid.Row="4" Margin="10" Command="{Binding Path=ScheduleBackupCommand}">Schedule Backup</Button>
+            <Button Grid.Row="4" Margin="10" Command="{Binding Path=ScheduleBackupCommand}" CommandParameter="RelativeSource={
+                                RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">Schedule Backup</Button>
         </Grid>
     </DockPanel>
-    
 </UserControl>

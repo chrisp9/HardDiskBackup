@@ -1,7 +1,10 @@
 ﻿using Domain;
 using HardDiskBackup.Commands;
+using HardDiskBackup.View;
+using HardDiskBackup.ViewModel;
 using Moq;
 using NUnit.Framework;
+using Services;
 using Services.Scheduling;
 using System;
 using System.Collections.Generic;
@@ -28,9 +31,11 @@ namespace HardDiskBackup.Tests
             _mockBackupDirectoryModel = new Mock<IBackupDirectoryModel>();
 
             _sut = new ScheduleBackupCommand(
-                _mockSetScheduleModel.Object, 
-                _mockBackupScheduleService.Object, 
-                _mockBackupDirectoryModel.Object);
+                _mockSetScheduleModel.Object,
+                _mockBackupScheduleService.Object,
+                _mockBackupDirectoryModel.Object,
+                Mock.Of<IWindowPresenter<BackupViewModel, IBackupView>>(),
+                Mock.Of<IDispatcher>());
         }
         
         [Test]

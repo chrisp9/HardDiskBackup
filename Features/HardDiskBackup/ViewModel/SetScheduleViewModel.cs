@@ -1,8 +1,8 @@
 ﻿using Domain;
 using Domain.Scheduling;
 using GalaSoft.MvvmLight;
-using Services.Scheduling;
 using Services.Factories;
+using Services.Scheduling;
 using System;
 using System.ComponentModel;
 

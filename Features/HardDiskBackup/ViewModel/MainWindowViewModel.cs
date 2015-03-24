@@ -1,29 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
 using GalaSoft.MvvmLight;
-using Domain;
-using Services;
+using HardDiskBackup.ViewModel;
 using Services.Persistence;
 
 namespace HardDiskBackup
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    /// 
-
     public class MainWindowViewModel : ViewModelBase
     {
         public bool IsFirstStartup
@@ -34,15 +15,20 @@ namespace HardDiskBackup
             }
         }
 
+        public FirstRunViewModel FirstRunViewModel { get; private set; }
+        public SetScheduleViewModel SetScheduleViewModel { get; private set; }
+
         private IDateTimeProvider _dateTimeProvider;
         private IJsonSerializer _persistedOptions;
 
         public MainWindowViewModel(
             IDateTimeProvider dateTimeProvider,
-            IJsonSerializer jsonSerializer)
+            IJsonSerializer jsonSerializer,
+            FirstRunViewModel firstRunViewModel)
         {
             _dateTimeProvider = dateTimeProvider;
             _persistedOptions = jsonSerializer;
+            FirstRunViewModel = firstRunViewModel;
         }
     }
 }

@@ -132,7 +132,8 @@ namespace HardDiskBackup.Tests
                 directoryFactory ?? Mock.Of<IDirectoryFactory>(),
                 backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>(),
                 setScheduleModel ?? Mock.Of<ISetScheduleModel>(),
-                scheduleBackupCommand ?? Mock.Of<IScheduleBackupCommand>()
+                scheduleBackupCommand ?? Mock.Of<IScheduleBackupCommand>(),
+                () => { return null; }
                 );
         }
     }

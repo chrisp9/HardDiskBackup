@@ -113,9 +113,10 @@
     </Compile>
     <Compile Include="Commands\ScheduleBackupCommand.cs" />
     <Compile Include="Ioc.cs" />
+    <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
     <Compile Include="ViewModel\SetScheduleViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModel\WindowPresenter.cs" />
     <Compile Include="View\BackupView.xaml.cs">
       <DependentUpon>BackupView.xaml</DependentUpon>
     </Compile>
