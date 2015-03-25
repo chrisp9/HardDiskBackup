@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -12,6 +13,7 @@ namespace Services.Disk
         void Unsubscribe();
     }
 
+    [Register(Scope.SingleInstance)]
     public class DriveNotifier : IDriveNotifier
     {
         private IDisposable _subscription;

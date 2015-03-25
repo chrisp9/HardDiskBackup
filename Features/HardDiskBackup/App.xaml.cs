@@ -24,10 +24,10 @@ namespace HardDiskBackup
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            _bootstrapper = new Bootstrapper();
-            _bootstrapper.RegisterDependencies();
+            var bootstrapper2 = new Bootstrapper2(Ioc.ContainerBuilder);
+            bootstrapper2.Bootstrap();
+            
             Ioc.Build();
-
             var main = Ioc.Container.Resolve<IWindowPresenter<MainWindowViewModel, IMainWindowView>>();
 
             var window = main.Present();

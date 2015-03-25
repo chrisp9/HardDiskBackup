@@ -1,10 +1,12 @@
 ﻿using Domain;
 using GalaSoft.MvvmLight;
 using HardDiskBackup.ViewModel;
+using Registrar;
 using Services.Persistence;
 
 namespace HardDiskBackup
 {
+    [Register(Scope.SingleInstance)]
     public class MainWindowViewModel : ViewModelBase
     {
         public bool IsFirstStartup

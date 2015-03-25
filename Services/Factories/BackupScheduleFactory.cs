@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Scheduling;
+using Registrar;
 using System;
 
 namespace Services.Factories
@@ -11,7 +12,8 @@ namespace Services.Factories
 
         BackupSchedule Create(BackupScheduleType backupScheduleType, BackupTime backupTime);
     }
-        
+     
+    [Register(Scope.InstancePerDependancy)]
     public class BackupScheduleFactory : IBackupScheduleFactory
     {
         public DayOfWeek? DayOfWeek { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Scheduling;
 using GalaSoft.MvvmLight;
+using Registrar;
 using Services.Factories;
 using Services.Scheduling;
 using System;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 
 namespace HardDiskBackup.ViewModel
 {
+    [Register(Scope.SingleInstance)]
     public class SetScheduleViewModel : ViewModelBase, IDataErrorInfo
     {
         public int? DayOfMonth 

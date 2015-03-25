@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Queries;
+using Registrar;
 
 namespace Services.Disk
 {
@@ -14,6 +15,7 @@ namespace Services.Disk
         IEnumerable<IDriveInfoWrap> GetDrives();
     }
 
+    [Register(Scope.SingleInstance)]
     public class DriveInfoService : IDriveInfoService
     {
         private IDriveInfoQuery _driveInfoQuery;

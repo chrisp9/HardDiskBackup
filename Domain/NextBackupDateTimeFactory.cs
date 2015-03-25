@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Registrar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Domain
         NextBackupDateTime Create(BackupDate date, BackupTime time);
     }
 
+    [Register(Scope.SingleInstance)]
     public class NextBackupDateTimeFactory : INextBackupDateTimeFactory
     {
         public NextBackupDateTime Create(BackupDate date, BackupTime time)

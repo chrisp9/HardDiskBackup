@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using HardDiskBackup.Commands;
 using HardDiskBackup.ViewModel;
+using Registrar;
 using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 
 namespace HardDiskBackup
 {
+    [Register(Scope.SingleInstance)]
     public class FirstRunViewModel : ViewModelBase, IDataErrorInfo, INotifyPropertyChanged
     {
         public ICommand AddPathCommand { get; private set; }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain;
 using System.IO;
+using Registrar;
 
 namespace Queries
 {
@@ -13,6 +14,7 @@ namespace Queries
         IEnumerable<IDriveInfoWrap> GetDrives();
     }
 
+    [Register(Scope.SingleInstance)]
     public class DriveInfoQuery : IDriveInfoQuery
     {
         public IEnumerable<IDriveInfoWrap> GetDrives()

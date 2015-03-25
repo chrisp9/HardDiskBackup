@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -18,6 +19,7 @@ namespace Services.Disk
         PathAlreadyExists
     }
 
+    [Register(Scope.InstancePerDependancy)]
     public class BackupDirectoryValidator : IBackupDirectoryValidator
     {
         private IDirectoryWrap _directoryWrap;

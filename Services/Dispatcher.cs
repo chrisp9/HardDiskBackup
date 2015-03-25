@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Registrar;
+using System;
 
 namespace Services
 {
@@ -7,6 +8,7 @@ namespace Services
         void InvokeAsync(Action action);
     }
 
+    [Register(Scope.SingleInstance)]
     public class Dispatcher : IDispatcher
     {
         private System.Windows.Threading.Dispatcher _dispatcher;

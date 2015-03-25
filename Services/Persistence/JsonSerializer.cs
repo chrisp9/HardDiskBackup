@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
 using Domain;
+using Registrar;
 
 namespace Services.Persistence
 {
@@ -18,6 +19,7 @@ namespace Services.Persistence
         IBackupSettings DeserializeFromFile();
     }
 
+    [Register(Scope.InstancePerDependancy)]
     public class JsonSerializer : IJsonSerializer
     {
         public bool FileExists

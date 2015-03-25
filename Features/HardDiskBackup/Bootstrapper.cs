@@ -27,24 +27,24 @@ namespace HardDiskBackup
         public void RegisterDependencies()
         {
             //TODO: THIS IS A MESS - use autowiring.
-            RegisterTransient<FileWrap, IFileWrap>();
-            RegisterTransient<DirectoryWrap, IDirectoryWrap>();
-            RegisterTransient<DriveInfoWrap, IDriveInfoWrap>();
-            RegisterTransient<EnvironmentWrap, IEnvironmentWrap>();
-            RegisterTransient<DefaultScheduler, IScheduler>();
-            RegisterTransient<DateTimeProvider, IDateTimeProvider>();
-            RegisterTransient<JsonSerializer, IJsonSerializer>();
-            RegisterTransient<BackupSettings, IBackupSettings>();
-            RegisterTransient<BackupFactory, IDirectoryFactory>();
-            RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();
-            RegisterTransient<BackupScheduleFactory, IBackupScheduleFactory>();
-            RegisterTransient<BackupScheduleService, IBackupScheduleService>();
-            RegisterTransient<NextBackupDateTimeFactory, INextBackupDateTimeFactory>();
+            RegisterTransient<FileWrap, IFileWrap>(); // Need manual 
+            RegisterTransient<DirectoryWrap, IDirectoryWrap>(); // Need manual
+            RegisterTransient<DriveInfoWrap, IDriveInfoWrap>(); // Need manual
+            RegisterTransient<EnvironmentWrap, IEnvironmentWrap>(); // Need manual
+            RegisterTransient<DefaultScheduler, IScheduler>(); // Need manual
+            RegisterTransient<DateTimeProvider, IDateTimeProvider>();//
+            RegisterTransient<JsonSerializer, IJsonSerializer>();//
+            RegisterTransient<BackupSettings, IBackupSettings>();//
+            RegisterTransient<BackupFactory, IDirectoryFactory>();//
+            RegisterTransient<BackupDirectoryValidator, IBackupDirectoryValidator>();//
+            RegisterTransient<BackupScheduleFactory, IBackupScheduleFactory>();//
+            RegisterTransient<BackupScheduleService, IBackupScheduleService>();//
+            RegisterTransient<NextBackupDateTimeFactory, INextBackupDateTimeFactory>();//
 
-            RegisterSingle<SetScheduleModel, ISetScheduleModel>();
-            RegisterSingle<DriveInfoService, IDriveInfoService>();
-            RegisterSingle<DriveNotifier, IDriveNotifier>();
-            RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();
+            RegisterSingle<SetScheduleModel, ISetScheduleModel>();//
+            RegisterSingle<DriveInfoService, IDriveInfoService>();//
+            RegisterSingle<DriveNotifier, IDriveNotifier>();//
+            RegisterSingle<DriveInfoQuery, IDriveInfoQuery>();//
             RegisterSingle<BackupDirectoryModel, IBackupDirectoryModel>();
             RegisterSingle<ScheduleBackupCommand, IScheduleBackupCommand>();
             RegisterSingle<BackupView, IBackupView>();

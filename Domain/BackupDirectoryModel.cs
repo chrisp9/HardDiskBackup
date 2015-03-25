@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Registrar;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Domain
         bool IsSubdirectoryOfExisting(string backupDirectoryPath);
     }
 
+    [Register(Scope.SingleInstance)]
     public class BackupDirectoryModel : IBackupDirectoryModel
     {
         public ReadOnlyCollection<BackupDirectory> BackupDirectories

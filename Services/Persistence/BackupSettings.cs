@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Registrar;
 
 namespace Services
 {
@@ -14,6 +15,7 @@ namespace Services
         IEnumerable<BackupDirectory> BackupDirectories { get; set; }
     }
 
+    [Register(Scope.InstancePerDependancy)]
     public class BackupSettings : IBackupSettings
     {
         public NextBackupDateTime NextBackup { get; set; }

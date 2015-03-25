@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{9F54DC56-B744-4929-840C-6998740BF011}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{755E9F8B-0A19-4551-98F2-BDA003D7499E}"
@@ -20,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Domain", "Domain.Tests\Test_Domain.csproj", "{11403AA7-3D8E-4E99-A57E-A9E89B6FC2F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HardDiskBackup.Tests", "Features\HardDiskBackup.Tests\HardDiskBackup.Tests.csproj", "{6AE43210-A478-45A7-BE78-05C57EB4F303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registrar", "Registrar\Registrar.csproj", "{8C530446-E391-4B5B-840B-E2984EBDA146}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,10 @@ Global
 		{6AE43210-A478-45A7-BE78-05C57EB4F303}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AE43210-A478-45A7-BE78-05C57EB4F303}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AE43210-A478-45A7-BE78-05C57EB4F303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C530446-E391-4B5B-840B-E2984EBDA146}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C530446-E391-4B5B-840B-E2984EBDA146}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C530446-E391-4B5B-840B-E2984EBDA146}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C530446-E391-4B5B-840B-E2984EBDA146}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using HardDiskBackup.View;
 using HardDiskBackup.ViewModel;
+using Registrar;
 using Services;
 using Services.Factories;
 using Services.Scheduling;
@@ -18,6 +19,7 @@ namespace HardDiskBackup.Commands
 {
     public interface IScheduleBackupCommand : ICommand { }
 
+    [Register(Scope.SingleInstance)]
     public class ScheduleBackupCommand : IScheduleBackupCommand
     {
         private ISetScheduleModel _setScheduleModel;
@@ -65,7 +67,10 @@ namespace HardDiskBackup.Commands
             {
                 Application.Current.Dispatcher.InvokeAsync(() => 
                 {
-                    ((Window)parameter).Close();
+                    var oldWindow = parameter as Window;
+                    if (oldWindow != null)
+                        oldWindow.Close();
+
                     var window = _backupViewPresenter.Present();
                     window.Show();
                 });

@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Services.Scheduling
     /// Maintains the Date/Time of the next backup
     /// Schedules an action to occur when the backup is due.
     /// </summary>
+    [Register(Scope.InstancePerDependancy)]
     public class BackupScheduleService : IBackupScheduleService
     {
         private IScheduler _scheduler;

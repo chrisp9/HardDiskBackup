@@ -1,4 +1,5 @@
 ﻿using Domain.Scheduling;
+using Registrar;
 using Services.Factories;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace Services.Scheduling
         void SetScheduleType(BackupScheduleType backupScheduleType);
     }
 
+    [Register(Scope.SingleInstance)]
     public class SetScheduleModel : ISetScheduleModel
     {
         public TimeSpan? Time { get; set; }

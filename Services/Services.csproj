@@ -98,6 +98,10 @@
       <Project>{409662cd-a00e-48c4-975e-4f81eee39ec8}</Project>
       <Name>Queries</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Registrar\Registrar.csproj">
+      <Project>{8c530446-e391-4b5b-840b-e2984ebda146}</Project>
+      <Name>Registrar</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

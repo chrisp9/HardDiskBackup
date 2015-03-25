@@ -1,4 +1,5 @@
 ﻿using FirstFloor.ModernUI.Windows.Controls;
+using Registrar;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace HardDiskBackup.View
     public interface IMainWindowView : IView { }
     /// <summary>
     /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// </summary
+    [Register(Scope.SingleInstance)]
     public partial class MainWindow : ModernWindow, IMainWindowView
     {
         public MainWindow()
