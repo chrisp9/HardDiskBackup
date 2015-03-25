@@ -20,8 +20,6 @@ namespace HardDiskBackup
     /// </summary>
     public partial class App : Application
     {
-        private Bootstrapper _bootstrapper;
-
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             var bootstrapper2 = new Bootstrapper2(Ioc.ContainerBuilder);
