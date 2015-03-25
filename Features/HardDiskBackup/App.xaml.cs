@@ -22,11 +22,11 @@ namespace HardDiskBackup
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var bootstrapper2 = new Bootstrapper2(Ioc.ContainerBuilder);
-            bootstrapper2.Bootstrap();
+            var bootstrapper = new Bootstrapper(new ContainerBuilder());
+            var builder = bootstrapper.Bootstrap();
             
-            Ioc.Build();
-            var main = Ioc.Container.Resolve<IWindowPresenter<MainWindowViewModel, IMainWindowView>>();
+            var container = builder.Build();
+            var main = container.Resolve<IWindowPresenter<MainWindowViewModel, IMainWindowView>>();
 
             var window = main.Present();
             window.Show();

@@ -15,16 +15,16 @@ using SystemWrapper.IO;
 
 namespace HardDiskBackup
 {
-    public class Bootstrapper2
+    public class Bootstrapper
     {
         private ContainerBuilder _containerBuilder;
 
-        public Bootstrapper2(ContainerBuilder cb)
+        public Bootstrapper(ContainerBuilder cb)
         {
             _containerBuilder = cb;
         }
 
-        public void Bootstrap()
+        public ContainerBuilder Bootstrap()
         {
             List<Assembly> allAssemblies = new List<Assembly>();
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -58,6 +58,7 @@ namespace HardDiskBackup
                   
             _containerBuilder.RegisterInstance<DefaultScheduler>(DefaultScheduler.Instance).As<IScheduler>();
 
+            return _containerBuilder;
         }
 
         private void Register(Type concrete, Type[] interfaces, Scope scope)

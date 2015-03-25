@@ -111,9 +111,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bootstrapper2.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commands\ScheduleBackupCommand.cs" />
-    <Compile Include="Ioc.cs" />
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
     <Compile Include="ViewModel\SetScheduleViewModel.cs" />
