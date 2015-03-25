@@ -15,7 +15,7 @@ namespace Services
         IEnumerable<BackupDirectory> BackupDirectories { get; set; }
     }
 
-    [Register(Scope.InstancePerDependancy)]
+    [Register(Scope.Transient)]
     public class BackupSettings : IBackupSettings
     {
         public NextBackupDateTime NextBackup { get; set; }

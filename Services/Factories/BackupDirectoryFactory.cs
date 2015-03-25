@@ -33,7 +33,7 @@ namespace Services.Factories
     // into a helper class, but there's only three types. Maybe if I add more, I'll consider it...
     // Whew...
 
-    [Register(Scope.InstancePerDependancy)]
+    [Register(Scope.Transient)]
     public class BackupFactory : IDirectoryFactory
     {
         public BackupDirectory CreateBackupDirectory(string path)

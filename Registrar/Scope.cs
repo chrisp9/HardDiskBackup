@@ -9,6 +9,6 @@ namespace Registrar
     public enum Scope
     {
         SingleInstance,
-        InstancePerDependancy
+        Transient
     }
 }

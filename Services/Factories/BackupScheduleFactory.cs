@@ -13,7 +13,7 @@ namespace Services.Factories
         BackupSchedule Create(BackupScheduleType backupScheduleType, BackupTime backupTime);
     }
      
-    [Register(Scope.InstancePerDependancy)]
+    [Register(Scope.Transient)]
     public class BackupScheduleFactory : IBackupScheduleFactory
     {
         public DayOfWeek? DayOfWeek { get; set; }

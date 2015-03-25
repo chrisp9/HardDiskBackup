@@ -19,7 +19,7 @@ namespace Services.Scheduling
     /// Maintains the Date/Time of the next backup
     /// Schedules an action to occur when the backup is due.
     /// </summary>
-    [Register(Scope.InstancePerDependancy)]
+    [Register(Scope.Transient)]
     public class BackupScheduleService : IBackupScheduleService
     {
         private IScheduler _scheduler;

@@ -78,7 +78,7 @@ namespace HardDiskBackup
         {
             if (scope == Scope.SingleInstance)
                 Register(_containerBuilder.RegisterType(concrete).As(interf), scope);
-            else if (scope == Scope.InstancePerDependancy)
+            else if (scope == Scope.Transient)
                 Register(_containerBuilder.RegisterType(concrete).As(interf), scope);
             else
                 throw new ArgumentException("Invalid scope");
@@ -90,7 +90,7 @@ namespace HardDiskBackup
         {
             switch (scope)
             {
-                case Scope.InstancePerDependancy:
+                case Scope.Transient:
                     regBuilder.InstancePerDependency();
                     return;
                 case Scope.SingleInstance:
