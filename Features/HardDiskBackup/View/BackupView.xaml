@@ -11,15 +11,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="A backup has been scheduled..." Grid.Row="0" Style="{StaticResource Heading2}" />
-        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" HorizontalAlignment="Right" Width="292" />
+        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" Width="292" />
 
-        <DockPanel>
-
-        </DockPanel>
+        <ProgressBar Grid.Row="2"/>
     </Grid>
 
 </mui:ModernWindow>

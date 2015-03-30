@@ -34,15 +34,14 @@ namespace HardDiskBackup.ViewModel
             {
                 var rootDirectory = _backupDirectoryFactory.GetBackupRootDirectoryForDrive(drive);
                 _backupFileSystem.Target(rootDirectory);
-
-                _backupFileSystem.Copy(
-                    backupScheduleService.NextBackup.BackupDirectories);
+                Backup(_backupScheduleService.NextBackup.BackupDirectories);
             });
         }
 
-        public async void Backup(IDriveInfoWrap drive, IEnumerable<BackupDirectory> backupDirectories)
+        public async void Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
+            await Task.Run(() => _backupFileSystem.Copy(backupDirectories));
         }
     }
 }

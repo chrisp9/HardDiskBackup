@@ -109,7 +109,7 @@ namespace HardDiskBackup.Tests
             var mockBackupDirectoryFactory = new Mock<IDirectoryFactory>();
 
             mockBackupDirectoryFactory
-                .Setup(x => x.CreateBackupDirectory(It.IsAny<string>()))
+                .Setup(x => x.GetBackupDirectoryFor(It.IsAny<string>()))
                 .Returns(backupDirectory);
 
             return mockBackupDirectoryFactory.Object;
