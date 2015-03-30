@@ -19,7 +19,7 @@ namespace Services.Persistence
         IBackupSettings DeserializeFromFile();
     }
 
-    [Register(Scope.Transient)]
+    [Register(LifeTime.Transient)]
     public class JsonSerializer : IJsonSerializer
     {
         public bool FileExists

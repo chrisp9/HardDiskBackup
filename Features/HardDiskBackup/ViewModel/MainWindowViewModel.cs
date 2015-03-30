@@ -6,7 +6,7 @@ using Services.Persistence;
 
 namespace HardDiskBackup
 {
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class MainWindowViewModel : ViewModelBase
     {
         public bool IsFirstStartup

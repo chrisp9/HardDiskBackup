@@ -13,7 +13,7 @@ namespace Domain
         NextBackupDateTime Create(BackupDate date, BackupTime time);
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class NextBackupDateTimeFactory : INextBackupDateTimeFactory
     {
         public NextBackupDateTime Create(BackupDate date, BackupTime time)

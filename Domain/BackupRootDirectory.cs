@@ -24,5 +24,4 @@ namespace Domain
             return Directory.FullName.ToLower().Replace('/', '\\');
         }
     }
-
 }

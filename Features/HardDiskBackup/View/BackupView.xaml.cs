@@ -25,7 +25,7 @@ namespace HardDiskBackup.View
     /// <summary>
     /// Interaction logic for BackupView.xaml
     /// </summary>
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public partial class BackupView : ModernWindow, IBackupView
     {
         public BackupView()

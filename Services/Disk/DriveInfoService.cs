@@ -15,7 +15,7 @@ namespace Services.Disk
         IEnumerable<IDriveInfoWrap> GetDrives();
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class DriveInfoService : IDriveInfoService
     {
         private IDriveInfoQuery _driveInfoQuery;

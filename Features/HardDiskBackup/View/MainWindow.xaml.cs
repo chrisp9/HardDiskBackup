@@ -22,7 +22,7 @@ namespace HardDiskBackup.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public partial class MainWindow : ModernWindow, IMainWindowView
     {
         public MainWindow()

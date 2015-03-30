@@ -22,6 +22,7 @@ namespace HardDiskBackup
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             var bootstrapper = new Bootstrapper(new ContainerBuilder());
             var builder = bootstrapper.Bootstrap();
             

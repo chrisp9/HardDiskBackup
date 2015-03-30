@@ -19,7 +19,7 @@ namespace Services.Disk
         PathAlreadyExists
     }
 
-    [Register(Scope.Transient)]
+    [Register(LifeTime.Transient)]
     public class BackupDirectoryValidator : IBackupDirectoryValidator
     {
         private IDirectoryWrap _directoryWrap;

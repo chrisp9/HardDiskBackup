@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace HardDiskBackup.ViewModel
 {
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class SetScheduleViewModel : ViewModelBase, IDataErrorInfo
     {
         public int? DayOfMonth 

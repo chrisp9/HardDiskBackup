@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace HardDiskBackup
 {
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class FirstRunViewModel : ViewModelBase, IDataErrorInfo, INotifyPropertyChanged
     {
         public ICommand AddPathCommand { get; private set; }
@@ -58,7 +58,7 @@ namespace HardDiskBackup
             AddPathCommand = new RelayCommand(
                 () => 
                     {
-                        var backupDirectory = _directoryFactory.CreateBackupDirectory(DirectoryPath);
+                        var backupDirectory = _directoryFactory.GetBackupDirectoryFor(DirectoryPath);
                         BackupDirectoryModel.Add(backupDirectory);
                     },
                 () => { return _backupDirectoryValidator.CanAdd(DirectoryPath) == ValidationResult.Success; });

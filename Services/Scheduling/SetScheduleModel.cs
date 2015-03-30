@@ -21,7 +21,7 @@ namespace Services.Scheduling
         void SetScheduleType(BackupScheduleType backupScheduleType);
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class SetScheduleModel : ISetScheduleModel
     {
         public TimeSpan? Time { get; set; }

@@ -1,55 +1,77 @@
 ﻿using Domain;
+using Registrar;
 using Services.Factories;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace Services.Disk.FileSystem
 {
-    public interface IBackupFileSystem
+    public enum FileSystemStatus
     {
-        void Copy(IEnumerable<BackupDirectory> backupDirectories);
-        long CalculateTotalSize(IEnumerable<BackupDirectory> backupDirectories);
+        Idle,
+        Calculating,
+        Copying
     }
 
-    public class BackupFileSystem
+    public interface IBackupFileSystem
+    {
+        Task Copy(IEnumerable<BackupDirectory> backupDirectories);
+        Task<long> CalculateTotalSize(IEnumerable<BackupDirectory> backupDirectories);
+        void Target(BackupRootDirectory directory);
+    }
+
+    [Register(LifeTime.Transient)]
+    public class BackupFileSystem : INotifyPropertyChanged, IBackupFileSystem
     {
         private BackupRootDirectory _backupRootDirectory;
         private IDirectoryWrap _directoryWrap;
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
-
+        private const string DiskBackup = "DiskBackupApp";
+        
         public BackupFileSystem(
-            BackupRootDirectory directory,
             IDirectoryWrap directoryWrap,
             IFileWrap fileWrap,
             IDirectoryFactory directoryFactory)
         {
-            _backupRootDirectory = directory;
             _directoryWrap = directoryWrap;
-            _directoryFactory = directoryFactory;
             _fileWrap = fileWrap;
+            _directoryFactory = directoryFactory;
         }
 
-        public void Copy(IEnumerable<BackupDirectory> backupDirectories)
+        public void Target(BackupRootDirectory directory)
         {
-            foreach (var backupDirectory in backupDirectories)
-                Copy(backupDirectory);
+            _backupRootDirectory = directory;
         }
 
-        public long CalculateTotalSize(IEnumerable<BackupDirectory> directories)
+        public async Task<long> CalculateTotalSize(IEnumerable<BackupDirectory> directories)
+        {
+            var size = await Task.Run(() => CalculateSize(directories));
+            return size;
+        }
+
+        public async Task Copy(IEnumerable<BackupDirectory> backupDirectories)
+        {
+            await Task.Run(() =>
+            {
+                foreach (var backupDirectory in backupDirectories)
+                    Copy(backupDirectory);
+            });
+        }
+
+        private long CalculateSize(IEnumerable<BackupDirectory> directories)
         {
             var currentSize = 0L;
-            // Add file sizes.
 
             foreach (var directory in directories)
-            {
                 currentSize += CalculateSize(directory.Directory);
-            }
 
             return currentSize;
         }
@@ -76,17 +98,17 @@ namespace Services.Disk.FileSystem
         {
             var files = source.Directory.GetFiles();
             var directories = source.Directory.GetDirectories();
+            
+            var mirroredRoot = CreateMirroredDirectory(source);
+
+            foreach (var file in files)
+            {
+                _fileWrap.Copy(file.FullName, Path.Combine(mirroredRoot.ToString(), file.Name));
+            }
 
             foreach (var directory in directories)
             {
                 var backupDirectory = new BackupDirectory(directory);
-                var mirroredDirectory = CreateMirroredDirectory(backupDirectory);
-
-                foreach(var file in directory.GetFiles()) 
-                {
-                    _fileWrap.Copy(file.FullName, Path.Combine(mirroredDirectory.ToString(), file.Name));
-                }
-
                 Copy(backupDirectory);
             }
         }
@@ -103,7 +125,7 @@ namespace Services.Disk.FileSystem
             // cannot be created due to permissions.
             // TODO: catch and return a sensible error to  the user?
             var mapped = _directoryWrap.CreateDirectory(mirroredPath);
-            return _directoryFactory.CreateMirroredDirectory(mirroredPath);
+            return _directoryFactory.GetMirroredDirectoryFor(mirroredPath);
         }
 
         private string ReplaceRootWith(string path, string newRoot)
@@ -111,5 +133,15 @@ namespace Services.Disk.FileSystem
             var endPart = path.Substring(3); //TODO: Will this be flaky?
             return Path.Combine(newRoot, endPart);
         }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            var handler = PropertyChanged;
+
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

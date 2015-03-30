@@ -14,7 +14,7 @@ namespace Queries
         IEnumerable<IDriveInfoWrap> GetDrives();
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class DriveInfoQuery : IDriveInfoQuery
     {
         public IEnumerable<IDriveInfoWrap> GetDrives()

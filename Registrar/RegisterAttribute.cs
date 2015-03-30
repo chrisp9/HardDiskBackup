@@ -9,9 +9,9 @@ namespace Registrar
     [AttributeUsage(AttributeTargets.Class)]
     public class Register : System.Attribute
     {
-        public Scope Scope { get; private set; }
+        public LifeTime Scope { get; private set; }
 
-        public Register(Scope scope)
+        public Register(LifeTime scope)
         {
             Scope = scope;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Registrar
 {
-    public enum Scope
+    public enum LifeTime
     {
         SingleInstance,
         Transient

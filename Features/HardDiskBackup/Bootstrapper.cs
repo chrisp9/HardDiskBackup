@@ -61,7 +61,7 @@ namespace HardDiskBackup
             return _containerBuilder;
         }
 
-        private void Register(Type concrete, Type[] interfaces, Scope scope)
+        private void Register(Type concrete, Type[] interfaces, LifeTime scope)
         {
             if (interfaces.Count() == 0)
                 RegisterSelf(concrete, scope);
@@ -69,16 +69,16 @@ namespace HardDiskBackup
                 interfaces.ToList().ForEach(x => Register(concrete, x, scope));
         }
 
-        private void RegisterSelf(Type concrete, Scope scope)
+        private void RegisterSelf(Type concrete, LifeTime scope)
         {
             Register(_containerBuilder.RegisterType(concrete).AsSelf(), scope);
         }
 
-        private void Register(Type concrete, Type interf, Scope scope)
+        private void Register(Type concrete, Type interf, LifeTime scope)
         {
-            if (scope == Scope.SingleInstance)
+            if (scope == LifeTime.SingleInstance)
                 Register(_containerBuilder.RegisterType(concrete).As(interf), scope);
-            else if (scope == Scope.Transient)
+            else if (scope == LifeTime.Transient)
                 Register(_containerBuilder.RegisterType(concrete).As(interf), scope);
             else
                 throw new ArgumentException("Invalid scope");
@@ -86,14 +86,14 @@ namespace HardDiskBackup
 
         private void Register(
             IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> regBuilder,
-            Scope scope)
+            LifeTime scope)
         {
             switch (scope)
             {
-                case Scope.Transient:
+                case LifeTime.Transient:
                     regBuilder.InstancePerDependency();
                     return;
-                case Scope.SingleInstance:
+                case LifeTime.SingleInstance:
                     regBuilder.SingleInstance();
                     return;
                 default:

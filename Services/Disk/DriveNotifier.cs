@@ -13,7 +13,7 @@ namespace Services.Disk
         void Unsubscribe();
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class DriveNotifier : IDriveNotifier
     {
         private IDisposable _subscription;
@@ -41,7 +41,7 @@ namespace Services.Disk
 
             _onNewDisk = onNewDisk;
 
-            var observer = new DiskObserver(x => _onNewDisk(x), _diskService.GetDrives());
+            var observer = new DiskObserver(x => { _onNewDisk(x); _subscription.Dispose(); }, _diskService.GetDrives());
 
             _subscription = Observable.Interval(TimeSpan.FromSeconds(1), _scheduler)
                 .SelectMany(x => _diskService.GetDrives().ToObservable())

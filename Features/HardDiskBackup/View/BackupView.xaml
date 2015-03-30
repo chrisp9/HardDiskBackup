@@ -5,9 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              xmlns:VM="clr-namespace:HardDiskBackup"           
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" d:DesignWidth="300"
+             Style="{StaticResource BlankWindow}" Height="90.458">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="A backup has been scheduled..." Grid.Row="0" Style="{StaticResource Heading2}" />
+        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" HorizontalAlignment="Right" Width="292" />
+
+        <DockPanel>
+
+        </DockPanel>
     </Grid>
+
 </mui:ModernWindow>

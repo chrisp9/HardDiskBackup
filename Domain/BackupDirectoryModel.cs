@@ -15,7 +15,7 @@ namespace Domain
         bool IsSubdirectoryOfExisting(string backupDirectoryPath);
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class BackupDirectoryModel : IBackupDirectoryModel
     {
         public ReadOnlyCollection<BackupDirectory> BackupDirectories

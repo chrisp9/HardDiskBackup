@@ -11,6 +11,7 @@ namespace Services.Scheduling
 {
     public interface IBackupScheduleService
     {
+        Backup NextBackup { get; }
         void ScheduleNextBackup(Backup backup, Action action);
         void TriggerImmediateBackup(IEnumerable<BackupDirectory> backupDirectories);
     }
@@ -19,10 +20,12 @@ namespace Services.Scheduling
     /// Maintains the Date/Time of the next backup
     /// Schedules an action to occur when the backup is due.
     /// </summary>
-    [Register(Scope.Transient)]
+    [Register(LifeTime.SingleInstance)]
     public class BackupScheduleService : IBackupScheduleService
     {
         private IScheduler _scheduler;
+
+        public Backup NextBackup { get; private set; }
 
         public BackupScheduleService(IScheduler scheduler)
         {
@@ -33,6 +36,7 @@ namespace Services.Scheduling
         {
             var scheduledTime = backup.BackupSchedule.CalculateNextBackupDateTime().DateTime;
             _scheduler.Schedule(scheduledTime.DateTimeInstance, action);
+            NextBackup = backup;
         }
 
         public void TriggerImmediateBackup(IEnumerable<BackupDirectory> backupDirectories)

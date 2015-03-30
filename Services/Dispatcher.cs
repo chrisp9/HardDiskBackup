@@ -8,7 +8,7 @@ namespace Services
         void InvokeAsync(Action action);
     }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class Dispatcher : IDispatcher
     {
         private System.Windows.Threading.Dispatcher _dispatcher;

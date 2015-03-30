@@ -63,7 +63,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Grid.Row="4" Margin="10" Command="{Binding Path=ScheduleBackupCommand}" CommandParameter="RelativeSource={
+            <Button Grid.Row="4" Margin="10" Command="{Binding Path=ScheduleBackupCommand}" CommandParameter="{Binding RelativeSource={
                                 RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">Schedule Backup</Button>
         </Grid>
     </DockPanel>

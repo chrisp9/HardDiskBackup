@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Registrar;
+using Services.Disk.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,9 +13,9 @@ namespace Services.Factories
 {
     public interface IDirectoryFactory
     {
-        BackupDirectory CreateBackupDirectory(string path);
-        MirroredDirectory CreateMirroredDirectory(string path);
-        BackupRootDirectory CreateBackupRootDirectory(string path);
+        BackupDirectory GetBackupDirectoryFor(string path);
+        MirroredDirectory GetMirroredDirectoryFor(string path);
+        BackupRootDirectory GetBackupRootDirectoryForDrive(IDriveInfoWrap drive);
     }
 
     // Why on earth do I have have 3 types for essentially the same thing (a wrapper around a directory)??
@@ -33,22 +34,37 @@ namespace Services.Factories
     // into a helper class, but there's only three types. Maybe if I add more, I'll consider it...
     // Whew...
 
-    [Register(Scope.Transient)]
+    [Register(LifeTime.Transient)]
     public class BackupFactory : IDirectoryFactory
     {
-        public BackupDirectory CreateBackupDirectory(string path)
+        private IFileSystemRootProvider _rootProvider;
+
+        public BackupFactory(IFileSystemRootProvider rootProvider) 
+        {
+            _rootProvider = rootProvider;
+        }
+
+        private const string DiskBackup = "DiskBackupApp";
+
+        public BackupDirectory GetBackupDirectoryFor(string path)
         {
             return new BackupDirectory(Sanitize(path));
         }
 
-        public MirroredDirectory CreateMirroredDirectory(string path)
+        public MirroredDirectory GetMirroredDirectoryFor(string path)
         {
             return new MirroredDirectory(Sanitize(path));
         }
 
-        public BackupRootDirectory CreateBackupRootDirectory(string path)
+        /// <summary>
+        /// Gets the BackupRootDirectory for the drive.
+        /// </summary>
+        /// <param name="drive">The drive</param>
+        /// <returns>The BackupRootDirectory</returns>
+        public BackupRootDirectory GetBackupRootDirectoryForDrive(IDriveInfoWrap drive)
         {
-            return new BackupRootDirectory(Sanitize(path));
+            var roo = _rootProvider.GetFileSystemRoot(drive);
+            return new BackupRootDirectory(new DirectoryInfoWrap(roo));
         }
 
         private DirectoryInfoWrap Sanitize(string path)

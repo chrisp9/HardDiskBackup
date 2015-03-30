@@ -19,7 +19,7 @@ namespace HardDiskBackup.Commands
 {
     public interface IScheduleBackupCommand : ICommand { }
 
-    [Register(Scope.SingleInstance)]
+    [Register(LifeTime.SingleInstance)]
     public class ScheduleBackupCommand : IScheduleBackupCommand
     {
         private ISetScheduleModel _setScheduleModel;
@@ -65,14 +65,12 @@ namespace HardDiskBackup.Commands
             var backup = Backup.Create(directories, schedule);
             _backupScheduleService.ScheduleNextBackup(backup, () => 
             {
-                Application.Current.Dispatcher.InvokeAsync(() => 
+                _dispatcher.InvokeAsync(() => 
                 {
-                    var oldWindow = parameter as Window;
-                    if (oldWindow != null)
-                        oldWindow.Close();
-
                     var window = _backupViewPresenter.Present();
-                    window.Show();
+
+                    if(window != null)
+                        window.Show();
                 });
             });
         }

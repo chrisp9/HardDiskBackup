@@ -8,7 +8,7 @@ namespace Domain
         DateTime Now { get; }
     }
 
-    [Register(Scope.Transient)]
+    [Register(LifeTime.Transient)]
     public class DateTimeProvider : IDateTimeProvider
     {
         public DateTime Now { get { return DateTime.Now; } }
