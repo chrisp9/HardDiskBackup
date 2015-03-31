@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel DockPanel.Dock="Top">
-        <TextBlock Text="Set your schedule" Style="{StaticResource Heading2}" />
-        <TextBlock Text="Please set your desired backup schedule:" />
+        <TextBlock Text="Set your schedule" Style="{StaticResource Header1}"/>
+        <TextBlock Text="Please set your desired backup schedule:" Style="{StaticResource Header2}"/>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

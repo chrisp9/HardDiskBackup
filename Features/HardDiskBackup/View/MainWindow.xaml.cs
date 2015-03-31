@@ -1,4 +1,4 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
+﻿using MahApps.Metro.Controls;
 using Registrar;
 using Services;
 using System;
@@ -23,7 +23,7 @@ namespace HardDiskBackup.View
     /// Interaction logic for MainWindow.xaml
     /// </summary
     [Register(LifeTime.SingleInstance)]
-    public partial class MainWindow : ModernWindow, IMainWindowView
+    public partial class MainWindow : MetroWindow, IMainWindowView
     {
         public MainWindow()
         {

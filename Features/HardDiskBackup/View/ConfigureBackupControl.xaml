@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Set your backup directories" Grid.Row="0" Style="{StaticResource Heading2}" />
+            <TextBlock Text="Set your backup directories" Grid.Row="0" Style="{StaticResource Header1}" />
             <TextBox Name="BackupDirectoryInput" Grid.Row="1" Margin="10" MaxLength="255" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                 <TextBox.Text>
                     <Binding Path="DirectoryPath" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">                        

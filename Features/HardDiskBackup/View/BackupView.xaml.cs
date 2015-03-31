@@ -1,5 +1,4 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
-using Registrar;
+﻿using Registrar;
 using Services;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace HardDiskBackup.View
     /// Interaction logic for BackupView.xaml
     /// </summary>
     [Register(LifeTime.SingleInstance)]
-    public partial class BackupView : ModernWindow, IBackupView
+    public partial class BackupView : IBackupView
     {
         public BackupView()
         {
