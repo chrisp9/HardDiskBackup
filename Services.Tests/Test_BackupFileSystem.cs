@@ -81,7 +81,8 @@ namespace Services.Tests
             _sut = new BackupFileSystem(
                 _directoryWrap.Object,
                 _fileWrap.Object,
-                _directoryFactory.Object);
+                _directoryFactory.Object,
+                Mock.Of<ITimestampedBackupRootProvider>());
         }
 
         private BackupFileSystem _sut;

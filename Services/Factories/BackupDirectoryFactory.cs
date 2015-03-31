@@ -34,17 +34,17 @@ namespace Services.Factories
     // into a helper class, but there's only three types. Maybe if I add more, I'll consider it...
     // Whew...
 
+    //TODO: This class is a target for future refactoring.
     [Register(LifeTime.Transient)]
     public class BackupFactory : IDirectoryFactory
     {
         private IFileSystemRootProvider _rootProvider;
+        private const string DiskBackup = "DiskBackupApp";
 
         public BackupFactory(IFileSystemRootProvider rootProvider) 
         {
             _rootProvider = rootProvider;
         }
-
-        private const string DiskBackup = "DiskBackupApp";
 
         public BackupDirectory GetBackupDirectoryFor(string path)
         {

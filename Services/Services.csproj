@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Disk\FileSystem\FileSystemRootProvider.cs" />
     <Compile Include="Dispatcher.cs" />
+    <Compile Include="Factories\TimestampedBackupRootProvider.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="Scheduling\BackupScheduleService.cs" />
     <Compile Include="Disk\FailedBackupReportingService.cs" />

@@ -31,15 +31,18 @@ namespace Services.Disk.FileSystem
         private IDirectoryWrap _directoryWrap;
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
+        private ITimestampedBackupRootProvider _timestampedRootProvider;
         
         public BackupFileSystem(
             IDirectoryWrap directoryWrap,
             IFileWrap fileWrap,
-            IDirectoryFactory directoryFactory)
+            IDirectoryFactory directoryFactory,
+            ITimestampedBackupRootProvider timestampedRootProvider)
         {
             _directoryWrap = directoryWrap;
             _fileWrap = fileWrap;
             _directoryFactory = directoryFactory;
+            _timestampedRootProvider = timestampedRootProvider;
         }
 
         public void Target(BackupRootDirectory directory)
