@@ -12,12 +12,23 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="A backup has been scheduled..." Grid.Row="0" Style="{StaticResource Heading2}" />
         <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" Width="292" />
 
-        <ProgressBar Grid.Row="2"/>
+        <ProgressBar Grid.Row="2" IsIndeterminate="True"/>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Column="0">Status: </Label>
+            <Label Grid.Column="1"> Waiting for device to be plugged in</Label>
+            
+        </Grid>
     </Grid>
 
 </mui:ModernWindow>

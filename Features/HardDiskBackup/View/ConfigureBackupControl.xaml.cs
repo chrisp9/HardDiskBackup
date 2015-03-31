@@ -4,11 +4,11 @@ using System.Windows.Data;
 namespace HardDiskBackup.View
 {
     /// <summary>
-    /// Interaction logic for FirstRunControl.xaml
+    /// Interaction logic for ConfigureBackupControl.xaml
     /// </summary>
-    public partial class FirstRunControl : UserControl
+    public partial class ConfigureBackupControl : UserControl
     {
-        public FirstRunControl()
+        public ConfigureBackupControl()
         {
             InitializeComponent();
         }

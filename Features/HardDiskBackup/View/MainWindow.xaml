@@ -10,6 +10,6 @@
                   Style="{StaticResource BlankWindow}">
 
     <ScrollViewer>
-        <controls:FirstRunControl DataContext="{Binding Path=FirstRunViewModel}"/>
+        <controls:ConfigureBackupControl DataContext="{Binding Path=FirstRunViewModel}"/>
     </ScrollViewer>
 </mui:ModernWindow>

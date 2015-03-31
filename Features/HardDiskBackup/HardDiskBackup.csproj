@@ -127,7 +127,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\FirstRunControl.xaml">
+    <Page Include="View\ConfigureBackupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,8 +135,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="View\FirstRunControl.xaml.cs">
-      <DependentUpon>FirstRunControl.xaml</DependentUpon>
+    <Compile Include="View\ConfigureBackupControl.xaml.cs">
+      <DependentUpon>ConfigureBackupControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
