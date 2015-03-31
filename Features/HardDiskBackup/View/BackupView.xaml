@@ -1,11 +1,13 @@
-﻿<Window x:Class="HardDiskBackup.View.BackupView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<metro:MetroWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    x:Class="HardDiskBackup.View.BackupView"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:VM="clr-namespace:HardDiskBackup"           
              mc:Ignorable="d" d:DesignWidth="300"
-             Height="90.458">
+             Height="150"
+             Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,8 +16,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="A backup has been scheduled..." Grid.Row="0"/>
-        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" Width="292" />
+        <TextBlock Text="A backup has been scheduled" Grid.Row="0" Style="{StaticResource Header1}"/>
+        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" Width="292" Style="{StaticResource Header2}"/>
 
         <ProgressBar Grid.Row="2" IsIndeterminate="True"/>
         <Grid Grid.Row="3">
@@ -24,9 +26,9 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
-            <Label Grid.Column="0">Status: </Label>
-            <Label Grid.Column="1"> Waiting for device to be plugged in</Label>
+            <TextBlock Grid.Column="0" Style="{StaticResource Text}">Status: </TextBlock>
+            <TextBlock Grid.Column="1" Style="{StaticResource Text}"> Waiting for device to be plugged in</TextBlock>
             
         </Grid>
     </Grid>
-</Window>
+</metro:MetroWindow>

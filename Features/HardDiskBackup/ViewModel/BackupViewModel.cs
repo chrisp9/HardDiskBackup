@@ -30,15 +30,15 @@ namespace HardDiskBackup.ViewModel
             _backupDirectoryFactory = backupDirectoryFactory;
             _backupFileSystem = backupFileSystem;
 
-            _driveNotifier.Subscribe(drive =>
+            _driveNotifier.Subscribe(async drive =>
             {
                 var rootDirectory = _backupDirectoryFactory.GetBackupRootDirectoryForDrive(drive);
                 _backupFileSystem.Target(rootDirectory);
-                Backup(_backupScheduleService.NextBackup.BackupDirectories);
+                await Backup(_backupScheduleService.NextBackup.BackupDirectories);
             });
         }
 
-        public async void Backup(IEnumerable<BackupDirectory> backupDirectories)
+        public async Task Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
             await Task.Run(() => _backupFileSystem.Copy(backupDirectories));

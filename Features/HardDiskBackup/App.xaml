@@ -24,7 +24,13 @@
                     <Setter Property="Padding" Value="8,4" />
                     <Setter Property="Margin" Value="4" />
                 </Style>
-                </ResourceDictionary>
+                    
+                <Style x:Key="Text" TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="Foreground" Value="Green" />
+                        <Setter Property="Padding" Value="8,4" />
+                    <Setter Property="Margin" Value="4" />
+                </Style>                </ResourceDictionary>
 
             </ResourceDictionary.MergedDictionaries>
             <!--<vm:MainWindowPresenter x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:HardDiskBackup.ViewModel" />-->

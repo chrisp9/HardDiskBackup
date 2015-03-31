@@ -1,13 +1,10 @@
 ﻿using Domain;
 using Registrar;
 using Services.Factories;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
 
@@ -34,7 +31,6 @@ namespace Services.Disk.FileSystem
         private IDirectoryWrap _directoryWrap;
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
-        private const string DiskBackup = "DiskBackupApp";
         
         public BackupFileSystem(
             IDirectoryWrap directoryWrap,
