@@ -11,9 +11,9 @@ namespace Services.Tests
 {
     public class Test_BackupFileSystem
     {
-        [TestCase(@"e:\backups\foo")]
-        [TestCase(@"e:\backups\bar")]
-        [TestCase(@"e:\backups\foo\fizz")]
+        [TestCase(@"e:\backups\now\foo")]
+        [TestCase(@"e:\backups\now\bar")]
+        [TestCase(@"e:\backups\now\foo\fizz")]
         public async void Copy_creates_correct_mirrored_directory(string directoryPath)
         {
             _sut.Target(_backupRootDirectory);
@@ -22,8 +22,8 @@ namespace Services.Tests
             _directoryWrap.Verify(x => x.CreateDirectory(directoryPath), Times.Once());
         }
 
-        [TestCase(@"c:\bar\test.txt", @"e:\backups\bar\test.txt")]
-        [TestCase(@"c:\foo\amazing.txt", @"e:\backups\foo\amazing.txt")]
+        [TestCase(@"c:\bar\test.txt", @"e:\backups\now\bar\test.txt")]
+        [TestCase(@"c:\foo\amazing.txt", @"e:\backups\now\foo\amazing.txt")]
         public async void Copy_copies_files_to_correct_directory(string sourceFileName, string destFileName)
         {
             _sut.Target(_backupRootDirectory);
@@ -67,6 +67,7 @@ namespace Services.Tests
             _fileWrap = new Mock<IFileWrap>();
 
             _directoryFactory = new Mock<IDirectoryFactory>();
+            _timestampedBackupRootProvider = new Mock<ITimestampedBackupRootProvider>();
             _root = CreateDirectoryStructure();
             _backupRootDirectory = new BackupRootDirectory(_root.Object);
 
@@ -76,19 +77,30 @@ namespace Services.Tests
             _backupRoot = FakeDirectoryInfoBuilder.Create(@"e:\backups");
             _backupRootDirectory = new BackupRootDirectory(_backupRoot.Object);
 
+            var mockDirectoryInfo = new Mock<IDirectoryInfoWrap>();
+            mockDirectoryInfo.Setup(x => x.FullName).Returns(@"e:\backups\now");
+
+            _timestampedBackupRoot = new TimestampedBackupRoot(mockDirectoryInfo.Object);
+
+            _timestampedBackupRootProvider.Setup(x => x.CreateTimestampedBackup(It.IsAny<BackupRootDirectory>()))
+                .Returns(_timestampedBackupRoot);
+
             _testDirectory = new BackupDirectory(_root.Object);
 
             _sut = new BackupFileSystem(
                 _directoryWrap.Object,
                 _fileWrap.Object,
                 _directoryFactory.Object,
-                Mock.Of<ITimestampedBackupRootProvider>());
+                _timestampedBackupRootProvider.Object);
         }
 
         private BackupFileSystem _sut;
         private Mock<IDirectoryWrap> _directoryWrap;
         private Mock<IFileWrap> _fileWrap;
         private Mock<IDirectoryFactory> _directoryFactory;
+
+        private TimestampedBackupRoot _timestampedBackupRoot;
+        private Mock<ITimestampedBackupRootProvider> _timestampedBackupRootProvider;
 
         private Mock<IDirectoryInfoWrap> _backupRoot;
         private BackupRootDirectory _backupRootDirectory;

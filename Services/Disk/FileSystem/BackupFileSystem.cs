@@ -58,10 +58,12 @@ namespace Services.Disk.FileSystem
 
         public async Task Copy(IEnumerable<BackupDirectory> backupDirectories)
         {
+            var timestampedRoot = _timestampedRootProvider.CreateTimestampedBackup(_backupRootDirectory);
+
             await Task.Run(() =>
             {
                 foreach (var backupDirectory in backupDirectories)
-                    Copy(backupDirectory);
+                    Copy(backupDirectory, timestampedRoot);
             });
         }
 
@@ -93,12 +95,12 @@ namespace Services.Disk.FileSystem
         }
 
         // Recursively copy source -> destination
-        private void Copy(BackupDirectory source)
+        private void Copy(BackupDirectory source, TimestampedBackupRoot destination)
         {
             var files = source.Directory.GetFiles();
             var directories = source.Directory.GetDirectories();
             
-            var mirroredRoot = CreateMirroredDirectory(source);
+            var mirroredRoot = CreateMirroredDirectory(source, destination);
 
             foreach (var file in files)
             {
@@ -108,14 +110,14 @@ namespace Services.Disk.FileSystem
             foreach (var directory in directories)
             {
                 var backupDirectory = new BackupDirectory(directory);
-                Copy(backupDirectory);
+                Copy(backupDirectory, destination);
             }
         }
 
-        private MirroredDirectory CreateMirroredDirectory(BackupDirectory directory)
+        private MirroredDirectory CreateMirroredDirectory(BackupDirectory directory, TimestampedBackupRoot destination)
         {
             var path = directory.ToString();
-            var backupRootPath = _backupRootDirectory.ToString();
+            var backupRootPath = destination.ToString();
 
             var mirroredPath = ReplaceRootWith(path, backupRootPath);
 
