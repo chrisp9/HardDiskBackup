@@ -32,7 +32,7 @@ namespace Services.Factories
         /// <returns>The timestamped backup directory which was just created</returns>
         public TimestampedBackupRoot CreateTimestampedBackup(BackupRootDirectory backupRoot)
         {
-            var now = _dateTimeProvider.Now.ToString("yyyy/MM/dd_HH.mm.ss");
+            var now = _dateTimeProvider.Now.ToString("yyyy-MM-dd_HH.mm.ss");
             backupRoot.Directory.CreateSubdirectory(now);
 
             return new TimestampedBackupRoot(new DirectoryInfoWrap(
