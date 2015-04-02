@@ -31,8 +31,7 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Grid.Column="0" Style="{StaticResource Text}">Status: </TextBlock>
-            <TextBlock Grid.Column="1" Style="{StaticResource Text}"> Waiting for device to be plugged in</TextBlock>
-            
+            <TextBlock Grid.Column="1" Style="{StaticResource Text}" Text="{Binding Path=Status}"/>       
         </Grid>
     </Grid>
 </metro:MetroWindow>

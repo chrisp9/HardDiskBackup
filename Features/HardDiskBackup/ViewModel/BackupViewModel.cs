@@ -7,13 +7,23 @@ using Services.Factories;
 using Services.Scheduling;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace HardDiskBackup.ViewModel
 {
     [Register(LifeTime.SingleInstance)]
-    public class BackupViewModel : ViewModelBase
+    public class BackupViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        public string Status 
+        {
+            get { return _status; }
+            private set { _status = value; OnPropertyChanged(); }
+        }
+
+        private string _status;
+
         private IDriveNotifier _driveNotifier;
         private IBackupScheduleService _backupScheduleService;
         private IBackupFileSystem _backupFileSystem;
@@ -30,6 +40,8 @@ namespace HardDiskBackup.ViewModel
             _backupDirectoryFactory = backupDirectoryFactory;
             _backupFileSystem = backupFileSystem;
 
+            Status = "Waiting for backup device to be plugged in...";
+
             _driveNotifier.Subscribe(async drive =>
             {
                 var rootDirectory = _backupDirectoryFactory.GetBackupRootDirectoryForDrive(drive);
@@ -40,8 +52,21 @@ namespace HardDiskBackup.ViewModel
 
         public async Task Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
-            await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
+            Status = "Calculating size of files to copy...";
+            var x = await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
+
+            Status = "Copying files...";
             await Task.Run(() => _backupFileSystem.Copy(backupDirectories));
         }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            var handler = PropertyChanged;
+
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

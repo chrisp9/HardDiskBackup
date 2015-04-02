@@ -1,9 +1,11 @@
 ﻿using Domain;
 using Registrar;
 using Services.Factories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
@@ -22,6 +24,8 @@ namespace Services.Disk.FileSystem
         Task Copy(IEnumerable<BackupDirectory> backupDirectories);
         Task<long> CalculateTotalSize(IEnumerable<BackupDirectory> backupDirectories);
         void Target(BackupRootDirectory directory);
+
+        event PropertyChangedEventHandler PropertyChanged;
     }
 
     [Register(LifeTime.Transient)]
@@ -32,17 +36,20 @@ namespace Services.Disk.FileSystem
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
         private ITimestampedBackupRootProvider _timestampedRootProvider;
+        private ISafeActionPerformer _safeActionPerformer;
         
         public BackupFileSystem(
             IDirectoryWrap directoryWrap,
             IFileWrap fileWrap,
             IDirectoryFactory directoryFactory,
-            ITimestampedBackupRootProvider timestampedRootProvider)
+            ITimestampedBackupRootProvider timestampedRootProvider,
+            ISafeActionPerformer safeActionPerformer)
         {
             _directoryWrap = directoryWrap;
             _fileWrap = fileWrap;
             _directoryFactory = directoryFactory;
             _timestampedRootProvider = timestampedRootProvider;
+            _safeActionPerformer = safeActionPerformer;
         }
 
         public void Target(BackupRootDirectory directory)
@@ -80,25 +87,30 @@ namespace Services.Disk.FileSystem
         private long CalculateSize(IDirectoryInfoWrap directory)
         {
             long currentSize = 0L;
-            var fis = directory.GetFiles();
+
+            var fis = _safeActionPerformer.SafeGet(() => directory.GetFiles());
+
             foreach (var fi in fis)
             {
                 currentSize += fi.Length;
             }
             // Add subdirectory sizes.
-            var dis = directory.GetDirectories();
+
+            var dis = _safeActionPerformer.SafeGet(() => directory.GetDirectories());
+
             foreach (var di in dis)
             {
                 currentSize += CalculateSize(di);
             }
+
             return (currentSize);
         }
 
         // Recursively copy source -> destination
         private void Copy(BackupDirectory source, TimestampedBackupRoot destination)
         {
-            var files = source.Directory.GetFiles();
-            var directories = source.Directory.GetDirectories();
+            var files = _safeActionPerformer.SafeGet(() => source.Directory.GetFiles());
+            var directories = _safeActionPerformer.SafeGet(() => source.Directory.GetDirectories());
             
             var mirroredRoot = CreateMirroredDirectory(source, destination);
 
