@@ -1,22 +1,24 @@
 ﻿using Registrar;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Services
 {
-    public interface ISafeActionPerformer
+    public interface ISafeActionLogger
     {
         void InvokeSafely(Action action, Action onFailure);
         IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> function);
+        IReadOnlyCollection<Exception> FlushExceptionLog();
     }
 
     [Register(LifeTime.Transient)]
-    public class SafeActionPerformer : ISafeActionPerformer
+    public class SafeActionLogger : ISafeActionLogger
     {
-        private IEnumerable<Exception> _exceptions;
+        private IList<Exception> _exceptions = new List<Exception>();
 
         /// <summary>
         /// Invokes an action safely, invoking the onFailure action
@@ -29,9 +31,10 @@ namespace Services
             try
             {
                 action();
-            } 
+            }
             catch(Exception e)
             {
+                _exceptions.Add(e);
                 onFailure();
             }
         }
@@ -43,16 +46,25 @@ namespace Services
         /// </summary>
         /// <param name="function">The function to execute</param>
         /// <returns>An enumerable</returns>
-        public IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> function)
+        public IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> fun)
         {
             try
             {
-                return function();
+                return fun();
             }
             catch(Exception e)
             {
+                _exceptions.Add(e);
                 return Enumerable.Empty<T>();
             }
+        }
+
+        public IReadOnlyCollection<Exception> FlushExceptionLog()
+        {
+            var coll = new ReadOnlyCollection<Exception>(_exceptions);
+            _exceptions.Clear();
+
+            return coll;
         }
     }
 }

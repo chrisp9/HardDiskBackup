@@ -4,6 +4,8 @@ using NUnit.Framework;
 using Services.Disk.FileSystem;
 using Services.Factories;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using SystemWrapper.IO;
 using TestHelpers;
 
@@ -67,6 +69,8 @@ namespace Services.Tests
             _fileWrap = new Mock<IFileWrap>();
 
             _directoryFactory = new Mock<IDirectoryFactory>();
+            _safeActionLogger = new Mock<ISafeActionLogger>();
+
             _timestampedBackupRootProvider = new Mock<ITimestampedBackupRootProvider>();
             _root = CreateDirectoryStructure();
             _backupRootDirectory = new BackupRootDirectory(_root.Object);
@@ -91,13 +95,15 @@ namespace Services.Tests
                 _directoryWrap.Object,
                 _fileWrap.Object,
                 _directoryFactory.Object,
-                _timestampedBackupRootProvider.Object);
+                _timestampedBackupRootProvider.Object,
+                new SafeActionLogger());
         }
 
         private BackupFileSystem _sut;
         private Mock<IDirectoryWrap> _directoryWrap;
         private Mock<IFileWrap> _fileWrap;
         private Mock<IDirectoryFactory> _directoryFactory;
+        private Mock<ISafeActionLogger> _safeActionLogger;
 
         private TimestampedBackupRoot _timestampedBackupRoot;
         private Mock<ITimestampedBackupRootProvider> _timestampedBackupRootProvider;

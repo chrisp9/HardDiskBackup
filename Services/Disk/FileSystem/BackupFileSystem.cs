@@ -36,20 +36,20 @@ namespace Services.Disk.FileSystem
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
         private ITimestampedBackupRootProvider _timestampedRootProvider;
-        private ISafeActionPerformer _safeActionPerformer;
+        private ISafeActionLogger _safeActionLogger;
         
         public BackupFileSystem(
             IDirectoryWrap directoryWrap,
             IFileWrap fileWrap,
             IDirectoryFactory directoryFactory,
             ITimestampedBackupRootProvider timestampedRootProvider,
-            ISafeActionPerformer safeActionPerformer)
+            ISafeActionLogger safeActionPerformer)
         {
             _directoryWrap = directoryWrap;
             _fileWrap = fileWrap;
             _directoryFactory = directoryFactory;
             _timestampedRootProvider = timestampedRootProvider;
-            _safeActionPerformer = safeActionPerformer;
+            _safeActionLogger = safeActionPerformer;
         }
 
         public void Target(BackupRootDirectory directory)
@@ -88,7 +88,7 @@ namespace Services.Disk.FileSystem
         {
             long currentSize = 0L;
 
-            var fis = _safeActionPerformer.SafeGet(() => directory.GetFiles());
+            var fis = _safeActionLogger.SafeGet(() => directory.GetFiles());
 
             foreach (var fi in fis)
             {
@@ -96,7 +96,7 @@ namespace Services.Disk.FileSystem
             }
             // Add subdirectory sizes.
 
-            var dis = _safeActionPerformer.SafeGet(() => directory.GetDirectories());
+            var dis = _safeActionLogger.SafeGet(() => directory.GetDirectories());
 
             foreach (var di in dis)
             {
@@ -109,8 +109,8 @@ namespace Services.Disk.FileSystem
         // Recursively copy source -> destination
         private void Copy(BackupDirectory source, TimestampedBackupRoot destination)
         {
-            var files = _safeActionPerformer.SafeGet(() => source.Directory.GetFiles());
-            var directories = _safeActionPerformer.SafeGet(() => source.Directory.GetDirectories());
+            var files = _safeActionLogger.SafeGet(() => source.Directory.GetFiles());
+            var directories = _safeActionLogger.SafeGet(() => source.Directory.GetDirectories());
             
             var mirroredRoot = CreateMirroredDirectory(source, destination);
 

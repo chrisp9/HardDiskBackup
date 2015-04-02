@@ -61,12 +61,10 @@ namespace HardDiskBackup.ViewModel
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var handler = PropertyChanged;
+            var handler = PropertyChangedHandler;
 
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
