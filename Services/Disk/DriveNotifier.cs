@@ -4,12 +4,13 @@ using System;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace Services.Disk
 {
     public interface IDriveNotifier
     {
-        void Subscribe(Action<IDriveInfoWrap> onNewDisk);
+        void Subscribe(Func<IDriveInfoWrap, Task> onNewDisk);
         void Unsubscribe();
     }
 
@@ -19,7 +20,7 @@ namespace Services.Disk
         private IDisposable _subscription;
         private IScheduler _scheduler;
         private IDriveInfoService _diskService;
-        private Action<IDriveInfoWrap> _onNewDisk;
+        private Func<IDriveInfoWrap, Task> _onNewDisk;
 
         public DriveNotifier(IScheduler scheduler, IDriveInfoService diskService)
         {
@@ -34,7 +35,7 @@ namespace Services.Disk
         /// <param name="onNewDisk">
         /// The delegate to execute when a new disk is observed
         /// </param>
-        public void Subscribe(Action<IDriveInfoWrap> onNewDisk)
+        public void Subscribe(Func<IDriveInfoWrap, Task> onNewDisk)
         {
             if (_subscription != null)
                 throw new InvalidOperationException("Cannot subscribe when subscription already exists. Call Unsubscribe first");

@@ -17,22 +17,21 @@ namespace HardDiskBackup.Tests
 {
     public class Test_BackupViewModel
     {
-
         [Test]
         public void Subscription_to_drive_notifier_occurs_on_construction()
         {
             SetupSut();
 
             _mockDriveNotifier.Verify(x => 
-                x.Subscribe(It.IsAny<Action<IDriveInfoWrap>>()), Times.Once());
+                x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()), Times.Once());
         }
 
         [Test]
         public void BackupRootDirectory_is_retrieved_from_factory_when_new_drive_is_observed()
         {
-            Action<IDriveInfoWrap> subscriptionAction = null;
-            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Action<IDriveInfoWrap>>()))
-                .Callback<Action<IDriveInfoWrap>>(x => subscriptionAction = x);
+            Func<IDriveInfoWrap, Task> subscriptionAction = null;
+            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()))
+                .Callback<Func<IDriveInfoWrap, Task>>(x => subscriptionAction = x);
 
             SetupSut();
 
@@ -44,9 +43,10 @@ namespace HardDiskBackup.Tests
         [Test]
         public void BackupFileSystem_is_targeted_at_root_directory_when_new_drive_is_observed()
         {
-            Action<IDriveInfoWrap> subscriptionAction = null;
-            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Action<IDriveInfoWrap>>()))
-                .Callback<Action<IDriveInfoWrap>>(x => subscriptionAction = x);
+            Func<IDriveInfoWrap, Task> subscriptionAction = null;
+            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()))
+                .Callback<Func<IDriveInfoWrap, Task>>(x => subscriptionAction = x);
+
 
             SetupSut();
 
@@ -58,9 +58,9 @@ namespace HardDiskBackup.Tests
         [Test]
         public void Calculate_total_size_is_called()
         {
-            Action<IDriveInfoWrap> subscriptionAction = null;
-            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Action<IDriveInfoWrap>>()))
-                .Callback<Action<IDriveInfoWrap>>(x => subscriptionAction = x);
+            Func<IDriveInfoWrap, Task> subscriptionAction = null;
+            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()))
+                .Callback<Func<IDriveInfoWrap, Task>>(x => subscriptionAction = x);
 
              SetupSut();
 
@@ -70,15 +70,15 @@ namespace HardDiskBackup.Tests
         }
 
         [Test]
-        public void Copy_is_called()
+        public async void Copy_is_called()
         {
-            Action<IDriveInfoWrap> subscriptionAction = null;
-            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Action<IDriveInfoWrap>>()))
-                .Callback<Action<IDriveInfoWrap>>(x => subscriptionAction = x);
+            Func<IDriveInfoWrap, Task> subscriptionAction = null;
+            _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()))
+                .Callback<Func<IDriveInfoWrap, Task>>(x => subscriptionAction = x);
 
             SetupSut();
 
-            subscriptionAction(_mockDriveInfoWrap.Object);
+            await subscriptionAction(_mockDriveInfoWrap.Object);
 
             _mockBackupFileSystem.Verify(x => x.Copy(_backupDirectories), Times.Once());
         }
@@ -99,6 +99,8 @@ namespace HardDiskBackup.Tests
             _mockBackupDirectoryFactory
                 .Setup(x => x.GetBackupRootDirectoryForDrive(_mockDriveInfoWrap.Object))
                 .Returns(_backupRootDirectory);
+
+            //SetupSut();
         }
 
         public void SetupSut()
@@ -121,11 +123,11 @@ namespace HardDiskBackup.Tests
         private BackupViewModel _sut;
         private BackupRootDirectory _backupRootDirectory;
         private IEnumerable<BackupDirectory> _backupDirectories;
-        private Mock<IBackupScheduleService> _mockBackupScheduleService = new Mock<IBackupScheduleService>();
-        private Mock<IBackupFileSystem> _mockBackupFileSystem = new Mock<IBackupFileSystem>();
-        private Mock<IDirectoryFactory> _mockBackupDirectoryFactory = new Mock<IDirectoryFactory>();
-        private Mock<IDriveNotifier> _mockDriveNotifier = new Mock<IDriveNotifier>();
-        private Mock<IDriveInfoWrap> _mockDriveInfoWrap = new Mock<IDriveInfoWrap>();
-        private Mock<IDirectoryInfoWrap> _mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
+        private Mock<IBackupScheduleService> _mockBackupScheduleService;
+        private Mock<IBackupFileSystem> _mockBackupFileSystem;
+        private Mock<IDirectoryFactory> _mockBackupDirectoryFactory;
+        private Mock<IDriveNotifier> _mockDriveNotifier;
+        private Mock<IDriveInfoWrap> _mockDriveInfoWrap;
+        private Mock<IDirectoryInfoWrap> _mockDirectoryInfoWrap;
     }
 }

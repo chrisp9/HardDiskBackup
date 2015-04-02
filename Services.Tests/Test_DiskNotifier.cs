@@ -33,7 +33,7 @@ namespace Services.Tests
             _mockDiskService.Setup(x => x.GetDrives()).Returns(initialDriveList);
 
             IDriveInfoWrap result = null;
-            sut.Subscribe((driveInfo) => { result = driveInfo; });
+            sut.Subscribe((driveInfo) => { result = driveInfo; return null; });
 
             _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
 
@@ -56,7 +56,7 @@ namespace Services.Tests
             _mockDiskService.Setup(x => x.GetDrives()).Returns(initialDriveList);
 
             IDriveInfoWrap result = null;
-            sut.Subscribe((driveInfo) => { result = driveInfo; });
+            sut.Subscribe((driveInfo) => { result = driveInfo; return null; });
             sut.Unsubscribe();
 
             _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
@@ -78,7 +78,7 @@ namespace Services.Tests
             _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
 
             IDriveInfoWrap result = null;
-            sut.Subscribe((driveInfo) => { result = driveInfo; });
+            sut.Subscribe((driveInfo) => { result = driveInfo; return null; });
 
             // Act
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
@@ -96,7 +96,7 @@ namespace Services.Tests
             var sut = SetupSut();
 
             IDriveInfoWrap result = null;
-            sut.Subscribe((driveInfo) => { result = driveInfo; });
+            sut.Subscribe((driveInfo) => { result = driveInfo; return null; });
 
             // Act
             _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
