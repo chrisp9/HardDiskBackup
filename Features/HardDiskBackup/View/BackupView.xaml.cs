@@ -31,5 +31,12 @@ namespace HardDiskBackup.View
         {
             InitializeComponent();
         }
+
+        private void MetroWindow_Deactivated(object sender, EventArgs e)
+        {
+            Window window = (Window)sender;
+            window.Topmost = true;
+            window.Activate();
+        }
     }
 }
