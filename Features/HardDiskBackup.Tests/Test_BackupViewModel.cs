@@ -80,7 +80,7 @@ namespace HardDiskBackup.Tests
 
             await subscriptionAction(_mockDriveInfoWrap.Object);
 
-            _mockBackupFileSystem.Verify(x => x.Copy(_backupDirectories), Times.Once());
+            _mockBackupFileSystem.Verify(x => x.Copy(_backupDirectories, null), Times.Once());
         }
 
         [SetUp]

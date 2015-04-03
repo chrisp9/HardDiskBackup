@@ -21,7 +21,7 @@ namespace Services.Disk.FileSystem
 
     public interface IBackupFileSystem
     {
-        Task Copy(IEnumerable<BackupDirectory> backupDirectories);
+        Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
         Task<long> CalculateTotalSize(IEnumerable<BackupDirectory> backupDirectories);
         void Target(BackupRootDirectory directory);
 
@@ -63,14 +63,20 @@ namespace Services.Disk.FileSystem
             return size;
         }
 
-        public async Task Copy(IEnumerable<BackupDirectory> backupDirectories)
+        /// <summary>
+        /// Copies the provided BackupDirectories from source to backup medium.
+        /// </summary>
+        /// <param name="backupDirectories">The directories included in the backup</param>
+        /// <param name="onFileCopied">A callback which executes after each file is copied</param>
+        /// <returns>A task which allows the operation to be awaited</returns>
+        public async Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied)
         {
             var timestampedRoot = _timestampedRootProvider.CreateTimestampedBackup(_backupRootDirectory);
 
             await Task.Run(() =>
             {
                 foreach (var backupDirectory in backupDirectories)
-                    Copy(backupDirectory, timestampedRoot);
+                    Copy(backupDirectory, timestampedRoot, onFileCopied);
             });
         }
 
@@ -107,7 +113,7 @@ namespace Services.Disk.FileSystem
         }
 
         // Recursively copy source -> destination
-        private void Copy(BackupDirectory source, TimestampedBackupRoot destination)
+        private void Copy(BackupDirectory source, TimestampedBackupRoot destination, Action<IFileInfoWrap> onFileCopied)
         {
             var files = _safeActionLogger.SafeGet(() => source.Directory.GetFiles());
             var directories = _safeActionLogger.SafeGet(() => source.Directory.GetDirectories());
@@ -116,13 +122,14 @@ namespace Services.Disk.FileSystem
 
             foreach (var file in files)
             {
-                _fileWrap.Copy(file.FullName, Path.Combine(mirroredRoot.ToString(), file.Name));
+                _safeActionLogger.InvokeSafely(() => { _fileWrap.Copy(file.FullName, Path.Combine(mirroredRoot.ToString(), file.Name)); });
+                onFileCopied(file);
             }
 
             foreach (var directory in directories)
             {
                 var backupDirectory = new BackupDirectory(directory);
-                Copy(backupDirectory, destination);
+                Copy(backupDirectory, destination, onFileCopied);
             }
         }
 

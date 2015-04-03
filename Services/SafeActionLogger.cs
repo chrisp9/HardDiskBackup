@@ -10,6 +10,7 @@ namespace Services
 {
     public interface ISafeActionLogger
     {
+        void InvokeSafely(Action action);
         void InvokeSafely(Action action, Action onFailure);
         IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> function);
         IReadOnlyCollection<Exception> FlushExceptionLog();
@@ -36,6 +37,18 @@ namespace Services
             {
                 _exceptions.Add(e);
                 onFailure();
+            }
+        }
+
+        public void InvokeSafely(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                _exceptions.Add(e);
             }
         }
 

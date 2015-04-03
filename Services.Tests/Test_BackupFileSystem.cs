@@ -19,7 +19,7 @@ namespace Services.Tests
         public async void Copy_creates_correct_mirrored_directory(string directoryPath)
         {
             _sut.Target(_backupRootDirectory);
-            await _sut.Copy(new[] { _testDirectory });
+            await _sut.Copy(new[] { _testDirectory }, null);
 
             _directoryWrap.Verify(x => x.CreateDirectory(directoryPath), Times.Once());
         }
@@ -30,7 +30,7 @@ namespace Services.Tests
         {
             _sut.Target(_backupRootDirectory);
 
-            await _sut.Copy(new[] { _testDirectory });
+            await _sut.Copy(new[] { _testDirectory }, null);
 
             _fileWrap.Verify(x => x.Copy(sourceFileName, destFileName), Times.Once());
         }

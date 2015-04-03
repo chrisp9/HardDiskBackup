@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using SystemWrapper.IO;
 
 namespace HardDiskBackup.ViewModel
 {
@@ -22,6 +23,27 @@ namespace HardDiskBackup.ViewModel
             private set { _status = value; OnPropertyChanged(); }
         }
 
+        public bool ProgressBarIsIndeterminate
+        {
+            get { return _progressBarIsIndeterminate; }
+            set { _progressBarIsIndeterminate = value; OnPropertyChanged(); }
+        }
+
+        public long TotalBytesToCopy
+        {
+            get { return _totalBytesToCopy; }
+            set { _totalBytesToCopy = value; OnPropertyChanged(); }
+        }
+
+        public long BytesCopiedSoFar
+        {
+            get { return _bytesCopiedSoFar; }
+            set { _bytesCopiedSoFar = value; OnPropertyChanged(); }
+        }
+
+        private long _totalBytesToCopy;
+        private long _bytesCopiedSoFar;
+        private bool _progressBarIsIndeterminate;
         private string _status;
 
         private IDriveNotifier _driveNotifier;
@@ -39,6 +61,7 @@ namespace HardDiskBackup.ViewModel
             _backupScheduleService = backupScheduleService;
             _backupDirectoryFactory = backupDirectoryFactory;
             _backupFileSystem = backupFileSystem;
+            ProgressBarIsIndeterminate = true;
 
             Status = "Waiting for backup device to be plugged in...";
 
@@ -53,10 +76,16 @@ namespace HardDiskBackup.ViewModel
         public async Task Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             Status = "Calculating size of files to copy...";
-            var x = await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
+            TotalBytesToCopy = await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
 
+            ProgressBarIsIndeterminate = false;
             Status = "Copying files...";
-            await Task.Run(() => _backupFileSystem.Copy(backupDirectories));
+            await Task.Run(() => _backupFileSystem.Copy(backupDirectories, AddToTotal));
+        }
+
+        private void AddToTotal(IFileInfoWrap file)
+        {
+            BytesCopiedSoFar += file.Length;
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
