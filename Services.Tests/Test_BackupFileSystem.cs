@@ -19,7 +19,7 @@ namespace Services.Tests
         public async void Copy_creates_correct_mirrored_directory(string directoryPath)
         {
             _sut.Target(_backupRootDirectory);
-            await _sut.Copy(new[] { _testDirectory }, null);
+            await _sut.Copy(new[] { _testDirectory }, _doNothingAction);
 
             _directoryWrap.Verify(x => x.CreateDirectory(directoryPath), Times.Once());
         }
@@ -30,7 +30,7 @@ namespace Services.Tests
         {
             _sut.Target(_backupRootDirectory);
 
-            await _sut.Copy(new[] { _testDirectory }, null);
+            await _sut.Copy(new[] { _testDirectory }, _doNothingAction);
 
             _fileWrap.Verify(x => x.Copy(sourceFileName, destFileName), Times.Once());
         }
@@ -42,6 +42,18 @@ namespace Services.Tests
             var totalSize = _sut.CalculateTotalSize(new[] { _testDirectory }).Result;
 
             Assert.AreEqual(450L, totalSize);
+        }
+
+        [Test]
+        public async void Callback_is_executed_when_copying_file()
+        {
+            _sut.Target(_backupRootDirectory);
+            bool hasBeenCalled = false;
+
+            Action<IFileInfoWrap> callback = _ => hasBeenCalled = true;
+            await _sut.Copy(new[] { _testDirectory }, callback);
+
+            Assert.IsTrue(hasBeenCalled);
         }
 
         private Mock<IDirectoryInfoWrap> CreateDirectoryStructure()
@@ -67,6 +79,7 @@ namespace Services.Tests
         {
             _directoryWrap = new Mock<IDirectoryWrap>();
             _fileWrap = new Mock<IFileWrap>();
+            _doNothingAction = _ => { };
 
             _directoryFactory = new Mock<IDirectoryFactory>();
             _safeActionLogger = new Mock<ISafeActionLogger>();
@@ -99,6 +112,7 @@ namespace Services.Tests
                 new SafeActionLogger());
         }
 
+        private Action<IFileInfoWrap> _doNothingAction;
         private BackupFileSystem _sut;
         private Mock<IDirectoryWrap> _directoryWrap;
         private Mock<IFileWrap> _fileWrap;
