@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionLogger.cs" />
     <Compile Include="Disk\FileSystem\FileSystemRootProvider.cs" />
     <Compile Include="Dispatcher.cs" />
     <Compile Include="Factories\TimestampedBackupRootProvider.cs" />

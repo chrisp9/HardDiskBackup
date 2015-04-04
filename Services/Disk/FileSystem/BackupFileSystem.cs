@@ -36,20 +36,23 @@ namespace Services.Disk.FileSystem
         private IDirectoryFactory _directoryFactory;
         private IFileWrap _fileWrap;
         private ITimestampedBackupRootProvider _timestampedRootProvider;
-        private ISafeActionLogger _safeActionLogger;
+        private ISafeActionPerformer _safeActionLogger;
+        private IErrorLogger _errorLogger;
         
         public BackupFileSystem(
             IDirectoryWrap directoryWrap,
             IFileWrap fileWrap,
             IDirectoryFactory directoryFactory,
             ITimestampedBackupRootProvider timestampedRootProvider,
-            ISafeActionLogger safeActionPerformer)
+            ISafeActionPerformer safeActionPerformer,
+            IErrorLogger errorLogger)
         {
             _directoryWrap = directoryWrap;
             _fileWrap = fileWrap;
             _directoryFactory = directoryFactory;
             _timestampedRootProvider = timestampedRootProvider;
             _safeActionLogger = safeActionPerformer;
+            _errorLogger = errorLogger;
         }
 
         public void Target(BackupRootDirectory directory)
@@ -71,6 +74,8 @@ namespace Services.Disk.FileSystem
         /// <returns>A task which allows the operation to be awaited</returns>
         public async Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied)
         {
+            _errorLogger.SubscribeToErrors();
+
             var timestampedRoot = _timestampedRootProvider.CreateTimestampedBackup(_backupRootDirectory);
 
             await Task.Run(() =>
@@ -78,6 +83,8 @@ namespace Services.Disk.FileSystem
                 foreach (var backupDirectory in backupDirectories)
                     Copy(backupDirectory, timestampedRoot, onFileCopied);
             });
+
+            _errorLogger.UnsubscribeFromErrors();
         }
 
         private long CalculateSize(IEnumerable<BackupDirectory> directories)

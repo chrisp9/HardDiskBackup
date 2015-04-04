@@ -82,7 +82,7 @@ namespace Services.Tests
             _doNothingAction = _ => { };
 
             _directoryFactory = new Mock<IDirectoryFactory>();
-            _safeActionLogger = new Mock<ISafeActionLogger>();
+            _safeActionLogger = new Mock<ISafeActionPerformer>();
 
             _timestampedBackupRootProvider = new Mock<ITimestampedBackupRootProvider>();
             _root = CreateDirectoryStructure();
@@ -109,7 +109,8 @@ namespace Services.Tests
                 _fileWrap.Object,
                 _directoryFactory.Object,
                 _timestampedBackupRootProvider.Object,
-                new SafeActionPerformer());
+                new SafeActionPerformer(), 
+                Mock.Of<IErrorLogger>());
         }
 
         private Action<IFileInfoWrap> _doNothingAction;
@@ -117,7 +118,7 @@ namespace Services.Tests
         private Mock<IDirectoryWrap> _directoryWrap;
         private Mock<IFileWrap> _fileWrap;
         private Mock<IDirectoryFactory> _directoryFactory;
-        private Mock<ISafeActionLogger> _safeActionLogger;
+        private Mock<ISafeActionPerformer> _safeActionLogger;
 
         private TimestampedBackupRoot _timestampedBackupRoot;
         private Mock<ITimestampedBackupRootProvider> _timestampedBackupRootProvider;

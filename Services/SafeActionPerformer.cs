@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public interface ISafeActionLogger
+    public interface ISafeActionPerformer
     {
+        event Services.SafeActionPerformer.OnErrorEventHandler OnError;
+
         void InvokeSafely(Action action);
         IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> function);
     }
 
-    [Register(LifeTime.Transient)]
-    public class SafeActionPerformer : ISafeActionLogger
+    [Register(LifeTime.SingleInstance)]
+    public class SafeActionPerformer : ISafeActionPerformer
     {
         public delegate void OnErrorEventHandler(object e, ExceptionEventArgs args);
         public event OnErrorEventHandler OnError;
