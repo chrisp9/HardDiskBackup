@@ -92,6 +92,7 @@
     <Compile Include="Test_DiskService.cs" />
     <Compile Include="Test_ErrorLogger.cs" />
     <Compile Include="Test_JsonSerializer.cs" />
+    <Compile Include="Test_SafeActionPerformer.cs" />
     <Compile Include="Test_SetScheduleModel.cs" />
     <Compile Include="Test_TimestampedBackupRootProvider.cs" />
   </ItemGroup>
