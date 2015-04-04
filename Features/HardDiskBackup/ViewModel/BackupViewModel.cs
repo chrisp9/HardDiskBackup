@@ -5,7 +5,6 @@ using Services.Disk;
 using Services.Disk.FileSystem;
 using Services.Factories;
 using Services.Scheduling;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -41,6 +40,7 @@ namespace HardDiskBackup.ViewModel
             set { _bytesCopiedSoFar = value; OnPropertyChanged(); }
         }
 
+        private object _lock = new object();
         private long _totalBytesToCopy;
         private long _bytesCopiedSoFar;
         private bool _progressBarIsIndeterminate;
@@ -80,7 +80,7 @@ namespace HardDiskBackup.ViewModel
 
             ProgressBarIsIndeterminate = false;
             Status = "Copying files...";
-            await Task.Run(() => _backupFileSystem.Copy(backupDirectories, AddToTotal));
+            await Task.Run(() => (object)_backupFileSystem.Copy(backupDirectories, AddToTotal));
         }
 
         private void AddToTotal(IFileInfoWrap file)

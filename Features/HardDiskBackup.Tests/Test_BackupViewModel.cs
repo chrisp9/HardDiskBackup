@@ -75,13 +75,54 @@ namespace HardDiskBackup.Tests
         }
 
         [Test]
+        public void Progress_bar_is_initially_indeterminate()
+        {
+            SetupSut();
+
+            Assert.IsTrue(_sut.ProgressBarIsIndeterminate);
+        }
+
+        [Test]
+        public async void Progress_bar_becomes_determinate()
+        {
+            SetupSut();
+
+            await _subscriptionAction(_mockDriveInfoWrap.Object);
+
+            Assert.IsFalse(_sut.ProgressBarIsIndeterminate);
+        }
+
+        [Test]
         public async void Bytes_copied_so_far_is_updated_after_a_file_is_copied()
         {
             SetupSut();
 
-            await _subscriptionAction(_mockDriveInfoWrap.Object);   
+            await _subscriptionAction(_mockDriveInfoWrap.Object);
       
             Assert.AreEqual(5L, _sut.BytesCopiedSoFar);
+        }
+
+        [Test]
+        public async void Bytes_copied_so_far_is_zero_before_copy_occurs()
+        {
+            SetupSut();
+
+            _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<BackupDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
+                .Callback<IEnumerable<BackupDirectory>, Action<IFileInfoWrap>>((x, y) => Assert.AreEqual(0, _sut.BytesCopiedSoFar));
+
+            await _subscriptionAction(_mockDriveInfoWrap.Object);
+
+            Assert.AreEqual(0L, _sut.BytesCopiedSoFar);
+        }
+
+        [Test]
+        public async void Bytes_to_copy_is_updated_after_calculating_total_size()
+        {
+            SetupSut();
+
+            await _subscriptionAction(_mockDriveInfoWrap.Object);
+
+            Assert.AreEqual(5L, _sut.TotalBytesToCopy);
         }
 
         [SetUp]
@@ -107,6 +148,8 @@ namespace HardDiskBackup.Tests
 
             _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()))
                 .Callback<Func<IDriveInfoWrap, Task>>(x => _subscriptionAction = x);
+
+            _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<IEnumerable<BackupDirectory>>())).Returns(Task.FromResult(5L));
 
             _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<BackupDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
                 .Callback<IEnumerable<BackupDirectory>, Action<IFileInfoWrap>>((x, y) => y(_mockFileInfoWrap.Object));
