@@ -109,7 +109,7 @@ namespace Services.Tests
                 _fileWrap.Object,
                 _directoryFactory.Object,
                 _timestampedBackupRootProvider.Object,
-                new SafeActionLogger());
+                new SafeActionPerformer());
         }
 
         private Action<IFileInfoWrap> _doNothingAction;

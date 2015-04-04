@@ -1,4 +1,5 @@
-﻿using Registrar;
+﻿using Domain.Exceptions;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,34 +12,14 @@ namespace Services
     public interface ISafeActionLogger
     {
         void InvokeSafely(Action action);
-        void InvokeSafely(Action action, Action onFailure);
         IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> function);
-        IReadOnlyCollection<Exception> FlushExceptionLog();
     }
 
     [Register(LifeTime.Transient)]
-    public class SafeActionLogger : ISafeActionLogger
+    public class SafeActionPerformer : ISafeActionLogger
     {
-        private IList<Exception> _exceptions = new List<Exception>();
-
-        /// <summary>
-        /// Invokes an action safely, invoking the onFailure action
-        /// if an exception was encountered whilst performing the action
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="onFailure"></param>
-        public void InvokeSafely(Action action, Action onFailure)
-        {
-            try
-            {
-                action();
-            }
-            catch(Exception e)
-            {
-                _exceptions.Add(e);
-                onFailure();
-            }
-        }
+        public delegate void OnErrorEventHandler(object e, ExceptionEventArgs args);
+        public event OnErrorEventHandler OnError;
 
         public void InvokeSafely(Action action)
         {
@@ -48,7 +29,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                _exceptions.Add(e);
+                OnError(this, new ExceptionEventArgs(e));
             }
         }
 
@@ -67,17 +48,9 @@ namespace Services
             }
             catch(Exception e)
             {
-                _exceptions.Add(e);
+                OnError(this, new ExceptionEventArgs(e));
                 return Enumerable.Empty<T>();
             }
-        }
-
-        public IReadOnlyCollection<Exception> FlushExceptionLog()
-        {
-            var coll = new ReadOnlyCollection<Exception>(_exceptions);
-            _exceptions.Clear();
-
-            return coll;
         }
     }
 }

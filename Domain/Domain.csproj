@@ -45,6 +45,7 @@
     <Compile Include="Backup.cs" />
     <Compile Include="BackupDate.cs" />
     <Compile Include="BackupRootDirectory.cs" />
+    <Compile Include="Exceptions\ExceptionEventArgs.cs" />
     <Compile Include="MirroredDirectory.cs" />
     <Compile Include="Scheduling\BackupScheduleType.cs" />
     <Compile Include="Scheduling\DailyBackupSchedule.cs" />
