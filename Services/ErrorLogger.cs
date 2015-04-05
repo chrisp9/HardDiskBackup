@@ -17,7 +17,7 @@ namespace Services
     }
 
     [Register(LifeTime.SingleInstance)]
-    public class ErrorLogger
+    public class ErrorLogger : IErrorLogger
     {
         private ISafeActionPerformer _safeActionPerformer;
         private List<Exception> _exceptions;

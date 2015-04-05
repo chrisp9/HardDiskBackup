@@ -11,7 +11,10 @@
              Height="150"
              Deactivated="MetroWindow_Deactivated"
              Title="Backup your drive"
-             Width="300">
+             Width="300"
+             WindowStyle="SingleBorderWindow" 
+             ResizeMode="NoResize"     
+             Loaded="MetroWindow_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

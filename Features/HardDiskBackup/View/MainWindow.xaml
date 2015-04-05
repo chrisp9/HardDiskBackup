@@ -30,6 +30,13 @@
                     <Grid/>
                 </DockPanel>
             </TabItem>
+            <TabItem Header="Manage Backups">
+                <DockPanel LastChildFill="True">
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" DockPanel.Dock="Left" Stroke="Green" />
+                    <Grid/>
+                </DockPanel>
+            </TabItem>
+
         </TabControl>
     </ScrollViewer>
 </metro:MetroWindow>
