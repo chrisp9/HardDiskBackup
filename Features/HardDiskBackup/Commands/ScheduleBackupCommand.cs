@@ -62,7 +62,7 @@ namespace HardDiskBackup.Commands
             var schedule = _setScheduleModel.CreateSchedule();
             var directories = _backupDirectoryModel.BackupDirectories;
 
-            var backup = Backup.Create(directories, schedule);
+            var backup = BackupDirectoriesAndSchedule.Create(directories, schedule);
             _backupScheduleService.ScheduleNextBackup(backup, () => 
             {
                 _dispatcher.InvokeAsync(() => 

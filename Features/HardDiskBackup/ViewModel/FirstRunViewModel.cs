@@ -21,7 +21,7 @@ namespace HardDiskBackup
         public ICommand RemovePathCommand { get; private set; }
         public ICommand ScheduleBackupCommand { get; private set; }
 
-        public Backup Backup { get; private set; }
+        public BackupDirectoriesAndSchedule Backup { get; private set; }
 
         public string DirectoryPath { get; set; }
 

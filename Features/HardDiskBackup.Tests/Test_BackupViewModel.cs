@@ -165,7 +165,7 @@ namespace HardDiskBackup.Tests
 
             // Jesus...
            _mockBackupScheduleService.Setup(x => x.NextBackup).Returns(
-               Backup.Create(
+               BackupDirectoriesAndSchedule.Create(
                _backupDirectories, 
                new DailyBackupSchedule(Mock.Of<INextBackupDateTimeFactory>(), 
                    Mock.Of<IDateTimeProvider>(), 

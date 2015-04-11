@@ -87,8 +87,8 @@ namespace HardDiskBackup.Tests
         public void Presenter_present_is_scheduled_and_ran_on_the_dispatcher_when_execute_is_called()
         {
             _mockBackupScheduleService.Setup(x => x.ScheduleNextBackup(
-                It.IsAny<Backup>(), It.IsAny<Action>()))
-                .Callback<Backup, Action>((b, a) => a());
+                It.IsAny<BackupDirectoriesAndSchedule>(), It.IsAny<Action>()))
+                .Callback<BackupDirectoriesAndSchedule, Action>((b, a) => a());
            
             _mockDispatcher.Setup(x => x.InvokeAsync(It.IsAny<Action>()))
                 .Callback<Action>(a => a());

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Backup
+    public class BackupDirectoriesAndSchedule
     {
         public IEnumerable<BackupDirectory> BackupDirectories { get; private set; }
         public BackupSchedule BackupSchedule { get; private set; }
 
-        private Backup(
+        private BackupDirectoriesAndSchedule(
             IEnumerable<BackupDirectory> backupDirectories,
             BackupSchedule nextBackupDateTime)
         {
@@ -20,11 +20,11 @@ namespace Domain
             BackupSchedule = nextBackupDateTime;
         }
 
-        public static Backup Create(
+        public static BackupDirectoriesAndSchedule Create(
             IEnumerable<BackupDirectory> backupDirectories, 
             BackupSchedule nextBackupDateTime) 
         {
-            return new Backup(backupDirectories, nextBackupDateTime);
+            return new BackupDirectoriesAndSchedule(backupDirectories, nextBackupDateTime);
         }
     }
 }
