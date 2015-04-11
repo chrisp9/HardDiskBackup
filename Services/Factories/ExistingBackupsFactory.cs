@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Services.Factories
 {
-    public interface IExistingBackupFactory
+    public interface IExistingBackupsFactory
     {
         IEnumerable<ExistingBackup> Create(BackupRootDirectory directory);
     }
 
     [Register(LifeTime.SingleInstance)]
-    public class ExistingBackupFactory : IExistingBackupFactory
+    public class ExistingBackupsFactory : IExistingBackupsFactory
     {
         public IEnumerable<ExistingBackup> Create(BackupRootDirectory directory)
         {
