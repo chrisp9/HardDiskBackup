@@ -19,6 +19,7 @@ namespace HardDiskBackup
 
         public FirstRunViewModel FirstRunViewModel { get; private set; }
         public SetScheduleViewModel SetScheduleViewModel { get; private set; }
+        public ManageBackupsViewModel ManageBackupsViewModel { get; private set; }
 
         private IDateTimeProvider _dateTimeProvider;
         private IJsonSerializer _persistedOptions;
@@ -26,11 +27,13 @@ namespace HardDiskBackup
         public MainWindowViewModel(
             IDateTimeProvider dateTimeProvider,
             IJsonSerializer jsonSerializer,
-            FirstRunViewModel firstRunViewModel)
+            FirstRunViewModel firstRunViewModel,
+            ManageBackupsViewModel manageBackupsViewModel)
         {
             _dateTimeProvider = dateTimeProvider;
             _persistedOptions = jsonSerializer;
             FirstRunViewModel = firstRunViewModel;
+            ManageBackupsViewModel = manageBackupsViewModel;
         }
     }
 }

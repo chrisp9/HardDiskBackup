@@ -17,6 +17,7 @@ namespace HardDiskBackup.ViewModel
         public ManageBackupsViewModel(IExistingBackupsPoller existingBackupsPoller)
         {
             _existingBackupsPoller = existingBackupsPoller;
+            _existingBackupsPoller.Subscribe(x => Console.WriteLine("Added"), x => Console.WriteLine("Removed"));
         }
     }
 }
