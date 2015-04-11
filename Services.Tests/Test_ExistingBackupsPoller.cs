@@ -36,7 +36,48 @@ namespace Services.Tests
         }
 
         [Test]
+        public void Adding_a_disk_which_does_not_contain_backups_means_OnAdded_does_not_execute()
+        {
+            // Arrange
+            var initialDriveList = Enumerable.Empty<IDriveInfoWrap>();
+            var finalDriveList = new[] { _removableDisk };
+
+            _mockDiskBackupDirectory.Setup(x => x.FullName).Returns("e:\\unrelatedStuff");
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(initialDriveList);
+
+            var hasBeenCalled = false;
+            _sut.Subscribe(_ => hasBeenCalled = true, _ => { });
+
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            Assert.IsFalse(hasBeenCalled);
+        }
+
+        [Test]
         public void Removing_a_disk_containing_backups_causes_onRemoved_to_execute()
+        {
+            // Arrange
+            var finalDriveList = Enumerable.Empty<IDriveInfoWrap>();
+            var initialDriveList = new[] { _removableDisk };
+
+            _mockDiskBackupDirectory.Setup(x => x.FullName).Returns("e:\\unrelatedStuff");
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(initialDriveList);
+
+            var hasBeenCalled = false;
+            _sut.Subscribe(_ => { }, _ => hasBeenCalled = true);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
+
+            _testScheduler.AdvanceBy(TimeSpan.FromSeconds(2).Ticks);
+
+            Assert.IsFalse(hasBeenCalled);
+        }
+
+        [Test]
+        public void Removing_a_disk_which_does_not_contain_backups_does_not_cause_onRemoved_to_execute()
         {
             // Arrange
             var finalDriveList = Enumerable.Empty<IDriveInfoWrap>();
@@ -65,10 +106,10 @@ namespace Services.Tests
             var mockRootDirectory = new Mock<IDirectoryInfoWrap>();
             mockRootDirectory.Setup(x => x.FullName).Returns("e:\\");
 
-            var mockDiskBackupDirectory = new Mock<IDirectoryInfoWrap>();
-            mockDiskBackupDirectory.Setup(x => x.FullName).Returns("e:\\DiskBackupApp");
+            _mockDiskBackupDirectory = new Mock<IDirectoryInfoWrap>();
+            _mockDiskBackupDirectory.Setup(x => x.FullName).Returns("e:\\DiskBackupApp");
 
-            mockRootDirectory.Setup(x => x.GetDirectories()).Returns(new[] { mockDiskBackupDirectory.Object });
+            mockRootDirectory.Setup(x => x.GetDirectories()).Returns(new[] { _mockDiskBackupDirectory.Object });
 
             var builder = new FakeDriveInfoBuilder();
             _removableDisk = builder.WithDriveType(DriveType.Removable)
@@ -78,6 +119,8 @@ namespace Services.Tests
         }
 
         private ExistingBackupsPoller _sut;
+        private Mock<IDirectoryInfoWrap> _mockDiskBackupDirectory;
+
         private TestScheduler _testScheduler;
         private Mock<IDriveInfoService> _mockDiskService;
         private IDriveInfoWrap _removableDisk;
