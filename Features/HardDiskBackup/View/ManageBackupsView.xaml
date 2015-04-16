@@ -6,6 +6,32 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <ScrollViewer HorizontalContentAlignment="Left">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
+                    <TextBlock Foreground="Red" Text="Please plug in your backup device to continue" Style="{StaticResource Header2}"/>
+                </StackPanel>
+            </Grid>
+                <ScrollViewer.Style>
+                <Style TargetType="ScrollViewer">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=DeviceWithBackupsExists}" Value="True">
+                            <Setter Property="ScrollViewer.ContentTemplate" >
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <UserControl>
+                                            <StackPanel>
+                                                <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
+                                            </StackPanel>
+                                        </UserControl>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Style>
+        </ScrollViewer>
     </Grid>
 </UserControl>
