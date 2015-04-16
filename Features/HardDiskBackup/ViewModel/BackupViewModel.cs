@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
+using System.Linq;
 
 namespace HardDiskBackup.ViewModel
 {
@@ -76,7 +77,7 @@ namespace HardDiskBackup.ViewModel
         public async Task Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             Status = "Calculating size of files to copy...";
-            TotalBytesToCopy = await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories));
+            TotalBytesToCopy = await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories.ToArray()));
 
             ProgressBarIsIndeterminate = false;
             Status = "Copying files...";

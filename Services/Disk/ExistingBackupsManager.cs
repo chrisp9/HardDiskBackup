@@ -13,12 +13,13 @@ namespace Services.Disk
         
     }
 
-    [Register(LifeTime.Transient)]
     public class ExistingBackupsManager : IExistingBackupsManager
     {
-        public ExistingBackupsManager(BackupRootDirectory backupRoot)
-        {
+        private IEnumerable<ExistingBackup> _backupRoot;
 
+        public ExistingBackupsManager(IEnumerable<ExistingBackup> backupRoot)
+        {
+            _backupRoot = backupRoot;
         }
     }
 }

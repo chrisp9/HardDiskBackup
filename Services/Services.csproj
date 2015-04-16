@@ -71,10 +71,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Disk\ExistingBackupsManager.cs" />
     <Compile Include="Disk\ExistingBackupsPoller.cs" />
     <Compile Include="ErrorLogger.cs" />
     <Compile Include="Disk\FileSystem\FileSystemRootProvider.cs" />
     <Compile Include="Dispatcher.cs" />
+    <Compile Include="Factories\ExistingBackupsFactory.cs" />
     <Compile Include="Factories\TimestampedBackupRootProvider.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="SafeActionPerformer.cs" />

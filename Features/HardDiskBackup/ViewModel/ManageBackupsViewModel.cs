@@ -30,8 +30,8 @@ namespace HardDiskBackup.ViewModel
             _existingBackupsPoller = existingBackupsPoller;
 
             _existingBackupsPoller.Subscribe(
-                x => DeviceWithBackupsExists = true, 
-                x => DeviceWithBackupsExists = false);
+                onAddedCallback:   _ => DeviceWithBackupsExists = true, 
+                onRemovedCallback: _ => DeviceWithBackupsExists = false);
         }
     }
 }

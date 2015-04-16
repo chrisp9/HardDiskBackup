@@ -12,6 +12,7 @@ namespace Domain
         public BackupDate BackupDate { get; private set; }
         public BackupTime BackupTime { get; private set; }
         public TimestampedBackupRoot BackupDirectory { get; private set; }
+        public long SizeInBytes { get; private set; }
 
         public ExistingBackup(
             BackupDate backupDate,
@@ -21,6 +22,7 @@ namespace Domain
             BackupDate = backupDate;
             BackupTime = backupTime;
             BackupDirectory = directory;
+            //SizeInBytes = directory.Directory;
         }
     }
 }

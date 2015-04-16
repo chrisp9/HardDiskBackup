@@ -140,7 +140,7 @@ namespace HardDiskBackup.Tests
             _mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
 
             _backupRootDirectory = new BackupRootDirectory(_mockDirectoryInfoWrap.Object);
-            _backupDirectories = new[] { new BackupDirectory(_mockDirectoryInfoWrap.Object) }.ToList();
+            _backupDirectories = new[] { new BackupDirectory(_mockDirectoryInfoWrap.Object) }.ToArray();
 
             _mockBackupDirectoryFactory
                 .Setup(x => x.GetBackupRootDirectoryForDrive(_mockDriveInfoWrap.Object))
@@ -149,7 +149,7 @@ namespace HardDiskBackup.Tests
             _mockDriveNotifier.Setup(x => x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()))
                 .Callback<Func<IDriveInfoWrap, Task>>(x => _subscriptionAction = x);
 
-            _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<IEnumerable<BackupDirectory>>())).Returns(Task.FromResult(5L));
+            _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<BackupDirectory[]>())).Returns(Task.FromResult(5L));
 
             _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<BackupDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
                 .Callback<IEnumerable<BackupDirectory>, Action<IFileInfoWrap>>((x, y) => y(_mockFileInfoWrap.Object));
@@ -177,7 +177,7 @@ namespace HardDiskBackup.Tests
 
         private Mock<IFileInfoWrap> _mockFileInfoWrap;
         private BackupRootDirectory _backupRootDirectory;
-        private IEnumerable<BackupDirectory> _backupDirectories;
+        private BackupDirectory[] _backupDirectories;
         private Mock<IBackupScheduleService> _mockBackupScheduleService;
         private Mock<IBackupFileSystem> _mockBackupFileSystem;
         private Mock<IDirectoryFactory> _mockBackupDirectoryFactory;
