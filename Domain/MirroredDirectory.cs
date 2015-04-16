@@ -7,7 +7,7 @@ using SystemWrapper.IO;
 
 namespace Domain
 {
-    public class MirroredDirectory
+    public class MirroredDirectory : IDirectory
     {
         public IDirectoryInfoWrap Directory { get; private set; }
 

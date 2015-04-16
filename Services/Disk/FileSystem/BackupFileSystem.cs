@@ -22,7 +22,7 @@ namespace Services.Disk.FileSystem
     public interface IBackupFileSystem
     {
         Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
-        Task<long> CalculateTotalSize(params BackupDirectory[] backupDirectories);
+        Task<long> CalculateTotalSize(params IDirectory[] backupDirectories);
         void Target(BackupRootDirectory directory);
 
         event PropertyChangedEventHandler PropertyChanged;
@@ -60,7 +60,7 @@ namespace Services.Disk.FileSystem
             _backupRootDirectory = directory;
         }
 
-        public async Task<long> CalculateTotalSize(params BackupDirectory[] directories)
+        public async Task<long> CalculateTotalSize(params IDirectory[] directories)
         {
             var size = await Task.Run(() => CalculateSize(directories));
             return size;
@@ -87,7 +87,7 @@ namespace Services.Disk.FileSystem
             _errorLogger.UnsubscribeFromErrors();
         }
 
-        private long CalculateSize(IEnumerable<BackupDirectory> directories)
+        private long CalculateSize(IEnumerable<IDirectory> directories)
         {
             var currentSize = 0L;
 

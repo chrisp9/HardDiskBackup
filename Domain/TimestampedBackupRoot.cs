@@ -7,7 +7,7 @@ using SystemWrapper.IO;
 
 namespace Domain
 {
-    public class TimestampedBackupRoot
+    public class TimestampedBackupRoot : IDirectory
     {
         public IDirectoryInfoWrap Directory { get; private set; }
 
