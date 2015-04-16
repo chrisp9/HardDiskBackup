@@ -42,11 +42,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backup.cs" />
     <Compile Include="BackupDate.cs" />
+    <Compile Include="BackupDirectoriesAndSchedule.cs" />
     <Compile Include="BackupRootDirectory.cs" />
     <Compile Include="BackupRootEventArgs.cs" />
     <Compile Include="Exceptions\ExceptionEventArgs.cs" />
+    <Compile Include="ExistingBackup.cs" />
     <Compile Include="MirroredDirectory.cs" />
     <Compile Include="Scheduling\BackupScheduleType.cs" />
     <Compile Include="Scheduling\DailyBackupSchedule.cs" />

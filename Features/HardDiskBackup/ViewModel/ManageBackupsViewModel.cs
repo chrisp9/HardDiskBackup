@@ -21,18 +21,17 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
-        private bool _deviceWithBackupsExists;
+        private bool _deviceWithBackupsExists = false;
         private IExistingBackupsPoller _existingBackupsPoller;
 
         public ManageBackupsViewModel(
-            IExistingBackupsPoller existingBackupsPoller,
-            IExistingBackupsManager)
+            IExistingBackupsPoller existingBackupsPoller)
         {
             _existingBackupsPoller = existingBackupsPoller;
 
             _existingBackupsPoller.Subscribe(
-                x => Console.WriteLine("Added"), 
-                x => Console.WriteLine("Removed"));
+                x => DeviceWithBackupsExists = true, 
+                x => DeviceWithBackupsExists = false);
         }
     }
 }
