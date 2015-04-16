@@ -17,12 +17,13 @@ namespace Domain
         public ExistingBackup(
             BackupDate backupDate,
             BackupTime backupTime,
-            TimestampedBackupRoot directory)
+            TimestampedBackupRoot directory,
+            long sizeInBytes)
         {
             BackupDate = backupDate;
             BackupTime = backupTime;
             BackupDirectory = directory;
-            //SizeInBytes = directory.Directory;
+            SizeInBytes = sizeInBytes;
         }
     }
 }
