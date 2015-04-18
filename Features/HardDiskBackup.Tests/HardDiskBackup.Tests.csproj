@@ -67,6 +67,7 @@
     <Compile Include="Test_BackupViewModel.cs" />
     <Compile Include="Test_FirstRunViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test_ManageBackupsViewModel.cs" />
     <Compile Include="Test_ScheduleBackupCommand.cs" />
     <Compile Include="Test_SetScheduleViewModel.cs" />
   </ItemGroup>
