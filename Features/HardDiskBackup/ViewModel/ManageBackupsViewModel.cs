@@ -1,10 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Domain;
+using GalaSoft.MvvmLight;
 using Registrar;
 using Services.Disk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Services.Factories;
 using System.Threading.Tasks;
 
 namespace HardDiskBackup.ViewModel
@@ -21,17 +19,40 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
+        public ExistingBackup[] ExistingBackups
+        {
+            get { return _existingBackups; }
+            set
+            {
+                _existingBackups = value;
+                RaisePropertyChanged("ExistingBackups");
+            }
+        }
+
         private bool _deviceWithBackupsExists = false;
         private IExistingBackupsPoller _existingBackupsPoller;
+        private IExistingBackupsFactory _existingBackupsFactory;
+        private ExistingBackup[] _existingBackups;
 
         public ManageBackupsViewModel(
-            IExistingBackupsPoller existingBackupsPoller)
+            IExistingBackupsPoller existingBackupsPoller,
+            IExistingBackupsFactory existingBackupsFactory)
         {
             _existingBackupsPoller = existingBackupsPoller;
+            _existingBackupsFactory = existingBackupsFactory;
 
             _existingBackupsPoller.Subscribe(
-                onAddedCallback:   _ => DeviceWithBackupsExists = true, 
-                onRemovedCallback: _ => DeviceWithBackupsExists = false);
+                onAddedCallback:   async dir => 
+                { 
+                    ExistingBackups = await _existingBackupsFactory.Create(dir); 
+                    DeviceWithBackupsExists = true; 
+                },
+
+                onRemovedCallback: dir => 
+                {
+                    ExistingBackups = null; DeviceWithBackupsExists = false; 
+                }
+            );
         }
     }
 }

@@ -3,11 +3,8 @@ using HardDiskBackup.ViewModel;
 using Moq;
 using NUnit.Framework;
 using Services.Disk;
+using Services.Factories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
@@ -53,19 +50,21 @@ namespace HardDiskBackup.Tests
                 .Callback<Action<BackupRootDirectory>, Action<BackupRootDirectory>>((x, y) => { _onAddCallback = x; _onRemoveCallback = y; });
 
             _mockDirectory = new Mock<IDirectoryInfoWrap>();
+            _existingBackupsFactory = new Mock<IExistingBackupsFactory>();
             _backupRootDirectory = new BackupRootDirectory(_mockDirectory.Object);
+            
 
-            _sut = new ManageBackupsViewModel(_existingBackupsPoller.Object);
+            _sut = new ManageBackupsViewModel(_existingBackupsPoller.Object, _existingBackupsFactory.Object);
         }
 
         private ManageBackupsViewModel _sut;
         private Mock<IExistingBackupsPoller> _existingBackupsPoller;
+        private Mock<IExistingBackupsFactory> _existingBackupsFactory;
 
         private Action<BackupRootDirectory> _onAddCallback;
         private Action<BackupRootDirectory> _onRemoveCallback;
 
         private Mock<IDirectoryInfoWrap> _mockDirectory;
         private BackupRootDirectory _backupRootDirectory;
-
     }
 }
