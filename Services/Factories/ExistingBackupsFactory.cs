@@ -40,7 +40,7 @@ namespace Services.Factories
                     new BackupDate(backupDateTime), 
                     new BackupTime(backupDateTime.TimeOfDay), 
                     timestampedDir,
-                    _backupFileSystem.CalculateTotalSize(timestampedDir).Result)); //TODO: Will this be too slow?
+                    size)); //TODO: Will this be too slow?
             }
 
             return existingBackups.ToArray();
