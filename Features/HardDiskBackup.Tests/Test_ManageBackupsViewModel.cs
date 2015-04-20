@@ -5,7 +5,11 @@ using NUnit.Framework;
 using Services.Disk;
 using Services.Factories;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using SystemWrapper.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HardDiskBackup.Tests
 {
@@ -41,6 +45,29 @@ namespace HardDiskBackup.Tests
             Assert.IsTrue(_sut.DeviceWithBackupsExists);
         }
 
+        [Test]
+        public void ExistingBackups_is_set_when_a_backupRoot_is_added()
+        {
+            _onAddCallback(_backupRootDirectory);
+
+            Assert.AreEqual(_existingBackups, _sut.ExistingBackups);
+        }
+
+        [Test]
+        public void ExistingBackups_is_initially_null()
+        {
+            Assert.IsNull(_sut.ExistingBackups);
+        }
+
+        [Test]
+        public void ExistingBackups_is_null_after_adding_then_removing()
+        {
+            _onAddCallback(_backupRootDirectory);
+            _onRemoveCallback(_backupRootDirectory);
+
+            Assert.IsNull(_sut.ExistingBackups);
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -50,12 +77,44 @@ namespace HardDiskBackup.Tests
                 .Callback<Action<BackupRootDirectory>, Action<BackupRootDirectory>>((x, y) => { _onAddCallback = x; _onRemoveCallback = y; });
 
             _mockDirectory = new Mock<IDirectoryInfoWrap>();
+            _mockDirectory.Setup(x => x.FullName).Returns(@"e:\test");
+
             _existingBackupsFactory = new Mock<IExistingBackupsFactory>();
             _backupRootDirectory = new BackupRootDirectory(_mockDirectory.Object);
-            
+
+            _existingBackups = CreateExistingBackups().ToArray();
+
+            _existingBackupsFactory.Setup(x => x.Create(_backupRootDirectory))
+                .Returns(Task.FromResult(_existingBackups));
 
             _sut = new ManageBackupsViewModel(_existingBackupsPoller.Object, _existingBackupsFactory.Object);
         }
+
+        private IEnumerable<ExistingBackup> CreateExistingBackups()
+        {
+            var directory = new Mock<IDirectoryInfoWrap>();
+            directory.Setup(x => x.FullName).Returns(@"c:\test");
+
+            var directory2 = new Mock<IDirectoryInfoWrap>();
+            directory2.Setup(x => x.FullName).Returns(@"c:\test2");
+
+            var first = new ExistingBackup(
+                new BackupDate(2015, 05, 01),
+                new BackupTime(20, 00, 00),
+                new TimestampedBackupRoot(directory.Object),
+                200L);
+
+            var second = new ExistingBackup(
+                new BackupDate(2014, 01, 04),
+                new BackupTime(00, 00, 01),
+                new TimestampedBackupRoot(directory2.Object),
+                300L
+                );
+
+            return new[] { first, second };
+        }
+
+        private ExistingBackup[] _existingBackups;
 
         private ManageBackupsViewModel _sut;
         private Mock<IExistingBackupsPoller> _existingBackupsPoller;

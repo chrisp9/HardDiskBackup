@@ -45,7 +45,7 @@ namespace HardDiskBackup.ViewModel
                 onAddedCallback:   async dir => 
                 { 
                     ExistingBackups = await _existingBackupsFactory.Create(dir); 
-                    DeviceWithBackupsExists = true; 
+                    DeviceWithBackupsExists = true;
                 },
 
                 onRemovedCallback: dir => 
