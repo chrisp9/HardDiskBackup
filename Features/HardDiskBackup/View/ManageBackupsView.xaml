@@ -23,6 +23,13 @@
                                         <UserControl>
                                             <StackPanel>
                                                 <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
+                                                <DataGrid>
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Header="Backup Date"/>
+                                                        <DataGridTextColumn Header="Backup Size"/>
+                                                        <DataGridTextColumn Header="Delete"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
                                             </StackPanel>
                                         </UserControl>
                                     </DataTemplate>
