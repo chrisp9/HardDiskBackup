@@ -31,6 +31,7 @@ namespace Services.Factories
 
             foreach (var dir in directories)
             {
+                //TODO: Fix edge-case crash when directory name cannot be parsed
                 var backupDateTime = DateTime.ParseExact(dir.Name, "yyyy-MM-dd_HH.mm.ss", null);
                 var timestampedDir = new TimestampedBackupRoot(dir);
 
@@ -40,7 +41,7 @@ namespace Services.Factories
                     new BackupDate(backupDateTime), 
                     new BackupTime(backupDateTime.TimeOfDay), 
                     timestampedDir,
-                    size)); //TODO: Will this be too slow?
+                    size));
             }
 
             return existingBackups.ToArray();
