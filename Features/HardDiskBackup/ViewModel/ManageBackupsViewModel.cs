@@ -4,6 +4,8 @@ using Registrar;
 using Services.Disk;
 using Services.Factories;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace HardDiskBackup.ViewModel
 {
@@ -29,6 +31,18 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
+        public FormattedExistingBackup[] FormattedExistingBackups 
+        {
+            get { return _formattedExistingBackups; }
+            set 
+            {
+                _formattedExistingBackups = value;
+                RaisePropertyChanged("FormattedExistingBackups");
+            }
+        }
+
+        private FormattedExistingBackup[] _formattedExistingBackups;
+
         private bool _deviceWithBackupsExists = false;
         private IExistingBackupsPoller _existingBackupsPoller;
         private IExistingBackupsFactory _existingBackupsFactory;
@@ -44,13 +58,18 @@ namespace HardDiskBackup.ViewModel
             _existingBackupsPoller.Subscribe(
                 onAddedCallback:   async dir => 
                 { 
-                    ExistingBackups = await _existingBackupsFactory.Create(dir); 
+                    ExistingBackups = await _existingBackupsFactory.Create(dir);
+
+                    FormattedExistingBackups = ExistingBackups
+                        .Select(x => new FormattedExistingBackup(x))
+                        .ToArray();
+
                     DeviceWithBackupsExists = true;
                 },
 
                 onRemovedCallback: dir => 
                 {
-                    ExistingBackups = null; DeviceWithBackupsExists = false; 
+                    ExistingBackups = null; DeviceWithBackupsExists = false; FormattedExistingBackups = null;
                 }
             );
         }

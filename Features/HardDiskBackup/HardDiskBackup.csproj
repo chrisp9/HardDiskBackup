@@ -115,6 +115,7 @@
     <Compile Include="Commands\ScheduleBackupCommand.cs" />
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
+    <Compile Include="ViewModel\FormattedExistingBackup.cs" />
     <Compile Include="ViewModel\ManageBackupsViewModel.cs" />
     <Compile Include="ViewModel\SetScheduleViewModel.cs" />
     <Compile Include="ViewModel\WindowPresenter.cs" />

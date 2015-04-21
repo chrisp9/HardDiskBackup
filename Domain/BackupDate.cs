@@ -29,6 +29,11 @@ namespace Domain
             return _date == other._date;
         }
 
+        public override string ToString()
+        {
+            return _date.ToString("dd/MM/yyyy");
+        }
+
         public override int GetHashCode()
         {
             return _date.GetHashCode();

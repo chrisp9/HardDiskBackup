@@ -29,6 +29,11 @@ namespace Domain
             return _time == other._time;
         }
 
+        public override string ToString()
+        {
+            return _time.ToString();
+        }
+
         public static bool operator < (BackupTime a, BackupTime b) 
         {
             return a._time < b._time;
