@@ -29,8 +29,7 @@ namespace Services.Disk
         {
             return _driveInfoQuery
                .GetDrives()
-               .Where(drive => drive.IsReady
-                  && drive.DriveType == DriveType.Removable);
+               .Where(drive => drive.IsReady);
         }
     }
 }
