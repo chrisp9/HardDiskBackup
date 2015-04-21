@@ -69,7 +69,8 @@ namespace HardDiskBackup.Commands
                 {
                     var window = _backupViewPresenter.Present();
 
-                    if(window != null)
+                    // Null check needed for tests. Not ideal but does the job.
+                    if(window != null) 
                         window.Show();
                 });
             });

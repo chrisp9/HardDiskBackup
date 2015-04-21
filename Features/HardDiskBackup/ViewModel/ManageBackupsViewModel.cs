@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using HardDiskBackup.Commands;
+using Services.Disk.FileSystem;
 
 namespace HardDiskBackup.ViewModel
 {
@@ -21,37 +23,53 @@ namespace HardDiskBackup.ViewModel
                 RaisePropertyChanged("DeviceWithBackupsExists");
             }
         }
+        public ObservableCollection<FormattedExistingBackup> FormattedExistingBackups
+        {
+            get
+            {
+                return _existingBackupsModel.ExistingBackups;
+            }
+        }
 
-        public ObservableCollection<FormattedExistingBackup> FormattedExistingBackups { get; set; }
-      
+        public IDeleteBackupCommand DeleteBackupCommand
+        {
+            get
+            {
+                return _deleteBackupCommand;
+            }
+        }
+
         private bool _deviceWithBackupsExists = false;
         private IExistingBackupsPoller _existingBackupsPoller;
         private IExistingBackupsFactory _existingBackupsFactory;
-        private ExistingBackup[] _existingBackups;
+        private IDeleteBackupCommand _deleteBackupCommand;
+        private IExistingBackupsModel _existingBackupsModel;
 
         public ManageBackupsViewModel(
             IExistingBackupsPoller existingBackupsPoller,
-            IExistingBackupsFactory existingBackupsFactory)
+            IExistingBackupsFactory existingBackupsFactory,
+            IDeleteBackupCommand deleteBackupCommand,
+            IExistingBackupsModel existingBackupsModel)
         {
+            _deleteBackupCommand = deleteBackupCommand;
             _existingBackupsPoller = existingBackupsPoller;
             _existingBackupsFactory = existingBackupsFactory;
-            FormattedExistingBackups = new ObservableCollection<FormattedExistingBackup>();
+            _existingBackupsModel = existingBackupsModel;
 
             _existingBackupsPoller.Subscribe(
                 onAddedCallback:   async dir => 
                 { 
                     var existingBackups = await _existingBackupsFactory.Create(dir);
                     
-                    existingBackups
-                        .ToList()
-                        .ForEach(x => FormattedExistingBackups.Add(new FormattedExistingBackup(x)));
+                    existingBackups.ToList()
+                        .ForEach(x => _existingBackupsModel.Add(new FormattedExistingBackup(x)));
 
                     DeviceWithBackupsExists = true;
                 },
 
                 onRemovedCallback: dir => 
                 {
-                    DeviceWithBackupsExists = false; FormattedExistingBackups.Clear();
+                    DeviceWithBackupsExists = false; _existingBackupsModel.Clear();
                 }
             );
         }

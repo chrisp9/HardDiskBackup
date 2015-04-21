@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Services.Disk.FileSystem;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace HardDiskBackup.Tests
         {
             _sut.Execute(_existingBackup);
 
-            _mockBackupFileSystem.Verify(x => x.Delete(_existingBackup), Times.Once());
+            _mockBackupFileSystem.Verify(x => x.Delete(_existingBackup, () => Debug.WriteLine("a")), Times.Once());
         }
 
         [SetUp]

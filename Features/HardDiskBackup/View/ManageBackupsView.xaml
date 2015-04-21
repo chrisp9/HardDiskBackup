@@ -29,9 +29,9 @@
                                                         <DataGridTextColumn Binding="{Binding Size}" Header="Size (MB)"></DataGridTextColumn>
 
                                                         <DataGridTemplateColumn Header="Delete" Width="75">
-                                                            <DataGridTemplateColumn.CellTemplate>
+                                                            <DataGridTemplateColumn.CellTemplate> 
                                                                 <DataTemplate>
-                                                                    <Button Content="Delete"/>
+                                                                    <Button Content="Delete" Command="{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding}"/>
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
                                                         </DataGridTemplateColumn>

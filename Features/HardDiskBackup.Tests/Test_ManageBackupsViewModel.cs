@@ -50,7 +50,7 @@ namespace HardDiskBackup.Tests
         {
             _onAddCallback(_backupRootDirectory);
 
-            Assert.AreEqual(_existingBackups, _sut.FormattedExistingBackups);
+            Assert.AreEqual(_existingBackups, _sut.FormattedExistingBackups.Select(x => x.ExistingBackup));
         }
 
         [Test]

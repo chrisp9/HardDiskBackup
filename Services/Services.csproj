@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Disk\ExistingBackupsManager.cs" />
     <Compile Include="Disk\ExistingBackupsPoller.cs" />
+    <Compile Include="Disk\FileSystem\ExistingBackupsModel.cs" />
     <Compile Include="ErrorLogger.cs" />
     <Compile Include="Disk\FileSystem\FileSystemRootProvider.cs" />
     <Compile Include="Dispatcher.cs" />

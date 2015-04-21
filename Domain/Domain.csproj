@@ -48,6 +48,7 @@
     <Compile Include="BackupRootEventArgs.cs" />
     <Compile Include="Exceptions\ExceptionEventArgs.cs" />
     <Compile Include="ExistingBackup.cs" />
+    <Compile Include="FormattedExistingBackup.cs" />
     <Compile Include="IDirectory.cs" />
     <Compile Include="MirroredDirectory.cs" />
     <Compile Include="Scheduling\BackupScheduleType.cs" />

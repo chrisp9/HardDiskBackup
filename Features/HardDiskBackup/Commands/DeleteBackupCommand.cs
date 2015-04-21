@@ -1,11 +1,7 @@
-﻿using HardDiskBackup.ViewModel;
+﻿using Domain;
 using Registrar;
 using Services.Disk.FileSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace HardDiskBackup.Commands
@@ -16,10 +12,14 @@ namespace HardDiskBackup.Commands
     public class DeleteBackupCommand : IDeleteBackupCommand
     {
         private IBackupFileSystem _backupFileSystem;
+        private IExistingBackupsModel _existingBackupsmodel;
 
-        public DeleteBackupCommand(IBackupFileSystem backupFileSystem)
+        public DeleteBackupCommand(
+            IBackupFileSystem backupFileSystem,
+            IExistingBackupsModel existingBackupsModel)
         {
             _backupFileSystem = backupFileSystem;
+            _existingBackupsmodel = existingBackupsModel;
         }
 
         public bool CanExecute(object parameter)
@@ -36,7 +36,7 @@ namespace HardDiskBackup.Commands
         public void Execute(object parameter)
         {
             var formattedBackup = parameter as FormattedExistingBackup;
-            _backupFileSystem.Delete(formattedBackup.ExistingBackup);
+            _backupFileSystem.Delete(formattedBackup.ExistingBackup, () => _existingBackupsmodel.Remove(formattedBackup));
         }
-}
+    }
 }
