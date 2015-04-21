@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using HardDiskBackup.Commands;
 using Services.Disk.FileSystem;
+using System.Windows.Input;
 
 namespace HardDiskBackup.ViewModel
 {
@@ -31,7 +32,7 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
-        public IDeleteBackupCommand DeleteBackupCommand
+        public ICommand DeleteBackupCommand
         {
             get
             {
