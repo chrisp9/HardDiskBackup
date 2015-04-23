@@ -23,11 +23,18 @@
                                         <UserControl>
                                             <StackPanel>
                                                 <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
-                                                <DataGrid>
+                                                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding DataContext.FormattedExistingBackups, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}">
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn Header="Backup Date"/>
-                                                        <DataGridTextColumn Header="Backup Size"/>
-                                                        <DataGridTextColumn Header="Delete"/>
+                                                        <DataGridTextColumn Binding="{Binding DateTime}" Header="Date of backup" SortDirection="Descending"></DataGridTextColumn>
+                                                        <DataGridTextColumn Binding="{Binding Size}" Header="Size (MB)"></DataGridTextColumn>
+
+                                                        <DataGridTemplateColumn Header="Delete" Width="75">
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button Content="Delete"/>
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>
                                                     </DataGrid.Columns>
                                                 </DataGrid>
                                             </StackPanel>
