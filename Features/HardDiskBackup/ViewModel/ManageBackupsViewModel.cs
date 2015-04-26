@@ -22,8 +22,6 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
-        public ExistingBackup[] ExistingBackups { get; set; }
-
         public ObservableCollection<FormattedExistingBackup> FormattedExistingBackups { get; set; }
       
         private bool _deviceWithBackupsExists = false;
@@ -42,9 +40,9 @@ namespace HardDiskBackup.ViewModel
             _existingBackupsPoller.Subscribe(
                 onAddedCallback:   async dir => 
                 { 
-                    ExistingBackups = await _existingBackupsFactory.Create(dir);
+                    var existingBackups = await _existingBackupsFactory.Create(dir);
                     
-                    ExistingBackups
+                    existingBackups
                         .ToList()
                         .ForEach(x => FormattedExistingBackups.Add(new FormattedExistingBackup(x)));
 
@@ -53,7 +51,7 @@ namespace HardDiskBackup.ViewModel
 
                 onRemovedCallback: dir => 
                 {
-                    ExistingBackups = null; DeviceWithBackupsExists = false; FormattedExistingBackups = null;
+                    DeviceWithBackupsExists = false; FormattedExistingBackups.Clear();
                 }
             );
         }
