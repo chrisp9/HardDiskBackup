@@ -6,6 +6,7 @@ using Services.Factories;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace HardDiskBackup.ViewModel
 {
@@ -21,28 +22,10 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
-        public ExistingBackup[] ExistingBackups
-        {
-            get { return _existingBackups; }
-            set
-            {
-                _existingBackups = value;
-                RaisePropertyChanged("ExistingBackups");
-            }
-        }
+        public ExistingBackup[] ExistingBackups { get; set; }
 
-        public FormattedExistingBackup[] FormattedExistingBackups 
-        {
-            get { return _formattedExistingBackups; }
-            set 
-            {
-                _formattedExistingBackups = value;
-                RaisePropertyChanged("FormattedExistingBackups");
-            }
-        }
-
-        private FormattedExistingBackup[] _formattedExistingBackups;
-
+        public ObservableCollection<FormattedExistingBackup> FormattedExistingBackups { get; set; }
+      
         private bool _deviceWithBackupsExists = false;
         private IExistingBackupsPoller _existingBackupsPoller;
         private IExistingBackupsFactory _existingBackupsFactory;
@@ -54,15 +37,16 @@ namespace HardDiskBackup.ViewModel
         {
             _existingBackupsPoller = existingBackupsPoller;
             _existingBackupsFactory = existingBackupsFactory;
+            FormattedExistingBackups = new ObservableCollection<FormattedExistingBackup>();
 
             _existingBackupsPoller.Subscribe(
                 onAddedCallback:   async dir => 
                 { 
                     ExistingBackups = await _existingBackupsFactory.Create(dir);
-
-                    FormattedExistingBackups = ExistingBackups
-                        .Select(x => new FormattedExistingBackup(x))
-                        .ToArray();
+                    
+                    ExistingBackups
+                        .ToList()
+                        .ForEach(x => FormattedExistingBackups.Add(new FormattedExistingBackup(x)));
 
                     DeviceWithBackupsExists = true;
                 },
