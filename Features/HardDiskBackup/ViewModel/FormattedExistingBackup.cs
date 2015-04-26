@@ -9,13 +9,13 @@ namespace HardDiskBackup.ViewModel
 {
     public class FormattedExistingBackup
     {
-        private ExistingBackup _existingBackup;
+        public ExistingBackup ExistingBackup;
 
         public string DateTime
         {
             get
             {
-                return _existingBackup.BackupDate.ToString() + " " + _existingBackup.BackupTime;
+                return ExistingBackup.BackupDate.ToString() + " " + ExistingBackup.BackupTime;
             }
         }
 
@@ -23,13 +23,13 @@ namespace HardDiskBackup.ViewModel
         {
             get
             {
-                return Math.Round(_existingBackup.SizeInBytes / 1024m / 1024m).ToString();
+                return Math.Round(ExistingBackup.SizeInBytes / 1024m / 1024m).ToString();
             }
         }
 
         public FormattedExistingBackup(ExistingBackup existingBackup)
         {
-            _existingBackup = existingBackup;
+            ExistingBackup = existingBackup;
         }
     }
 }

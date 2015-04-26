@@ -22,6 +22,7 @@ namespace Services.Disk.FileSystem
     public interface IBackupFileSystem
     {
         Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
+        Task Delete(ExistingBackup existingBackup);
         Task<long> CalculateTotalSize(params IDirectory[] backupDirectories);
         void Target(BackupRootDirectory directory);
 
@@ -85,6 +86,12 @@ namespace Services.Disk.FileSystem
             });
 
             _errorLogger.UnsubscribeFromErrors();
+        }
+
+        public async Task Delete(ExistingBackup existingBackup)
+        {
+            var toDelete = existingBackup.BackupDirectory.Directory;
+            await Task.Run(() => toDelete.Delete(true));
         }
 
         private long CalculateSize(IEnumerable<IDirectory> directories)
