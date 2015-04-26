@@ -50,22 +50,22 @@ namespace HardDiskBackup.Tests
         {
             _onAddCallback(_backupRootDirectory);
 
-            Assert.AreEqual(_existingBackups, _sut.ExistingBackups);
+            Assert.AreEqual(_existingBackups, _sut.FormattedExistingBackups);
         }
 
         [Test]
-        public void ExistingBackups_is_initially_null()
+        public void ExistingBackups_is_initially_empty()
         {
-            Assert.IsNull(_sut.ExistingBackups);
+            Assert.IsEmpty(_sut.FormattedExistingBackups);
         }
 
         [Test]
-        public void ExistingBackups_is_null_after_adding_then_removing()
+        public void ExistingBackups_is_empty_after_adding_then_removing()
         {
             _onAddCallback(_backupRootDirectory);
             _onRemoveCallback(_backupRootDirectory);
 
-            Assert.IsNull(_sut.ExistingBackups);
+            Assert.IsEmpty(_sut.FormattedExistingBackups);
         }
 
         [SetUp]
