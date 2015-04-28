@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using SystemWrapper.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Services.Disk.FileSystem;
+using HardDiskBackup.Commands;
 
 namespace HardDiskBackup.Tests
 {
@@ -81,13 +83,19 @@ namespace HardDiskBackup.Tests
 
             _existingBackupsFactory = new Mock<IExistingBackupsFactory>();
             _backupRootDirectory = new BackupRootDirectory(_mockDirectory.Object);
+            _mockExistingBackupsModel = new Mock<IExistingBackupsModel>();
+            _mockDeleteBackupCommand = new Mock<IDeleteBackupCommand>();
 
             _existingBackups = CreateExistingBackups().ToArray();
 
             _existingBackupsFactory.Setup(x => x.Create(_backupRootDirectory))
                 .Returns(Task.FromResult(_existingBackups));
 
-            _sut = new ManageBackupsViewModel(_existingBackupsPoller.Object, _existingBackupsFactory.Object);
+            _sut = new ManageBackupsViewModel(
+                _existingBackupsPoller.Object, 
+                _existingBackupsFactory.Object, 
+                _mockDeleteBackupCommand.Object, 
+                _mockExistingBackupsModel.Object);
         }
 
         private IEnumerable<ExistingBackup> CreateExistingBackups()
@@ -119,6 +127,8 @@ namespace HardDiskBackup.Tests
         private ManageBackupsViewModel _sut;
         private Mock<IExistingBackupsPoller> _existingBackupsPoller;
         private Mock<IExistingBackupsFactory> _existingBackupsFactory;
+        private Mock<IExistingBackupsModel> _mockExistingBackupsModel;
+        private Mock<IDeleteBackupCommand> _mockDeleteBackupCommand;
 
         private Action<BackupRootDirectory> _onAddCallback;
         private Action<BackupRootDirectory> _onRemoveCallback;

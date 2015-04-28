@@ -26,7 +26,9 @@ namespace HardDiskBackup.Tests
         public void Setup()
         {
             _mockBackupFileSystem = new Mock<IBackupFileSystem>();
-            _sut = new DeleteBackupCommand(_mockBackupFileSystem.Object);
+            _mockExistingBackupModel = new Mock<IExistingBackupsModel>();
+           
+            _sut = new DeleteBackupCommand(_mockBackupFileSystem.Object, _mockExistingBackupModel.Object);
 
             _existingBackup = new ExistingBackup(
                 new BackupDate(DateTime.Now), new BackupTime(TimeSpan.FromSeconds(1)),
@@ -38,5 +40,6 @@ namespace HardDiskBackup.Tests
         private ExistingBackup _existingBackup;
         private Mock<IBackupFileSystem> _mockBackupFileSystem; 
         private IDeleteBackupCommand _sut;
+        private Mock<IExistingBackupsModel> _mockExistingBackupModel;
     }
 }
