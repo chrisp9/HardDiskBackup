@@ -47,29 +47,6 @@ namespace HardDiskBackup.Tests
             Assert.IsTrue(_sut.DeviceWithBackupsExists);
         }
 
-        [Test]
-        public void ExistingBackups_is_set_when_a_backupRoot_is_added()
-        {
-            _onAddCallback(_backupRootDirectory);
-
-            Assert.AreEqual(_existingBackups, _sut.FormattedExistingBackups.Select(x => x.ExistingBackup));
-        }
-
-        [Test]
-        public void ExistingBackups_is_initially_empty()
-        {
-            Assert.IsEmpty(_sut.FormattedExistingBackups);
-        }
-
-        [Test]
-        public void ExistingBackups_is_empty_after_adding_then_removing()
-        {
-            _onAddCallback(_backupRootDirectory);
-            _onRemoveCallback(_backupRootDirectory);
-
-            Assert.IsEmpty(_sut.FormattedExistingBackups);
-        }
-
         [SetUp]
         public void Setup()
         {

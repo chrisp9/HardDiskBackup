@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Test_BackupViewModel.cs" />
     <Compile Include="Test_DeleteBackupCommand.cs" />
+    <Compile Include="Test_ExistingBackupsModel.cs" />
     <Compile Include="Test_FirstRunViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test_ManageBackupsViewModel.cs" />
