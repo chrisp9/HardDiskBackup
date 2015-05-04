@@ -31,7 +31,9 @@ namespace Services
             }
             catch (Exception e)
             {
-                OnError(this, new ExceptionEventArgs(e));
+                var evt = OnError;
+                if(evt != null)
+                    evt(this, new ExceptionEventArgs(e));
             }
         }
 
