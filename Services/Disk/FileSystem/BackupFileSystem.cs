@@ -137,7 +137,13 @@ namespace Services.Disk.FileSystem
 
             foreach (var file in files)
             {
-                _safeActionLogger.InvokeSafely(() => { _fileWrap.Copy(file.FullName, Path.Combine(mirroredRoot.ToString(), file.Name)); });
+                var newFilePath = Path.Combine(mirroredRoot.ToString(), file.Name);
+                _safeActionLogger.InvokeSafely(() => 
+                { 
+                    _fileWrap.Copy(file.FullName, newFilePath);
+                    var newFile = new FileInfoWrap(Path.Combine(mirroredRoot.ToString(), file.Name).ToString());
+                    newFile.Attributes &= ~FileAttributes.ReadOnly;
+                });
                 onFileCopied(file);
             }
 
