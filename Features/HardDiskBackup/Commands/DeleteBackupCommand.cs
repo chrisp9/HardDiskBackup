@@ -36,6 +36,8 @@ namespace HardDiskBackup.Commands
         public void Execute(object parameter)
         {
             var formattedBackup = parameter as FormattedExistingBackup;
+            formattedBackup.DeleteIsInProgress = true;
+
             _backupFileSystem.Delete(formattedBackup.ExistingBackup, () => _existingBackupsmodel.Remove(formattedBackup));
         }
     }

@@ -32,9 +32,10 @@
                                                         <DataGridTemplateColumn Header="Delete" Width="75">
                                                             <DataGridTemplateColumn.CellTemplate> 
                                                                 <DataTemplate>
-                                                                    <Button Content="Delete" Command=
-                                                                            "{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"
-                                                                            
+                                                                    <Button 
+                                                                    IsEnabled="{Binding Path=DeleteIsInProgress, Converter={StaticResource InverseBoolToVis}}"   
+                                                                        Content="Delete" Command=
+                                                                            "{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"   
                                                                             CommandParameter="{Binding}"/>
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
