@@ -2,9 +2,11 @@
 using GalaSoft.MvvmLight;
 using HardDiskBackup.View;
 using HardDiskBackup.ViewModel;
+using Newtonsoft.Json;
 using Registrar;
 using Services;
 using Services.Factories;
+using Services.Persistence;
 using Services.Scheduling;
 using System;
 using System.Collections.Generic;
@@ -27,20 +29,22 @@ namespace HardDiskBackup.Commands
         private IBackupDirectoryModel _backupDirectoryModel;
         private IWindowPresenter<BackupViewModel, IBackupView> _backupViewPresenter;
         private IDispatcher _dispatcher;
+        private IJsonSerializer _jsonSerializer;
 
         public ScheduleBackupCommand(
             ISetScheduleModel setScheduleModel,
             IBackupScheduleService backupScheduleService,
             IBackupDirectoryModel backupDirectoryModel,
             IWindowPresenter<BackupViewModel, IBackupView> backupViewPresenter,
-            IDispatcher dispatcher
-            )
+            IDispatcher dispatcher,
+            IJsonSerializer jsonSerializer)
         {
             _setScheduleModel = setScheduleModel;
             _backupScheduleService = backupScheduleService;
             _backupDirectoryModel = backupDirectoryModel;
             _backupViewPresenter = backupViewPresenter;
             _dispatcher = dispatcher;
+            _jsonSerializer = jsonSerializer;
         }
 
         public bool CanExecute(object parameter)
@@ -62,7 +66,8 @@ namespace HardDiskBackup.Commands
             var schedule = _setScheduleModel.CreateSchedule();
             var directories = _backupDirectoryModel.BackupDirectories;
 
-            var backup = BackupDirectoriesAndSchedule.Create(directories, schedule);
+            _jsonSerializer.SerializeToFile(schedule, directories);
+            
             _backupScheduleService.ScheduleNextBackup(backup, () => 
             {
                 _dispatcher.InvokeAsync(() => 

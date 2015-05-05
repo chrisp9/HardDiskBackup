@@ -122,8 +122,7 @@ namespace HardDiskBackup.Tests
             IDirectoryFactory directoryFactory = null,
             IBackupDirectoryModel backupDirectoryModel = null,
             ISetScheduleModel setScheduleModel = null,
-            IScheduleBackupCommand scheduleBackupCommand = null
-            )
+            IScheduleBackupCommand scheduleBackupCommand = null)
         {
             return new FirstRunViewModel(
                 dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),

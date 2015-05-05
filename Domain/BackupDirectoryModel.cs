@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Domain
 {
@@ -24,6 +26,10 @@ namespace Domain
             {
                 return new ReadOnlyCollection<BackupDirectory>(
                     _backupDirectories.ToArray());
+            }
+            set
+            {
+                _backupDirectories = value;
             }
         }
 

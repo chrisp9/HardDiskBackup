@@ -10,6 +10,7 @@ using Services.Persistence;
 using Services.Scheduling;
 using System;
 using System.ComponentModel;
+using Newtonsoft.Json;
 using System.Windows.Input;
 
 namespace HardDiskBackup
@@ -25,15 +26,16 @@ namespace HardDiskBackup
 
         public string DirectoryPath { get; set; }
 
-        public SetScheduleViewModel SetScheduleViewModel { get; private set; }
-        public IBackupDirectoryModel BackupDirectoryModel { get; private set; }
+        public SetScheduleViewModel SetScheduleViewModel { get; set; }
+
+        public IBackupDirectoryModel BackupDirectoryModel { get; set; }
 
         private IDateTimeProvider _dateTimeProvider;
         private IJsonSerializer _jsonSerializer;
         private IBackupDirectoryValidator _backupDirectoryValidator;
         private IDirectoryFactory _directoryFactory;
         private ISetScheduleModel _setScheduleModel;
-
+        
         public FirstRunViewModel( // TODO: Factor out commands.
             IDateTimeProvider dateTimeProvider,
             IJsonSerializer jsonSerializer,
@@ -42,6 +44,7 @@ namespace HardDiskBackup
             IBackupDirectoryModel backupDirectoryModel,
             ISetScheduleModel setScheduleModel,
             IScheduleBackupCommand scheduleBackupCommand,
+            IJsonSerializer jsonSerialiser,
             Func<SetScheduleViewModel> setScheduleViewModel)
         {
             _dateTimeProvider = dateTimeProvider;

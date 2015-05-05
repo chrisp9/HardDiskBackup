@@ -1,4 +1,5 @@
 ﻿using Domain.Scheduling;
+using Newtonsoft.Json;
 using Registrar;
 using Services.Factories;
 using System;
@@ -21,10 +22,13 @@ namespace Services.Scheduling
         void SetScheduleType(BackupScheduleType backupScheduleType);
     }
 
-    [Register(LifeTime.SingleInstance)]
+    [Register(LifeTime.SingleInstance), JsonObject(MemberSerialization.OptIn)]
     public class SetScheduleModel : ISetScheduleModel
     {
+        [JsonProperty]
         public TimeSpan? Time { get; set; }
+
+        [JsonProperty]
         public int? DayOfMonth 
         {
             get 
@@ -38,6 +42,7 @@ namespace Services.Scheduling
             } 
         }
 
+        [JsonProperty]
         public DayOfWeek? DayOfWeek
         {
             get
@@ -51,6 +56,7 @@ namespace Services.Scheduling
             }
         }
 
+        [JsonProperty]
         public BackupScheduleType? ScheduleType { get; private set; }
 
         private IBackupScheduleFactory _backupScheduleFactory;

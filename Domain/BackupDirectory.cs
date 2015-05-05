@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,10 @@ using SystemWrapper.IO;
 
 namespace Domain
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class BackupDirectory : IDirectory
     {
+        [JsonProperty]
         public IDirectoryInfoWrap Directory { get; private set; }
 
         public BackupDirectory(IDirectoryInfoWrap directory)
