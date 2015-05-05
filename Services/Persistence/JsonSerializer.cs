@@ -16,8 +16,8 @@ namespace Services.Persistence
     public interface IJsonSerializer
     {
         bool FileExists { get; }
-        void SerializeToFile(SetScheduleModel setScheduleModel, IEnumerable<IDirectoryInfoWrap> directories);
-        IBackupSettings DeserializeFromFile();
+        void SerializeToFile(ISetScheduleModel setScheduleModel, IEnumerable<BackupDirectory> directories);
+        IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile();
     }
 
     [Register(LifeTime.Transient)]
@@ -63,10 +63,10 @@ namespace Services.Persistence
 
         public void SerializeToFile(
             ISetScheduleModel setScheduleModel,
-            IEnumerable<IDirectoryInfoWrap> directories)
+            IEnumerable<BackupDirectory> directories)
         {
             var serializedSchedule = JsonConvert.SerializeObject(setScheduleModel);
-            var serializedDirectories = JsonConvert.SerializeObject(directories.Select(x => x.FullName).ToArray());
+            var serializedDirectories = JsonConvert.SerializeObject(directories.Select(x => x.Directory.FullName).ToArray());
             var backupToolDir = _path;
 
             if (!_directoryWrapper.Exists(backupToolDir))
@@ -88,20 +88,22 @@ namespace Services.Persistence
             _fileWrapper.WriteAllText(scheduleFile, serializedDirectories);
         }
 
-        public IEnumerable<IDirectoryInfoWrap> DeserializeDirectories()
+        public IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile()
         {
             var serialized = _fileWrapper.ReadAllText(_directoriesFileName);
-            var dirs = JsonConvert.DeserializeObject<string>(serialized);
+            var dirs = JsonConvert.DeserializeObject<IEnumerable<string>>(serialized);
 
+            var backupDirectories = new List<BackupDirectory>();
             foreach (var dir in dirs)
             {
                 try
                 {
-                    yield return new DirectoryInfoWrap(new DirectoryInfo(dir));
+                    backupDirectories.Add(new BackupDirectory(new DirectoryInfoWrap(new DirectoryInfo(dir))));
                 }
                 catch { }
             }
-            
+
+            return backupDirectories;
         }
 
         public IBackupSettings DeserializeFromFile()

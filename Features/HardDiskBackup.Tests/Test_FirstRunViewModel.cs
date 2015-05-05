@@ -132,6 +132,7 @@ namespace HardDiskBackup.Tests
                 backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>(),
                 setScheduleModel ?? Mock.Of<ISetScheduleModel>(),
                 scheduleBackupCommand ?? Mock.Of<IScheduleBackupCommand>(),
+                Mock.Of<IJsonSerializer>(),
                 () => { return null; }
                 );
         }

@@ -66,8 +66,9 @@ namespace HardDiskBackup.Commands
             var schedule = _setScheduleModel.CreateSchedule();
             var directories = _backupDirectoryModel.BackupDirectories;
 
-            _jsonSerializer.SerializeToFile(schedule, directories);
-            
+            _jsonSerializer.SerializeToFile(_setScheduleModel, directories);
+            var backup = BackupDirectoriesAndSchedule.Create(directories, schedule);
+
             _backupScheduleService.ScheduleNextBackup(backup, () => 
             {
                 _dispatcher.InvokeAsync(() => 

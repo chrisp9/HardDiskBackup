@@ -6,6 +6,7 @@ using HardDiskBackup.ViewModel;
 using Moq;
 using NUnit.Framework;
 using Services;
+using Services.Persistence;
 using Services.Scheduling;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace HardDiskBackup.Tests
         private Mock<IBackupDirectoryModel> _mockBackupDirectoryModel;
         private Mock<IDispatcher> _mockDispatcher;
         private Mock<IWindowPresenter<BackupViewModel, IBackupView>> _mockPresenter;
+        private Mock<IJsonSerializer> _mockJsonSerializer;
 
         [SetUp]
         public void Setup()
@@ -40,7 +42,8 @@ namespace HardDiskBackup.Tests
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryModel.Object,
                 _mockPresenter.Object,
-                _mockDispatcher.Object);
+                _mockDispatcher.Object,
+                _mockJsonSerializer.Object);
         }
         
         [Test]
