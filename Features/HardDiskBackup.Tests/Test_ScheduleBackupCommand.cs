@@ -36,6 +36,7 @@ namespace HardDiskBackup.Tests
             _mockBackupDirectoryModel = new Mock<IBackupDirectoryModel>();
             _mockDispatcher = new Mock<IDispatcher>();
             _mockPresenter = new Mock<IWindowPresenter<BackupViewModel, IBackupView>>();
+            _mockJsonSerializer = new Mock<IJsonSerializer>();
 
             _sut = new ScheduleBackupCommand(
                 _mockSetScheduleModel.Object,

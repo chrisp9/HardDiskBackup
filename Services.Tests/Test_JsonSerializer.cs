@@ -1,7 +1,10 @@
 ﻿using Domain;
+using Domain.Scheduling;
 using Moq;
 using NUnit.Framework;
+using Services.Factories;
 using Services.Persistence;
+using Services.Scheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,38 +22,9 @@ namespace Services.Tests
         private Mock<IEnvironmentWrap> _mockEnvironmentWrap;
         private IJsonSerializer _sut;
         
-        [Test]
-        public void File_is_deleted_if_it_already_exists()
-        {
-            // Arrange
-            SetupSut();
-            _mockFileWrap.Setup(x => x.Exists(It.IsAny<string>()))
-                .Returns(true);
-
-            // Act
-            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
-
-            //Assert
-            _mockFileWrap.Verify(x => x.Delete(It.IsAny<string>()), Times.Once());
-        }
 
         [Test]
-        public void File_is_not_deleted_if_it_doesnt_already_exist()
-        {
-            // Arrange
-            SetupSut();
-            _mockFileWrap.Setup(x => x.Exists(It.IsAny<string>()))
-                .Returns(false);
-
-            // Act
-            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
-
-            //Assert
-            _mockFileWrap.Verify(x => x.Delete(It.IsAny<string>()), Times.Never());
-        }
-
-        [Test]
-        public void Backup_tool_directory_is_created_if_it_doesnt_exist()
+        public void WriteAllText_is_called()
         {
             // Arrange
             SetupSut();
@@ -58,28 +32,29 @@ namespace Services.Tests
                 .Returns(false);
 
             // Act
-            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
+            _sut.SerializeToFile(Mock.Of<ISetScheduleModel>(), new[] {new BackupDirectory(Mock.Of<IDirectoryInfoWrap>())});
 
             //Assert
-            _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());
+            _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
 
         [Test]
-        public void Deserialize_returns_correct_data()
+        public void Serialized_scheduleModel_is_correct()
         {
-            // Arrange
             SetupSut();
 
-            var mockPersistedOptions = new Mock<IBackupSettings>();
-            mockPersistedOptions.Setup(x => x.BackupDirectories).Returns(new[] { CreateBackupDirectory("c:\\stuff") });
-            mockPersistedOptions.Setup(x => x.NextBackup).Returns(new NextBackupDateTime(DateTime.Now));
+            _setScheduleModel.DayOfMonth = 10;
+            _setScheduleModel.DayOfWeek = DayOfWeek.Wednesday;
+            _setScheduleModel.Time = TimeSpan.FromHours(10);
+            _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly);
 
-            // Act
-            _sut.SerializeToFile(Mock.Of<IBackupSettings>());
+            var serialized = "{\"Time\":\"10:00:00\",\"DayOfMonth\":10,\"DayOfWeek\":3,\"ScheduleType\":1}";
 
-            //Assert
-            _mockFileWrap.Verify(x => x.Create(It.IsAny<string>()), Times.Once());
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
+
+            _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), serialized));
         }
+
 
         private BackupDirectory CreateBackupDirectory(string path)
         {
@@ -89,11 +64,14 @@ namespace Services.Tests
             return new BackupDirectory(mockDirectoryInfoWrap.Object);
         }
 
+        private ISetScheduleModel _setScheduleModel;
+
         private void SetupSut()
         {
             _mockFileWrap = new Mock<IFileWrap>();
             _mockDirectoryWrap = new Mock<IDirectoryWrap>();
             _mockEnvironmentWrap = new Mock<IEnvironmentWrap>();
+            _setScheduleModel = new SetScheduleModel(Mock.Of<IBackupScheduleFactory>());
 
             _mockFileWrap.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
             _mockEnvironmentWrap.Setup(x => x.AppDataPath).Returns(@"c:\");

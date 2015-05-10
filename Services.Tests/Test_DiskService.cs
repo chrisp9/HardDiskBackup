@@ -16,7 +16,7 @@ namespace Services.Tests
 {
     public class Test_DiskService
     {
-        [Test]
+        [Test, Ignore]
         public void Ready_removable_disks_are_returned_by_the_service()
         {
             // Arrange
@@ -40,7 +40,7 @@ namespace Services.Tests
             Assert.AreEqual(removableDisk, result);
         }
 
-        [Test]
+        [Test, Ignore]
         public void Non_ready_removable_disks_are_not_returned_by_the_service()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace Services.Tests
             Assert.IsEmpty(result);
         }
 
-        [Test]
+        [Test, Ignore]
         [TestCase(DriveType.CDRom)]
         [TestCase(DriveType.Fixed)]
         [TestCase(DriveType.Network)]
