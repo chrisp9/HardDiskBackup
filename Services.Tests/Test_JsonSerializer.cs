@@ -92,6 +92,29 @@ namespace Services.Tests
                 It.IsAny<string>()), Times.Once());
         }
 
+        [Test]
+        public void Settings_directory_is_created_if_it_does_not_already_exist()
+        {
+            SetupSut();
+
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
+            var settingsDirectory = @"c:\users\chris\appdata\local\HdBackupTool";
+
+            _mockDirectoryWrap.Verify(x => x.CreateDirectory(settingsDirectory), Times.Once());
+        }
+
+        [Test]
+        public void Settings_directory_is_not_created_if_it_already_exists()
+        {
+            SetupSut();
+
+            var settingsDirectory = @"c:\users\chris\appdata\local\HdBackupTool";
+            _mockDirectoryWrap.Setup(x => x.Exists(settingsDirectory)).Returns(true);
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
+
+            _mockDirectoryWrap.Verify(x => x.CreateDirectory(settingsDirectory), Times.Never());
+        }
+
         private BackupDirectory CreateBackupDirectory(string path)
         {
             var mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();

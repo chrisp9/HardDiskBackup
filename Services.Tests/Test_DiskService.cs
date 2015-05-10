@@ -107,6 +107,5 @@ namespace Services.Tests
 
             return new DriveInfoService(mockDriveInfo.Object);
         }
-
     }
 }
