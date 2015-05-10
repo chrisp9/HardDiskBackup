@@ -93,7 +93,6 @@
     <Compile Include="Disk\DriveNotifier.cs" />
     <Compile Include="Disk\DriveInfoService.cs" />
     <Compile Include="Factories\BackupDirectoryFactory.cs" />
-    <Compile Include="Persistence\BackupSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

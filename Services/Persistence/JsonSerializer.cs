@@ -17,7 +17,9 @@ namespace Services.Persistence
     {
         bool FileExists { get; }
         void SerializeToFile(ISetScheduleModel setScheduleModel, IEnumerable<BackupDirectory> directories);
+
         IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile();
+
     }
 
     [Register(LifeTime.Transient)]
@@ -95,12 +97,6 @@ namespace Services.Persistence
             }
 
             return backupDirectories;
-        }
-
-        public IBackupSettings DeserializeFromFile()
-        {
-            var serialized = _fileWrapper.ReadAllText(_path);
-            return JsonConvert.DeserializeObject<BackupSettings>(serialized);
         }
     }
 }
