@@ -81,11 +81,8 @@ namespace Services.Persistence
             if (_fileWrapper.Exists(directoriesFile))
                 _fileWrapper.Delete(directoriesFile);
 
-            _fileWrapper.Create(scheduleFile);
             _fileWrapper.WriteAllText(scheduleFile, serializedSchedule);
-
-            _fileWrapper.Create(directoriesFile);
-            _fileWrapper.WriteAllText(scheduleFile, serializedDirectories);
+            _fileWrapper.WriteAllText(directoriesFile, serializedDirectories);
         }
 
         public IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile()
