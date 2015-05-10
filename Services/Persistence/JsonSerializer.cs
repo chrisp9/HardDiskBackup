@@ -75,12 +75,6 @@ namespace Services.Persistence
             var scheduleFile = Path.Combine(backupToolDir, _setScheduleModelFilename);
             var directoriesFile = Path.Combine(backupToolDir, _directoriesFileName);
 
-            if (_fileWrapper.Exists(scheduleFile))
-                _fileWrapper.Delete(scheduleFile);
-
-            if (_fileWrapper.Exists(directoriesFile))
-                _fileWrapper.Delete(directoriesFile);
-
             _fileWrapper.WriteAllText(scheduleFile, serializedSchedule);
             _fileWrapper.WriteAllText(directoriesFile, serializedDirectories);
         }
