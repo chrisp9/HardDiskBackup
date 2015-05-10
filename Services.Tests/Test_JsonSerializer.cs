@@ -22,9 +22,8 @@ namespace Services.Tests
         private Mock<IEnvironmentWrap> _mockEnvironmentWrap;
         private IJsonSerializer _sut;
         
-
         [Test]
-        public void WriteAllText_is_called()
+        public void WriteAllText_is_called_twice()
         {
             // Arrange
             SetupSut();
@@ -35,7 +34,7 @@ namespace Services.Tests
             _sut.SerializeToFile(Mock.Of<ISetScheduleModel>(), new[] {new BackupDirectory(Mock.Of<IDirectoryInfoWrap>())});
 
             //Assert
-            _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+            _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Test]
@@ -55,6 +54,43 @@ namespace Services.Tests
             _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), serialized));
         }
 
+        [Test]
+        public void Serialized_backupDirectories_are_correct()
+        {
+            SetupSut();
+            var mockDiw = new Mock<IDirectoryInfoWrap>();
+            mockDiw.Setup(x => x.FullName).Returns(@"c:\users\chris\desktop");
+
+            var mockDiw2 = new Mock<IDirectoryInfoWrap>();
+            mockDiw2.Setup(x => x.FullName).Returns(@"c:\users\chris\documents");
+
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(mockDiw.Object), new BackupDirectory(mockDiw2.Object)});
+            
+            var serialized = "[\"c:\\\\users\\\\chris\\\\desktop\",\"c:\\\\users\\\\chris\\\\documents\"]";
+            _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), serialized), Times.Once());
+        }
+
+        [Test]
+        public void Serialized_BackupDirectories_are_written_to_correct_place()
+        {
+            SetupSut();
+
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
+
+            _mockFileWrap.Verify(x => x.WriteAllText(@"c:\users\chris\appdata\local\HdBackupTool\directories.json", 
+                It.IsAny<string>()), Times.Once());
+        }
+
+        [Test]
+        public void Serialized_Schedule_is_written_to_correct_place()
+        {
+            SetupSut();
+
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
+
+            _mockFileWrap.Verify(x => x.WriteAllText(@"c:\users\chris\appdata\local\HdBackupTool\schedule.json", 
+                It.IsAny<string>()), Times.Once());
+        }
 
         private BackupDirectory CreateBackupDirectory(string path)
         {
@@ -73,8 +109,9 @@ namespace Services.Tests
             _mockEnvironmentWrap = new Mock<IEnvironmentWrap>();
             _setScheduleModel = new SetScheduleModel(Mock.Of<IBackupScheduleFactory>());
 
+            _mockEnvironmentWrap.Setup(x => x.AppDataPath).Returns(@"c:\users\chris\appdata\local");
+
             _mockFileWrap.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
-            _mockEnvironmentWrap.Setup(x => x.AppDataPath).Returns(@"c:\");
 
             _sut = new JsonSerializer(
                 _mockFileWrap.Object, 
