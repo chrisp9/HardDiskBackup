@@ -19,7 +19,6 @@ namespace Services.Persistence
         void SerializeToFile(ISetScheduleModel setScheduleModel, IEnumerable<BackupDirectory> directories);
 
         IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile();
-
     }
 
     [Register(LifeTime.Transient)]
@@ -93,10 +92,21 @@ namespace Services.Persistence
                 {
                     backupDirectories.Add(new BackupDirectory(new DirectoryInfoWrap(new DirectoryInfo(dir))));
                 }
-                catch { }
+                catch
+                { 
+                    // This means the user has deleted the directory
+                }
             }
 
             return backupDirectories;
+        }
+
+        public ISetScheduleModel DeserializeSetScheduleModelFromFile()
+        {
+            var serialized = _fileWrapper.ReadAllText(_setScheduleModelFilename);
+            var model = JsonConvert.DeserializeObject<ISetScheduleModel>(serialized);
+
+            return model;
         }
     }
 }
