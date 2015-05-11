@@ -1,15 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper.IO;
-using Domain;
+﻿using Domain;
+using Newtonsoft.Json;
 using Registrar;
 using Services.Scheduling;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using SystemWrapper.IO;
 
 namespace Services.Persistence
 {
@@ -32,7 +28,8 @@ namespace Services.Persistence
                 var directory = Path.Combine(appData, _backupToolDir);
 
                 return (_directoryWrapper.Exists(directory)
-                    && _fileWrapper.Exists(Path.Combine(directory, _setScheduleModelFilename)));
+                    && _fileWrapper.Exists(Path.Combine(directory, _setScheduleModelFilename)))
+                    && _fileWrapper.Exists(Path.Combine(directory, _directoriesFileName));
             }
          }
 

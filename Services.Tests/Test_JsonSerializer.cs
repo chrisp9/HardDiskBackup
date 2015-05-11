@@ -148,6 +148,36 @@ namespace Services.Tests
             Assert.AreEqual(@"c:\users\chris\documents", result.Last().Directory.FullName);
         }
 
+        [Test]
+        public void FileExists_returns_true_if_Model_file_and_Directories_file_both_exist()
+        {
+            SetupSut();
+
+            _mockFileWrap.Setup(x => x.Exists(_directoriesFile)).Returns(true);
+            _mockFileWrap.Setup(x => x.Exists(_scheduleFile)).Returns(true);
+            _mockDirectoryWrap.Setup(x => x.Exists(_toolDirectory)).Returns(true);
+
+            Assert.IsTrue(_sut.FileExists);
+        }
+
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(false, false)]
+        public void FileExists_returns_false_if_either_Model_file_or_Directories_file_do_not_exist(
+            bool directoriesFileExists, bool scheduleFileExists)
+        {
+            SetupSut();
+
+            _mockFileWrap.Setup(x => x.Exists(_directoriesFile)).Returns(directoriesFileExists);
+            _mockFileWrap.Setup(x => x.Exists(_scheduleFile)).Returns(scheduleFileExists);
+            _mockDirectoryWrap.Setup(x => x.Exists(_toolDirectory)).Returns(true);
+
+            Assert.IsFalse(_sut.FileExists);
+        }
+
+        private string _directoriesFile = @"c:\users\chris\appdata\local\HdBackupTool\directories.json";
+        private string _scheduleFile = @"c:\users\chris\appdata\local\HdBackupTool\schedule.json";
+        private string _toolDirectory = @"c:\users\chris\appdata\local\HdBackupTool";
 
         private BackupDirectory CreateBackupDirectory(string path)
         {

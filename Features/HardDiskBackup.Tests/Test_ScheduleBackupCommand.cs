@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Domain.Scheduling;
 using HardDiskBackup.Commands;
 using HardDiskBackup.View;
 using HardDiskBackup.ViewModel;
@@ -9,11 +8,8 @@ using Services;
 using Services.Persistence;
 using Services.Scheduling;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
