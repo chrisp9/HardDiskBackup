@@ -115,6 +115,23 @@ namespace Services.Tests
             _mockDirectoryWrap.Verify(x => x.CreateDirectory(settingsDirectory), Times.Never());
         }
 
+        [Test]
+        public void Deserialize_works_as_expected()
+        {
+            SetupSut();
+
+            var serialized = "{\"Time\":\"10:00:00\",\"DayOfMonth\":10,\"DayOfWeek\":3,\"ScheduleType\":1}";
+            _mockFileWrap.Setup(x => x.ReadAllText(@"c:\users\chris\appdata\local\HdBackupTool\schedule.json"))
+                .Returns(serialized);
+                  
+            var result = _sut.DeserializeSetScheduleModelFromFile();
+
+            Assert.AreEqual(TimeSpan.FromHours(10), result.Time);
+            Assert.AreEqual(10, result.DayOfMonth);
+            Assert.AreEqual(DayOfWeek.Wednesday, result.DayOfWeek);
+            Assert.AreEqual(BackupScheduleType.Weekly, result.ScheduleType);
+        }
+
         private BackupDirectory CreateBackupDirectory(string path)
         {
             var mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();

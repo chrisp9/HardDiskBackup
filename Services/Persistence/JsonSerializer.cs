@@ -17,7 +17,7 @@ namespace Services.Persistence
     {
         bool FileExists { get; }
         void SerializeToFile(ISetScheduleModel setScheduleModel, IEnumerable<BackupDirectory> directories);
-
+        ISetScheduleModel DeserializeSetScheduleModelFromFile();
         IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile();
     }
 
@@ -103,8 +103,9 @@ namespace Services.Persistence
 
         public ISetScheduleModel DeserializeSetScheduleModelFromFile()
         {
-            var serialized = _fileWrapper.ReadAllText(_setScheduleModelFilename);
-            var model = JsonConvert.DeserializeObject<ISetScheduleModel>(serialized);
+            var scheduleFile = Path.Combine(_path, _setScheduleModelFilename);
+            var serialized = _fileWrapper.ReadAllText(scheduleFile);
+            var model = JsonConvert.DeserializeObject<SetScheduleModel>(serialized);
 
             return model;
         }

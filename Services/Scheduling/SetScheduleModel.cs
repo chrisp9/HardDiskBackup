@@ -38,7 +38,9 @@ namespace Services.Scheduling
             set 
             { 
                 _dayOfMonth = value;
-                _backupScheduleFactory.DayOfMonth = value;
+
+                if(_backupScheduleFactory != null)
+                    _backupScheduleFactory.DayOfMonth = value;
             } 
         }
 
@@ -52,7 +54,9 @@ namespace Services.Scheduling
             set
             {
                 _dayOfWeek = value;
-                _backupScheduleFactory.DayOfWeek = value;
+
+                if(_backupScheduleFactory != null)
+                    _backupScheduleFactory.DayOfWeek = value;
             }
         }
 
