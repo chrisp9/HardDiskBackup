@@ -116,7 +116,7 @@ namespace Services.Tests
         }
 
         [Test]
-        public void Deserialize_works_as_expected()
+        public void Deserialize_works_as_expected_for_schedule()
         {
             SetupSut();
 
@@ -131,6 +131,23 @@ namespace Services.Tests
             Assert.AreEqual(DayOfWeek.Wednesday, result.DayOfWeek);
             Assert.AreEqual(BackupScheduleType.Weekly, result.ScheduleType);
         }
+
+        [Test]
+        public void Deserialize_works_as_expected_for_directories()
+        {
+            SetupSut();
+            
+            var serialized = "[\"c:\\\\users\\\\chris\\\\desktop\",\"c:\\\\users\\\\chris\\\\documents\"]";
+            
+            _mockFileWrap.Setup(x => x.ReadAllText(@"c:\users\chris\appdata\local\HdBackupTool\directories.json"))
+                .Returns(serialized);
+
+            var result = _sut.DeserializeBackupDirectoriesFromFile();
+
+            Assert.AreEqual(@"c:\users\chris\desktop", result.First().Directory.FullName);
+            Assert.AreEqual(@"c:\users\chris\documents", result.Last().Directory.FullName);
+        }
+
 
         private BackupDirectory CreateBackupDirectory(string path)
         {

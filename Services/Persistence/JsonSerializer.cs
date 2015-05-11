@@ -82,7 +82,8 @@ namespace Services.Persistence
 
         public IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile()
         {
-            var serialized = _fileWrapper.ReadAllText(_directoriesFileName);
+            var directoriesFile =  Path.Combine(_path, _directoriesFileName);
+            var serialized = _fileWrapper.ReadAllText(directoriesFile);
             var dirs = JsonConvert.DeserializeObject<IEnumerable<string>>(serialized);
 
             var backupDirectories = new List<BackupDirectory>();
