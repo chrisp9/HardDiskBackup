@@ -13,21 +13,21 @@ namespace HardDiskBackup.ViewModel
         where T : ViewModelBase 
         where U : IView
     {
-        private Func<T> _mainWindowViewModelFactory;
-        private Func<U> _mainWindowViewFactory;
+        private Func<T> _viewModelFactory;
+        private Func<U> viewFactory;
 
         public WindowPresenter(
             Func<T> mainWindowViewModelFactory,
             Func<U> mainWindowFactory)
         {
-            _mainWindowViewModelFactory = mainWindowViewModelFactory;
-            _mainWindowViewFactory = mainWindowFactory;
+            _viewModelFactory = mainWindowViewModelFactory;
+            viewFactory = mainWindowFactory;
         }
 
         public IView Present()
         {
-            var viewModel = _mainWindowViewModelFactory();
-            var view = _mainWindowViewFactory();
+            var viewModel = _viewModelFactory();
+            var view = viewFactory();
 
             view.DataContext = viewModel;
             return view;
@@ -35,7 +35,7 @@ namespace HardDiskBackup.ViewModel
         
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            // TODO Clear the ViewModels?
         }
     }
 }

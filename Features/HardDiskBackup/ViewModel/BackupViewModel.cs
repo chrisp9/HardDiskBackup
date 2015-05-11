@@ -7,10 +7,10 @@ using Services.Factories;
 using Services.Scheduling;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
-using System.Linq;
 
 namespace HardDiskBackup.ViewModel
 {
