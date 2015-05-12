@@ -105,6 +105,16 @@ namespace HardDiskBackup.Tests
             mockJsonSerializer.Verify(x => x.DeserializeBackupDirectoriesFromFile(), Times.Once());
         }
 
+        [Test]
+        public void Deserialization_does_not_occur_if_no_serialized_files_exist()
+        {
+            var mockJsonSerializer = new Mock<IJsonSerializer>();
+
+            SetupSut(jsonSerializer: mockJsonSerializer.Object);
+
+            mockJsonSerializer.Verify(x => x.DeserializeBackupDirectoriesFromFile(), Times.Never());
+        }
+
         private IBackupDirectoryValidator SetupValidator(ValidationResult validationResult)
         {
             var mockBackupDirectoryValidator = new Mock<IBackupDirectoryValidator>();

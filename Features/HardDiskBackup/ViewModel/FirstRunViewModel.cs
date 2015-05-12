@@ -75,7 +75,6 @@ namespace HardDiskBackup
             if (_jsonSerializer.FileExists)
             {
                 _setScheduleModel.Load(_jsonSerializer.DeserializeSetScheduleModelFromFile());
-
                 var directories = _jsonSerializer.DeserializeBackupDirectoriesFromFile();
                 directories.ToList().ForEach(x => BackupDirectoryModel.Add(x));
             }

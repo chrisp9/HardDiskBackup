@@ -10,12 +10,19 @@ namespace Services.Scheduling
     public interface ISetScheduleModel : IDataErrorInfo, INotifyPropertyChanged
     {
         TimeSpan? Time { get; set; }
+
         int? DayOfMonth { get; set; }
+
         DayOfWeek? DayOfWeek { get; set; }
+
         BackupScheduleType? ScheduleType { get; }
+
         BackupSchedule CreateSchedule();
+
         bool IsScheduleValid();
+
         void SetScheduleType(BackupScheduleType backupScheduleType);
+
         void Load(ISetScheduleModel setScheduleModel);
     }
 
@@ -26,19 +33,19 @@ namespace Services.Scheduling
         public TimeSpan? Time { get; set; }
 
         [JsonProperty]
-        public int? DayOfMonth 
+        public int? DayOfMonth
         {
-            get 
+            get
             {
-                return _dayOfMonth; 
-            } 
-            set 
-            { 
+                return _dayOfMonth;
+            }
+            set
+            {
                 _dayOfMonth = value;
 
-                if(_backupScheduleFactory != null)
+                if (_backupScheduleFactory != null)
                     _backupScheduleFactory.DayOfMonth = value;
-            } 
+            }
         }
 
         [JsonProperty]
@@ -52,7 +59,7 @@ namespace Services.Scheduling
             {
                 _dayOfWeek = value;
 
-                if(_backupScheduleFactory != null)
+                if (_backupScheduleFactory != null)
                     _backupScheduleFactory.DayOfWeek = value;
             }
         }
@@ -70,7 +77,7 @@ namespace Services.Scheduling
             _backupScheduleFactory = factory;
         }
 
-        public void SetScheduleType(BackupScheduleType backupScheduleType) 
+        public void SetScheduleType(BackupScheduleType backupScheduleType)
         {
             ScheduleType = backupScheduleType;
         }
@@ -96,8 +103,10 @@ namespace Services.Scheduling
             {
                 case BackupScheduleType.Daily:
                     return ValidateTimeOfDay() == null;
+
                 case BackupScheduleType.Weekly:
                     return ValidateDayOfWeek() == null && ValidateTimeOfDay() == null;
+
                 case BackupScheduleType.Monthly:
                     return ValidateDayOfMonth() == null && ValidateTimeOfDay() == null;
             }
@@ -112,7 +121,7 @@ namespace Services.Scheduling
 
         public string this[string columnName]
         {
-            get 
+            get
             {
                 if (columnName == "DayOfMonth")
                     return ValidateDayOfMonth();
@@ -132,7 +141,7 @@ namespace Services.Scheduling
                 : "Day of Month must be between 1 and 28";
         }
 
-        private string ValidateDayOfWeek() 
+        private string ValidateDayOfWeek()
         {
             return DayOfWeek.HasValue
                 ? null
