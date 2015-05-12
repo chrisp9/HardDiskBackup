@@ -93,6 +93,18 @@ namespace HardDiskBackup.Tests
             _mockBackupDirectoryModel.Verify(x => x.Remove(_backupDirectory), Times.Once());
         }
 
+        [Test]
+        public void Deserialization_occurs_when_loading()
+        {
+            var mockJsonSerializer = new Mock<IJsonSerializer>();
+
+            mockJsonSerializer.Setup(x => x.FileExists).Returns(true);
+
+            SetupSut(jsonSerializer: mockJsonSerializer.Object);
+
+            mockJsonSerializer.Verify(x => x.DeserializeBackupDirectoriesFromFile(), Times.Once());
+        }
+
         private IBackupDirectoryValidator SetupValidator(ValidationResult validationResult)
         {
             var mockBackupDirectoryValidator = new Mock<IBackupDirectoryValidator>();
@@ -132,7 +144,7 @@ namespace HardDiskBackup.Tests
                 backupDirectoryModel ?? Mock.Of<IBackupDirectoryModel>(),
                 setScheduleModel ?? Mock.Of<ISetScheduleModel>(),
                 scheduleBackupCommand ?? Mock.Of<IScheduleBackupCommand>(),
-                Mock.Of<IJsonSerializer>(),
+                jsonSerializer ?? Mock.Of<IJsonSerializer>(),
                 () => { return null; }
                 );
         }

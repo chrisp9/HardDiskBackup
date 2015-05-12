@@ -44,7 +44,7 @@ namespace HardDiskBackup.ViewModel
             set 
             {
                 if (value.HasValue)
-                    _setScheduleModel.Time = _setScheduleModel.Time = value.Value.TimeOfDay;
+                    _setScheduleModel.Time = value.Value.TimeOfDay;
             } 
         }
 
