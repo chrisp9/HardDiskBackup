@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
@@ -22,8 +21,11 @@ namespace Services.Disk.FileSystem
     public interface IBackupFileSystem
     {
         Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
+
         Task Delete(ExistingBackup existingBackup, Action onDeleteComplete);
+
         Task<long> CalculateTotalSize(params IDirectory[] backupDirectories);
+
         void Target(BackupRootDirectory directory);
 
         event PropertyChangedEventHandler PropertyChanged;
@@ -39,7 +41,7 @@ namespace Services.Disk.FileSystem
         private ITimestampedBackupRootProvider _timestampedRootProvider;
         private ISafeActionPerformer _safeActionLogger;
         private IErrorLogger _errorLogger;
-        
+
         public BackupFileSystem(
             IDirectoryWrap directoryWrap,
             IFileWrap fileWrap,
@@ -132,14 +134,14 @@ namespace Services.Disk.FileSystem
         {
             var files = _safeActionLogger.SafeGet(() => source.Directory.GetFiles());
             var directories = _safeActionLogger.SafeGet(() => source.Directory.GetDirectories());
-            
+
             var mirroredRoot = CreateMirroredDirectory(source, destination);
 
             foreach (var file in files)
             {
                 var newFilePath = Path.Combine(mirroredRoot.ToString(), file.Name);
-                _safeActionLogger.InvokeSafely(() => 
-                { 
+                _safeActionLogger.InvokeSafely(() =>
+                {
                     _fileWrap.Copy(file.FullName, newFilePath);
                     var newFile = new FileInfoWrap(Path.Combine(mirroredRoot.ToString(), file.Name).ToString());
                     newFile.Attributes &= ~FileAttributes.ReadOnly;

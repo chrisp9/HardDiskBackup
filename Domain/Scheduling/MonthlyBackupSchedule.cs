@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper;
 
 namespace Domain.Scheduling
 {
     public class MonthlyBackupSchedule : BackupSchedule
     {
         private int _dayOfMonth;
-        
+
         public MonthlyBackupSchedule(
             INextBackupDateTimeFactory nextBackupDateTimeFactory,
-            IDateTimeProvider provider, 
-            int dayOfMonth, 
-            BackupTime time) : base(provider, nextBackupDateTimeFactory, time)
+            IDateTimeProvider provider,
+            int dayOfMonth,
+            BackupTime time)
+            : base(provider, nextBackupDateTimeFactory, time)
         {
             _dayOfMonth = dayOfMonth;
         }
@@ -44,7 +40,7 @@ namespace Domain.Scheduling
                 // date, which falls in the current month
                 return new BackupDate(from.Year, from.Month, _dayOfMonth);
             }
-            
+
             // Otherwise we're past the backup day so we need to schedule for the next
             // month.
             var nextMonth = from.AddMonths(1).AddDays(target - start);

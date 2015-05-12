@@ -1,42 +1,42 @@
 ﻿<UserControl x:Class="HardDiskBackup.View.ManageBackupsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-              xmlns:local="clr-namespace:HardDiskBackup.View;assembly="  
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:local="clr-namespace:HardDiskBackup.View;assembly="
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Name="gridz0r">
         <ScrollViewer HorizontalContentAlignment="Left">
             <Grid>
                 <StackPanel>
-                    <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
-                    <TextBlock Foreground="Red" Text="Please plug in your backup device to continue" Style="{StaticResource Header2}"/>
+                    <TextBlock Text="Manage Backups" Style="{StaticResource Header1}" />
+                    <TextBlock Foreground="Red" Text="Please plug in your backup device to continue" Style="{StaticResource Header2}" />
                 </StackPanel>
             </Grid>
-                <ScrollViewer.Style>
+            <ScrollViewer.Style>
                 <Style TargetType="ScrollViewer">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=DeviceWithBackupsExists}" Value="True">
-                            <Setter Property="ScrollViewer.ContentTemplate" >
+                            <Setter Property="ScrollViewer.ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
                                         <UserControl>
                                             <StackPanel>
-                                                <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
+                                                <TextBlock Text="Manage Backups" Style="{StaticResource Header1}" />
                                                 <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding DataContext.FormattedExistingBackups, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}">
                                                     <DataGrid.Columns>
                                                         <DataGridTextColumn Binding="{Binding DateTime, Mode=OneWay}" Header="Date of backup" SortDirection="Descending"></DataGridTextColumn>
                                                         <DataGridTextColumn Binding="{Binding Size, Mode=OneWay}" Header="Size (MB)"></DataGridTextColumn>
 
                                                         <DataGridTemplateColumn Header="Delete" Width="75">
-                                                            <DataGridTemplateColumn.CellTemplate> 
+                                                            <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
-                                                                    <Button 
-                                                                    IsEnabled="{Binding Path=DeleteIsInProgress, Converter={StaticResource InverseBoolToVis}}"   
+                                                                    <Button
+                                                                    IsEnabled="{Binding Path=DeleteIsInProgress, Converter={StaticResource InverseBoolToVis}}"
                                                                         Content="Delete" Command=
-                                                                            "{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"   
-                                                                            CommandParameter="{Binding}"/>
+                                                                            "{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"
+                                                                            CommandParameter="{Binding}" />
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
                                                         </DataGridTemplateColumn>

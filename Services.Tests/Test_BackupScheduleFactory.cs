@@ -15,7 +15,7 @@ namespace Services.Tests
             var sut = SetupSut();
 
             var result = sut.Create(
-                BackupScheduleType.Daily, 
+                BackupScheduleType.Daily,
                 new BackupTime(TimeSpan.Parse("20:00:00")));
 
             Assert.IsInstanceOf<DailyBackupSchedule>(result);
@@ -34,7 +34,6 @@ namespace Services.Tests
             Assert.IsInstanceOf<WeeklyBackupSchedule>(result);
         }
 
-
         [Test]
         public void MonthlyBackupSchedule_is_returned_for_BackupScheduleType_Monthly()
         {
@@ -47,7 +46,6 @@ namespace Services.Tests
 
             Assert.IsInstanceOf<MonthlyBackupSchedule>(result);
         }
-
 
         private BackupScheduleFactory SetupSut(
             INextBackupDateTimeFactory factory = null,

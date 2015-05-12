@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
+using Moq;
 using NUnit.Framework;
 using Services.Factories;
-using Moq;
-using Domain;
+using System;
 using SystemWrapper.IO;
 
 namespace Services.Tests
@@ -43,7 +39,6 @@ namespace Services.Tests
 
             _mockDateTimeProvider.Setup(x => x.Now).Returns(DateTime.MinValue);
             _mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(@"c:\test");
-
 
             _sut = new TimestampedBackupRootProvider(_mockDateTimeProvider.Object);
         }

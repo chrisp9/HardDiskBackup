@@ -14,12 +14,12 @@ namespace Services.Disk
     {
         private IDictionary<IFileInfoWrap, string> _reasons;
 
-        public FailedBackupReportingService() 
+        public FailedBackupReportingService()
         {
             _reasons = new Dictionary<IFileInfoWrap, string>();
         }
 
-        public void LogFailure(FileInfoWrap backupDirectory, Exception reason) 
+        public void LogFailure(FileInfoWrap backupDirectory, Exception reason)
         {
             _reasons.Add(backupDirectory, reason + ": " + reason.Message);
         }

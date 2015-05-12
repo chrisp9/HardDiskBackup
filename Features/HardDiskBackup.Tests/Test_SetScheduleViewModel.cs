@@ -6,10 +6,6 @@ using NUnit.Framework;
 using Services.Factories;
 using Services.Scheduling;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HardDiskBackup.Tests
 {
@@ -128,7 +124,6 @@ namespace HardDiskBackup.Tests
             _mockSetScheduleModel.Verify(x => x.SetScheduleType(BackupScheduleType.Monthly), Times.Never());
         }
 
-
         [Test]
         public void CreateSchedule_asks_model_for_schedule()
         {
@@ -144,6 +139,5 @@ namespace HardDiskBackup.Tests
                 _mockSetScheduleModel.Object
                 );
         }
-
     }
 }

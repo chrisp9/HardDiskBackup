@@ -1,26 +1,24 @@
 ﻿using Domain;
 using Registrar;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Disk.FileSystem
 {
     public interface IExistingBackupsModel
     {
         ObservableCollection<FormattedExistingBackup> ExistingBackups { get; }
+
         void Add(FormattedExistingBackup existingBackup);
+
         void Remove(FormattedExistingBackup existingBackup);
+
         void Clear();
     }
 
     [Register(LifeTime.SingleInstance)]
     public class ExistingBackupsModel : IExistingBackupsModel
     {
-        public ObservableCollection<FormattedExistingBackup> ExistingBackups { get;  private set; }
+        public ObservableCollection<FormattedExistingBackup> ExistingBackups { get; private set; }
 
         public ExistingBackupsModel()
         {

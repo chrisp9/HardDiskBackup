@@ -2,17 +2,16 @@
 using Registrar;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Scheduling
 {
     public interface IBackupScheduleService
     {
         BackupDirectoriesAndSchedule NextBackup { get; }
+
         void ScheduleNextBackup(BackupDirectoriesAndSchedule backup, Action action);
+
         void TriggerImmediateBackup(IEnumerable<BackupDirectory> backupDirectories);
     }
 

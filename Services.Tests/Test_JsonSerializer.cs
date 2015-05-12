@@ -6,10 +6,7 @@ using Services.Factories;
 using Services.Persistence;
 using Services.Scheduling;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace Services.Tests
@@ -21,7 +18,7 @@ namespace Services.Tests
         private Mock<IDirectoryWrap> _mockDirectoryWrap;
         private Mock<IEnvironmentWrap> _mockEnvironmentWrap;
         private IJsonSerializer _sut;
-        
+
         [Test]
         public void WriteAllText_is_called_twice()
         {
@@ -31,7 +28,7 @@ namespace Services.Tests
                 .Returns(false);
 
             // Act
-            _sut.SerializeToFile(Mock.Of<ISetScheduleModel>(), new[] {new BackupDirectory(Mock.Of<IDirectoryInfoWrap>())});
+            _sut.SerializeToFile(Mock.Of<ISetScheduleModel>(), new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
 
             //Assert
             _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
@@ -64,8 +61,8 @@ namespace Services.Tests
             var mockDiw2 = new Mock<IDirectoryInfoWrap>();
             mockDiw2.Setup(x => x.FullName).Returns(@"c:\users\chris\documents");
 
-            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(mockDiw.Object), new BackupDirectory(mockDiw2.Object)});
-            
+            _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(mockDiw.Object), new BackupDirectory(mockDiw2.Object) });
+
             var serialized = "[\"c:\\\\users\\\\chris\\\\desktop\",\"c:\\\\users\\\\chris\\\\documents\"]";
             _mockFileWrap.Verify(x => x.WriteAllText(It.IsAny<string>(), serialized), Times.Once());
         }
@@ -77,7 +74,7 @@ namespace Services.Tests
 
             _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
 
-            _mockFileWrap.Verify(x => x.WriteAllText(@"c:\users\chris\appdata\local\HdBackupTool\directories.json", 
+            _mockFileWrap.Verify(x => x.WriteAllText(@"c:\users\chris\appdata\local\HdBackupTool\directories.json",
                 It.IsAny<string>()), Times.Once());
         }
 
@@ -88,7 +85,7 @@ namespace Services.Tests
 
             _sut.SerializeToFile(_setScheduleModel, new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) });
 
-            _mockFileWrap.Verify(x => x.WriteAllText(@"c:\users\chris\appdata\local\HdBackupTool\schedule.json", 
+            _mockFileWrap.Verify(x => x.WriteAllText(@"c:\users\chris\appdata\local\HdBackupTool\schedule.json",
                 It.IsAny<string>()), Times.Once());
         }
 
@@ -123,7 +120,7 @@ namespace Services.Tests
             var serialized = "{\"Time\":\"10:00:00\",\"DayOfMonth\":10,\"DayOfWeek\":3,\"ScheduleType\":1}";
             _mockFileWrap.Setup(x => x.ReadAllText(@"c:\users\chris\appdata\local\HdBackupTool\schedule.json"))
                 .Returns(serialized);
-                  
+
             var result = _sut.DeserializeSetScheduleModelFromFile();
 
             Assert.AreEqual(TimeSpan.FromHours(10), result.Time);
@@ -136,9 +133,9 @@ namespace Services.Tests
         public void Deserialize_works_as_expected_for_directories()
         {
             SetupSut();
-            
+
             var serialized = "[\"c:\\\\users\\\\chris\\\\desktop\",\"c:\\\\users\\\\chris\\\\documents\"]";
-            
+
             _mockFileWrap.Setup(x => x.ReadAllText(@"c:\users\chris\appdata\local\HdBackupTool\directories.json"))
                 .Returns(serialized);
 
@@ -201,8 +198,8 @@ namespace Services.Tests
             _mockFileWrap.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
 
             _sut = new JsonSerializer(
-                _mockFileWrap.Object, 
-                _mockDirectoryWrap.Object, 
+                _mockFileWrap.Object,
+                _mockDirectoryWrap.Object,
                 _mockEnvironmentWrap.Object);
         }
     }

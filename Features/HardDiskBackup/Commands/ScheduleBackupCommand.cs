@@ -1,21 +1,12 @@
 ﻿using Domain;
-using GalaSoft.MvvmLight;
 using HardDiskBackup.View;
 using HardDiskBackup.ViewModel;
-using Newtonsoft.Json;
 using Registrar;
 using Services;
-using Services.Factories;
 using Services.Persistence;
 using Services.Scheduling;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace HardDiskBackup.Commands
 {
@@ -69,14 +60,14 @@ namespace HardDiskBackup.Commands
             _jsonSerializer.SerializeToFile(_setScheduleModel, directories);
             var backup = BackupDirectoriesAndSchedule.Create(directories, schedule);
 
-            _backupScheduleService.ScheduleNextBackup(backup, () => 
+            _backupScheduleService.ScheduleNextBackup(backup, () =>
             {
-                _dispatcher.InvokeAsync(() => 
+                _dispatcher.InvokeAsync(() =>
                 {
                     var window = _backupViewPresenter.Present();
 
                     // Null check needed for tests. Not ideal but does the job.
-                    if(window != null) 
+                    if (window != null)
                         window.Show();
                 });
             });

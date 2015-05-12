@@ -5,10 +5,6 @@ using NUnit.Framework;
 using Services.Factories;
 using Services.Scheduling;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Tests
 {
@@ -36,10 +32,10 @@ namespace Services.Tests
         public void Factory_is_called_with_correct_arguments(BackupScheduleType backupScheduleType)
         {
             _sut.SetScheduleType(backupScheduleType);
-            _sut.DayOfWeek = (DayOfWeek?) DayOfWeek.Monday;
+            _sut.DayOfWeek = (DayOfWeek?)DayOfWeek.Monday;
             _sut.Time = _backupTimeSpan;
 
-            var result =_sut.CreateSchedule();
+            var result = _sut.CreateSchedule();
 
             _mockBackupScheduleFactory.Verify(
                 x => x.Create(backupScheduleType, _backupTime), Times.Once());
@@ -49,7 +45,7 @@ namespace Services.Tests
         public void Schedule_is_valid_for_weekly_when_a_day_and_time_are_specified()
         {
             _sut.SetScheduleType(BackupScheduleType.Weekly);
-            _sut.DayOfWeek = (DayOfWeek?) DayOfWeek.Tuesday;
+            _sut.DayOfWeek = (DayOfWeek?)DayOfWeek.Tuesday;
             _sut.Time = _backupTimeSpan;
 
             var result = _sut.IsScheduleValid();
@@ -61,7 +57,7 @@ namespace Services.Tests
         public void Schedule_is_invalid_for_weekly_when_time_is_not_specified()
         {
             _sut.SetScheduleType(BackupScheduleType.Weekly);
-            _sut.DayOfWeek = (DayOfWeek?) DayOfWeek.Monday;
+            _sut.DayOfWeek = (DayOfWeek?)DayOfWeek.Monday;
             var result = _sut.IsScheduleValid();
 
             Assert.IsFalse(result);
@@ -103,7 +99,7 @@ namespace Services.Tests
             _sut.SetScheduleType(BackupScheduleType.Monthly);
             _sut.Time = _backupTimeSpan;
             _sut.DayOfMonth = 28;
-               
+
             var result = _sut.IsScheduleValid();
 
             Assert.IsTrue(result);
@@ -128,7 +124,7 @@ namespace Services.Tests
             _sut.SetScheduleType(BackupScheduleType.Monthly);
             _sut.Time = _backupTimeSpan;
             var result = _sut.IsScheduleValid();
-            
+
             Assert.IsFalse(result);
         }
 
@@ -160,6 +156,7 @@ namespace Services.Tests
 
             Assert.IsFalse(result);
         }
+
         // **************************
         // ****** Validation ********
         // **************************
@@ -175,7 +172,7 @@ namespace Services.Tests
         public void Validation_error_if_DayOfWeek_has_not_been_set()
         {
             var result = _sut["DayOfWeek"];
-            Assert.AreEqual("Day of Week must be set",result);
+            Assert.AreEqual("Day of Week must be set", result);
         }
 
         [Test]

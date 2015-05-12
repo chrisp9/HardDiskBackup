@@ -1,13 +1,7 @@
 ﻿using Domain.Scheduling;
 using Moq;
 using NUnit.Framework;
-using Services.Factories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper;
 using TestHelpers;
 
 namespace Domain.Tests.BackupSchedule
@@ -21,10 +15,10 @@ namespace Domain.Tests.BackupSchedule
         [TestCase(4, "2015/03/03", "2015/03/04", "23:29:42")]
         [TestCase(5, "2015/03/03", "2015/03/05", "23:29:42")]
         [TestCase(2, "2015/03/03", "2015/04/02", "23:29:42")]
-       // [TestCase(DayOfWeek.Thursday, "2015/03/03", "2015/03/05", "00:29:42")]
-       // [TestCase(DayOfWeek.Friday, "2015/03/03", "2015/03/06", "00:00:59")]
-       // [TestCase(DayOfWeek.Saturday, "2015/03/03", "2015/03/07", "00:00:01")]
-       // [TestCase(DayOfWeek.Sunday, "2015/03/03", "2015/03/08", "12:29:42")]
+        // [TestCase(DayOfWeek.Thursday, "2015/03/03", "2015/03/05", "00:29:42")]
+        // [TestCase(DayOfWeek.Friday, "2015/03/03", "2015/03/06", "00:00:59")]
+        // [TestCase(DayOfWeek.Saturday, "2015/03/03", "2015/03/07", "00:00:01")]
+        // [TestCase(DayOfWeek.Sunday, "2015/03/03", "2015/03/08", "12:29:42")]
         public void monthly_next_backup_datetime_is_calculated_correctly(
             int nextDay,
             string currentDate,

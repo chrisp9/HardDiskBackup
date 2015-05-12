@@ -5,15 +5,13 @@ using Services.Disk;
 using SystemWrapper.IO;
 
 namespace Services.Tests
-{    
+{
     public class Test_BackupDirectoryValidator
     {
         [TestCase(@"c:\", true, false, ValidationResult.Success)]
         [TestCase(@"c:\stuff\stuff", true, false, ValidationResult.Success)]
-
         [TestCase(@"c:\", true, true, ValidationResult.PathAlreadyExists)]
         [TestCase(@"c:\stuff\stuff", true, true, ValidationResult.PathAlreadyExists)]
-
         [TestCase(@"c:\stuff\..\", true, false, ValidationResult.InvalidPath)]
         [TestCase(@"c:\stuff\.\.\.\.\", true, false, ValidationResult.InvalidPath)]
         [TestCase(@"c:\.", true, false, ValidationResult.InvalidPath)]

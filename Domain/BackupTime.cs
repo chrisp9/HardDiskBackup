@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper;
 
 namespace Domain
 {
@@ -34,7 +29,7 @@ namespace Domain
             return _time.ToString();
         }
 
-        public static bool operator < (BackupTime a, BackupTime b) 
+        public static bool operator <(BackupTime a, BackupTime b)
         {
             return a._time < b._time;
         }
@@ -50,7 +45,9 @@ namespace Domain
         }
 
         public int Hours { get { return _time.Hours; } }
+
         public int Minutes { get { return _time.Minutes; } }
+
         public int Seconds { get { return _time.Seconds; } }
     }
 }

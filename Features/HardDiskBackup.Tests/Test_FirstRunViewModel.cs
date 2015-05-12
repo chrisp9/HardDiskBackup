@@ -75,7 +75,7 @@ namespace HardDiskBackup.Tests
 
         [Test]
         public void A_new_BackupDirectory_is_added_when_AddPathCommand_is_executed()
-        {            
+        {
             // Act
             _sut.AddPathCommand.Execute(_backupDirectory);
 
@@ -118,7 +118,7 @@ namespace HardDiskBackup.Tests
         private IBackupDirectoryValidator SetupValidator(ValidationResult validationResult)
         {
             var mockBackupDirectoryValidator = new Mock<IBackupDirectoryValidator>();
-            
+
             mockBackupDirectoryValidator
                 .Setup(x => x.CanAdd(It.IsAny<string>()))
                 .Returns(validationResult);

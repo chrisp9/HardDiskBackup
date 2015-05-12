@@ -2,10 +2,7 @@
 using Registrar;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -14,6 +11,7 @@ namespace Services
         event Services.SafeActionPerformer.OnErrorEventHandler OnError;
 
         void InvokeSafely(Action action);
+
         IEnumerable<T> SafeGet<T>(Func<IEnumerable<T>> function);
     }
 
@@ -21,6 +19,7 @@ namespace Services
     public class SafeActionPerformer : ISafeActionPerformer
     {
         public delegate void OnErrorEventHandler(object e, ExceptionEventArgs args);
+
         public event OnErrorEventHandler OnError;
 
         public void InvokeSafely(Action action)
@@ -32,7 +31,7 @@ namespace Services
             catch (Exception e)
             {
                 var evt = OnError;
-                if(evt != null)
+                if (evt != null)
                     evt(this, new ExceptionEventArgs(e));
             }
         }
@@ -50,7 +49,7 @@ namespace Services
             {
                 return fun();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 OnError(this, new ExceptionEventArgs(e));
                 return Enumerable.Empty<T>();

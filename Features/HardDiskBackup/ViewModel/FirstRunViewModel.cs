@@ -10,10 +10,8 @@ using Services.Persistence;
 using Services.Scheduling;
 using System;
 using System.ComponentModel;
-using Newtonsoft.Json;
-using System.Windows.Input;
-using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace HardDiskBackup
 {
@@ -21,7 +19,9 @@ namespace HardDiskBackup
     public class FirstRunViewModel : ViewModelBase, IDataErrorInfo, INotifyPropertyChanged
     {
         public ICommand AddPathCommand { get; private set; }
+
         public ICommand RemovePathCommand { get; private set; }
+
         public ICommand ScheduleBackupCommand { get; private set; }
 
         public BackupDirectoriesAndSchedule Backup { get; private set; }
@@ -37,7 +37,7 @@ namespace HardDiskBackup
         private IBackupDirectoryValidator _backupDirectoryValidator;
         private IDirectoryFactory _directoryFactory;
         private ISetScheduleModel _setScheduleModel;
-        
+
         public FirstRunViewModel( // TODO: Factor out commands.
             IDateTimeProvider dateTimeProvider,
             IJsonSerializer jsonSerializer,
@@ -51,7 +51,7 @@ namespace HardDiskBackup
         {
             _dateTimeProvider = dateTimeProvider;
             _jsonSerializer = jsonSerializer;
-            
+
             _backupDirectoryValidator = backupDirectoryValidator;
             _directoryFactory = backupDirectoryFactory;
             _setScheduleModel = setScheduleModel;
@@ -61,16 +61,16 @@ namespace HardDiskBackup
             BackupDirectoryModel = backupDirectoryModel;
 
             AddPathCommand = new RelayCommand(
-                () => 
-                    {
-                        var backupDirectory = _directoryFactory.GetBackupDirectoryFor(DirectoryPath);
-                        BackupDirectoryModel.Add(backupDirectory);
-                    },
+                () =>
+                {
+                    var backupDirectory = _directoryFactory.GetBackupDirectoryFor(DirectoryPath);
+                    BackupDirectoryModel.Add(backupDirectory);
+                },
                 () => { return _backupDirectoryValidator.CanAdd(DirectoryPath) == ValidationResult.Success; });
 
             RemovePathCommand = new RelayCommand<BackupDirectory>(
                 (item) => { BackupDirectoryModel.Remove(item); },
-                _      => { return true; });
+                _ => { return true; });
 
             if (_jsonSerializer.FileExists)
             {
@@ -88,7 +88,7 @@ namespace HardDiskBackup
 
         public string this[string columnName]
         {
-            get 
+            get
             {
                 CommandManager.InvalidateRequerySuggested();
                 if (columnName != "DirectoryPath")
@@ -99,10 +99,13 @@ namespace HardDiskBackup
                 {
                     case ValidationResult.InvalidPath:
                         return "This path is not valid";
+
                     case ValidationResult.PathAlreadyExists:
                         return "You cannot add this path because it is already included in the backup";
+
                     case ValidationResult.Success:
                         return null;
+
                     default:
                         throw new ArgumentException("Invalid ValidationResult");
                 }

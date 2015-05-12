@@ -1,14 +1,12 @@
 ﻿using Domain;
 using GalaSoft.MvvmLight;
+using HardDiskBackup.Commands;
 using Registrar;
 using Services.Disk;
-using Services.Factories;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using HardDiskBackup.Commands;
 using Services.Disk.FileSystem;
+using Services.Factories;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace HardDiskBackup.ViewModel
@@ -16,7 +14,8 @@ namespace HardDiskBackup.ViewModel
     [Register(LifeTime.SingleInstance)]
     public class ManageBackupsViewModel : ViewModelBase
     {
-        public bool DeviceWithBackupsExists {
+        public bool DeviceWithBackupsExists
+        {
             get { return _deviceWithBackupsExists; }
             set
             {
@@ -24,6 +23,7 @@ namespace HardDiskBackup.ViewModel
                 RaisePropertyChanged("DeviceWithBackupsExists");
             }
         }
+
         public ObservableCollection<FormattedExistingBackup> FormattedExistingBackups
         {
             get
@@ -58,17 +58,17 @@ namespace HardDiskBackup.ViewModel
             _existingBackupsModel = existingBackupsModel;
 
             _existingBackupsPoller.Subscribe(
-                onAddedCallback:   async dir => 
-                { 
+                onAddedCallback: async dir =>
+                {
                     var existingBackups = await _existingBackupsFactory.Create(dir);
-                    
+
                     existingBackups.ToList()
                         .ForEach(x => _existingBackupsModel.Add(new FormattedExistingBackup(x)));
 
                     DeviceWithBackupsExists = true;
                 },
 
-                onRemovedCallback: dir => 
+                onRemovedCallback: dir =>
                 {
                     DeviceWithBackupsExists = false; _existingBackupsModel.Clear();
                 }

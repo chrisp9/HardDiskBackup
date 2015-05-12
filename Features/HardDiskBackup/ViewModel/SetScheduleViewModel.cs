@@ -12,58 +12,58 @@ namespace HardDiskBackup.ViewModel
     [Register(LifeTime.SingleInstance)]
     public class SetScheduleViewModel : ViewModelBase, IDataErrorInfo
     {
-        public int? DayOfMonth 
+        public int? DayOfMonth
         {
             get { return _setScheduleModel.DayOfMonth; }
-            set 
-            { 
-                if(value != null)
-                    _setScheduleModel.DayOfMonth = value; 
+            set
+            {
+                if (value != null)
+                    _setScheduleModel.DayOfMonth = value;
             }
         }
 
         public int? DayOfWeek
         {
-            get { return (int?) _setScheduleModel.DayOfWeek; }
-            set 
-            { 
-                if(value != null)
-                    _setScheduleModel.DayOfWeek = (DayOfWeek?) value; 
+            get { return (int?)_setScheduleModel.DayOfWeek; }
+            set
+            {
+                if (value != null)
+                    _setScheduleModel.DayOfWeek = (DayOfWeek?)value;
             }
         }
 
-        public DateTime? TimeOfDay 
+        public DateTime? TimeOfDay
         {
-            get 
+            get
             {
                 if (_setScheduleModel.Time == null)
                     return null;
 
                 return DateTime.MinValue.Add(_setScheduleModel.Time.Value);
             }
-            set 
+            set
             {
                 if (value.HasValue)
                     _setScheduleModel.Time = value.Value.TimeOfDay;
-            } 
+            }
         }
 
-        public bool IsDaily 
+        public bool IsDaily
         {
             get { return _setScheduleModel.ScheduleType == BackupScheduleType.Daily; }
-            set { _isDaily = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
+            set { _isDaily = value; if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
         }
 
         public bool IsWeekly
         {
             get { return _setScheduleModel.ScheduleType == BackupScheduleType.Weekly; }
-            set { _isWeekly = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
+            set { _isWeekly = value; if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
         }
 
         public bool IsMonthly
         {
             get { return _setScheduleModel.ScheduleType == BackupScheduleType.Monthly; }
-            set { _isMonthly = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
+            set { _isMonthly = value; if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
         }
 
         private bool _isDaily;
@@ -75,7 +75,7 @@ namespace HardDiskBackup.ViewModel
         private ISetScheduleModel _setScheduleModel;
 
         public SetScheduleViewModel(
-            IDateTimeProvider dateTimeProvider, 
+            IDateTimeProvider dateTimeProvider,
             IBackupScheduleFactory backupScheduleFactory,
             ISetScheduleModel setScheduleModel)
         {
@@ -108,16 +108,19 @@ namespace HardDiskBackup.ViewModel
 
         public string this[string columnName]
         {
-            get 
+            get
             {
                 switch (columnName)
                 {
                     case "DayOfWeek":
                         return _setScheduleModel["DayOfWeek"];
+
                     case "DayOfMonth":
                         return _setScheduleModel["DayOfMonth"];
+
                     case "TimeOfDay":
                         return _setScheduleModel["Time"];
+
                     default:
                         throw new ArgumentException("Invalid ColumnName");
                 }

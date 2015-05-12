@@ -1,8 +1,5 @@
 ﻿using Domain;
 using Registrar;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using SystemWrapper.IO;
 
 namespace Services.Disk
@@ -25,7 +22,7 @@ namespace Services.Disk
         private IDirectoryWrap _directoryWrap;
         private IBackupDirectoryModel _backupDirectoryModel;
 
-        public BackupDirectoryValidator(IDirectoryWrap directoryWrap, IBackupDirectoryModel model) 
+        public BackupDirectoryValidator(IDirectoryWrap directoryWrap, IBackupDirectoryModel model)
         {
             _directoryWrap = directoryWrap;
             _backupDirectoryModel = model;
@@ -33,12 +30,12 @@ namespace Services.Disk
 
         public ValidationResult CanAdd(string backupDirectory)
         {
-            if(backupDirectory == null
-                ||!_directoryWrap.Exists(backupDirectory)
+            if (backupDirectory == null
+                || !_directoryWrap.Exists(backupDirectory)
                 || backupDirectory.Contains(".")
                 || (!backupDirectory.Contains("/")
                 && !backupDirectory.Contains(@"\")))
-                    return ValidationResult.InvalidPath;
+                return ValidationResult.InvalidPath;
 
             return _backupDirectoryModel.IsSubdirectoryOfExisting(backupDirectory)
                 ? ValidationResult.PathAlreadyExists

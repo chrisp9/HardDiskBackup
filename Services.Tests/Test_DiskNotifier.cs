@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain;
+using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
-using Microsoft.Reactive.Testing;
 using Services.Disk;
-using Domain;
-using TestHelpers;
+using System;
 using System.IO;
+using System.Linq;
+using TestHelpers;
 
 namespace Services.Tests
 {
@@ -17,6 +14,7 @@ namespace Services.Tests
     {
         // These tests do not check that the service only returns removable disks
         private IDriveInfoWrap _fixedDisk;
+
         private IDriveInfoWrap _removableDisk;
         private Mock<IDriveInfoService> _mockDiskService;
         private TestScheduler _testScheduler;
@@ -43,7 +41,7 @@ namespace Services.Tests
             // Assert
             Assert.AreEqual(_removableDisk, result);
         }
-        
+
         [Test]
         public void If_a_disk_is_added_after_unsubscribing_then_this_is_not_detected()
         {
@@ -73,7 +71,7 @@ namespace Services.Tests
         {
             // Arrange
             var finalDriveList = new[] { _fixedDisk, _removableDisk };
-            
+
             var sut = SetupSut();
             _mockDiskService.Setup(x => x.GetDrives()).Returns(finalDriveList);
 
@@ -115,6 +113,5 @@ namespace Services.Tests
 
             return new DriveNotifier(_testScheduler, _mockDiskService.Object);
         }
-
     }
 }

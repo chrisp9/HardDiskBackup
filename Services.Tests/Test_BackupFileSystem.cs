@@ -4,8 +4,6 @@ using NUnit.Framework;
 using Services.Disk.FileSystem;
 using Services.Factories;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using SystemWrapper.IO;
 using TestHelpers;
 
@@ -64,13 +62,13 @@ namespace Services.Tests
 
             var fizz = FakeDirectoryInfoBuilder.Create(@"c:\foo\fizz");
             var bar = FakeDirectoryInfoBuilder.Create(@"c:\bar");
-            
+
             bar.WithFiles(new Tuple<string, long>("test.txt", 150L));
             bar.WithFiles(new Tuple<string, long>("buzz.txt", 50L));
 
             foo.WithSubDirectories(fizz);
             root.WithSubDirectories(new[] { foo, bar });
-           
+
             return root;
         }
 
@@ -109,7 +107,7 @@ namespace Services.Tests
                 _fileWrap.Object,
                 _directoryFactory.Object,
                 _timestampedBackupRootProvider.Object,
-                new SafeActionPerformer(), 
+                new SafeActionPerformer(),
                 Mock.Of<IErrorLogger>());
         }
 

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper.IO;
+﻿using Domain;
 using Moq;
-using Domain;
+using System.IO;
+using SystemWrapper.IO;
 
 namespace TestHelpers
 {
@@ -79,18 +74,15 @@ namespace TestHelpers
         public IDriveInfoWrap Build()
         {
             return new FakeDriveInfoWrap(
-                _availableFreeSpace, 
-                _driveFormat, 
-                _driveType, 
-                _isReady, 
-                _name, 
-                _rootDirectory, 
-                _totalFreeSpace, 
-                _totalSize, 
+                _availableFreeSpace,
+                _driveFormat,
+                _driveType,
+                _isReady,
+                _name,
+                _rootDirectory,
+                _totalFreeSpace,
+                _totalSize,
                 _volumeLabel);
         }
-
-
-
     }
 }

@@ -13,7 +13,7 @@ namespace Services
     {
         private System.Windows.Threading.Dispatcher _dispatcher;
 
-        public Dispatcher() 
+        public Dispatcher()
         {
             _dispatcher = System.Windows.Application.Current.Dispatcher;
         }

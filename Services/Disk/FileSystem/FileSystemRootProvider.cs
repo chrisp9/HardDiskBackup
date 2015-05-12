@@ -1,11 +1,6 @@
 ﻿using Domain;
 using Registrar;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Disk.FileSystem
 {
@@ -29,5 +24,4 @@ namespace Services.Disk.FileSystem
             return Path.Combine(root, DiskBackup).ToString();
         }
     }
-  
 }

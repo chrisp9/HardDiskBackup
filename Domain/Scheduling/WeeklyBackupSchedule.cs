@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper;
 
 namespace Domain.Scheduling
 {
@@ -13,9 +8,10 @@ namespace Domain.Scheduling
 
         public WeeklyBackupSchedule(
             INextBackupDateTimeFactory nextBackupDateTimeFactory,
-            IDateTimeProvider provider, 
-            DayOfWeek dayOfWeek, 
-            BackupTime time) : base(provider, nextBackupDateTimeFactory, time)
+            IDateTimeProvider provider,
+            DayOfWeek dayOfWeek,
+            BackupTime time)
+            : base(provider, nextBackupDateTimeFactory, time)
         {
             _dayOfWeek = dayOfWeek;
         }
@@ -29,17 +25,17 @@ namespace Domain.Scheduling
         private BackupDate Next(DateTime from)
         {
             // Yes the casts suck, but DayOfWeek is unlikely to change
-            int start = (int) from.DayOfWeek;
-            int target = (int) _dayOfWeek;
+            int start = (int)from.DayOfWeek;
+            int target = (int)_dayOfWeek;
 
             if (start == target && new BackupTime(from.TimeOfDay) < BackupTime)
             {
                 // We're on the same day as the target, but before the scheduled time
                 // so we schedule for the current day
-                return new BackupDate(from.Year, from.Month, start+1);
+                return new BackupDate(from.Year, from.Month, start + 1);
             }
 
-            if (target <= start) 
+            if (target <= start)
                 target += 7;
 
             var nextWeek = from.AddDays(target - start);

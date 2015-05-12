@@ -8,10 +8,10 @@ using Services.Disk.FileSystem;
 using Services.Factories;
 using Services.Scheduling;
 using System;
-using SystemWrapper.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
 {
@@ -22,7 +22,7 @@ namespace HardDiskBackup.Tests
         {
             SetupSut();
 
-            _mockDriveNotifier.Verify(x => 
+            _mockDriveNotifier.Verify(x =>
                 x.Subscribe(It.IsAny<Func<IDriveInfoWrap, Task>>()), Times.Once());
         }
 
@@ -49,9 +49,9 @@ namespace HardDiskBackup.Tests
         [Test]
         public void Calculate_total_size_is_called()
         {
-             SetupSut();
+            SetupSut();
 
-             _subscriptionAction(_mockDriveInfoWrap.Object);
+            _subscriptionAction(_mockDriveInfoWrap.Object);
 
             _mockBackupFileSystem.Verify(x => x.CalculateTotalSize(_backupDirectories), Times.Once());
         }
@@ -98,7 +98,7 @@ namespace HardDiskBackup.Tests
             SetupSut();
 
             await _subscriptionAction(_mockDriveInfoWrap.Object);
-      
+
             Assert.AreEqual(5L, _sut.BytesCopiedSoFar);
         }
 
@@ -128,7 +128,6 @@ namespace HardDiskBackup.Tests
         [SetUp]
         public void SetUp()
         {
-
             _mockFileInfoWrap = new Mock<IFileInfoWrap>();
             _mockFileInfoWrap.Setup(x => x.Length).Returns(5L);
 
@@ -164,12 +163,12 @@ namespace HardDiskBackup.Tests
                 _mockBackupFileSystem.Object);
 
             // Jesus...
-           _mockBackupScheduleService.Setup(x => x.NextBackup).Returns(
-               BackupDirectoriesAndSchedule.Create(
-               _backupDirectories, 
-               new DailyBackupSchedule(Mock.Of<INextBackupDateTimeFactory>(), 
-                   Mock.Of<IDateTimeProvider>(), 
-                   new BackupTime(TimeSpan.Parse("20:00:00")))));
+            _mockBackupScheduleService.Setup(x => x.NextBackup).Returns(
+                BackupDirectoriesAndSchedule.Create(
+                _backupDirectories,
+                new DailyBackupSchedule(Mock.Of<INextBackupDateTimeFactory>(),
+                    Mock.Of<IDateTimeProvider>(),
+                    new BackupTime(TimeSpan.Parse("20:00:00")))));
         }
 
         private BackupViewModel _sut;

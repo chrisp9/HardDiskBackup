@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
-using Services;
-using Services.Disk;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using SystemWrapper.IO;
-using Services.Factories;
 
 namespace Domain.Tests
 {
@@ -95,7 +86,7 @@ namespace Domain.Tests
             _sut.Add(CreateBackupDirectory(directory1));
 
             // Act
-            var isSubDirectory =_sut.IsSubdirectoryOfExisting(directory2);
+            var isSubDirectory = _sut.IsSubdirectoryOfExisting(directory2);
 
             // Assert
             Assert.AreEqual(expected, isSubDirectory);
@@ -130,4 +121,3 @@ namespace Domain.Tests
         }
     }
 }
-

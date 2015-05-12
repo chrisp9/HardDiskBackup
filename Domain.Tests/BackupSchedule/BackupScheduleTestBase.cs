@@ -1,9 +1,4 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Tests.BackupSchedule
 {
@@ -22,8 +17,6 @@ namespace Domain.Tests.BackupSchedule
                     (d, t) => { ActualBackupDate = d; ActualBackupTime = t; });
 
             return mockNextBackupDateTimeFactory.Object;
-
         }
-
     }
 }

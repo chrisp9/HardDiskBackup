@@ -3,8 +3,6 @@ using Registrar;
 using Services.Disk.FileSystem;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services.Factories
@@ -38,8 +36,8 @@ namespace Services.Factories
                 var size = await _backupFileSystem.CalculateTotalSize(timestampedDir);
 
                 existingBackups.Add(new ExistingBackup(
-                    new BackupDate(backupDateTime), 
-                    new BackupTime(backupDateTime.TimeOfDay), 
+                    new BackupDate(backupDateTime),
+                    new BackupTime(backupDateTime.TimeOfDay),
                     timestampedDir,
                     size));
             }

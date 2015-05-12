@@ -12,8 +12,11 @@ namespace Services.Persistence
     public interface IJsonSerializer
     {
         bool FileExists { get; }
+
         void SerializeToFile(ISetScheduleModel setScheduleModel, IEnumerable<BackupDirectory> directories);
+
         ISetScheduleModel DeserializeSetScheduleModelFromFile();
+
         IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile();
     }
 
@@ -31,7 +34,7 @@ namespace Services.Persistence
                     && _fileWrapper.Exists(Path.Combine(directory, _setScheduleModelFilename)))
                     && _fileWrapper.Exists(Path.Combine(directory, _directoriesFileName));
             }
-         }
+        }
 
         private const string _setScheduleModelFilename = "schedule.json";
         private const string _directoriesFileName = "directories.json";
@@ -50,7 +53,7 @@ namespace Services.Persistence
         }
 
         public JsonSerializer(
-            IFileWrap fileWrapper, 
+            IFileWrap fileWrapper,
             IDirectoryWrap directoryWrapper,
             IEnvironmentWrap environmentWrapper)
         {
@@ -79,7 +82,7 @@ namespace Services.Persistence
 
         public IEnumerable<BackupDirectory> DeserializeBackupDirectoriesFromFile()
         {
-            var directoriesFile =  Path.Combine(_path, _directoriesFileName);
+            var directoriesFile = Path.Combine(_path, _directoriesFileName);
             var serialized = _fileWrapper.ReadAllText(directoriesFile);
             var dirs = JsonConvert.DeserializeObject<IEnumerable<string>>(serialized);
 
@@ -91,7 +94,7 @@ namespace Services.Persistence
                     backupDirectories.Add(new BackupDirectory(new DirectoryInfoWrap(new DirectoryInfo(dir))));
                 }
                 catch
-                { 
+                {
                     // This means the user has deleted the directory
                 }
             }

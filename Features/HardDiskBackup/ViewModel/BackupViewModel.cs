@@ -17,7 +17,7 @@ namespace HardDiskBackup.ViewModel
     [Register(LifeTime.SingleInstance)]
     public class BackupViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        public string Status 
+        public string Status
         {
             get { return _status; }
             private set { _status = value; OnPropertyChanged(); }

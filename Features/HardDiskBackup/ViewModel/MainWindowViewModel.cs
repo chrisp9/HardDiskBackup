@@ -18,7 +18,9 @@ namespace HardDiskBackup
         }
 
         public FirstRunViewModel FirstRunViewModel { get; private set; }
+
         public SetScheduleViewModel SetScheduleViewModel { get; private set; }
+
         public ManageBackupsViewModel ManageBackupsViewModel { get; private set; }
 
         private IDateTimeProvider _dateTimeProvider;

@@ -4,7 +4,7 @@
         xmlns:VM="clr-namespace:HardDiskBackup"
         xmlns:controls="clr-namespace:HardDiskBackup.View;assembly="
         xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Hard Disk Backup" 
+        Title="Hard Disk Backup"
         BorderBrush="Green"
         BorderThickness="1"
         Width="650">
@@ -15,28 +15,27 @@
             <TabItem Header="Backup Settings">
                 <DockPanel LastChildFill="True">
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" DockPanel.Dock="Left" Stroke="Green" />
-                    <controls:ConfigureBackupControl DockPanel.Dock="Right" DataContext="{Binding Path=FirstRunViewModel}"/>
+                    <controls:ConfigureBackupControl DockPanel.Dock="Right" DataContext="{Binding Path=FirstRunViewModel}" />
                 </DockPanel>
             </TabItem>
             <TabItem Header="Restore Backup">
                 <DockPanel LastChildFill="True">
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" DockPanel.Dock="Left" Stroke="Green" />
-                    <Grid/>
+                    <Grid />
                 </DockPanel>
             </TabItem>
             <TabItem Header="Manual Backup">
                 <DockPanel LastChildFill="True">
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" DockPanel.Dock="Left" Stroke="Green" />
-                    <Grid/>
+                    <Grid />
                 </DockPanel>
             </TabItem>
             <TabItem Header="Manage Backups">
                 <DockPanel LastChildFill="True">
                     <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" DockPanel.Dock="Left" Stroke="Green" />
-                    <controls:ManageBackupsView DockPanel.Dock="Right" HorizontalAlignment="Stretch" DataContext="{Binding Path=ManageBackupsViewModel}"/>
+                    <controls:ManageBackupsView DockPanel.Dock="Right" HorizontalAlignment="Stretch" DataContext="{Binding Path=ManageBackupsViewModel}" />
                 </DockPanel>
             </TabItem>
-
         </TabControl>
     </ScrollViewer>
 </metro:MetroWindow>

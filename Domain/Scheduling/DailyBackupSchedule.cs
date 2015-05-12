@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Scheduling
 {
@@ -14,7 +10,7 @@ namespace Domain.Scheduling
             INextBackupDateTimeFactory nextBackupDateTimeFactory,
             IDateTimeProvider provider,
             BackupTime time)
-            : base(provider, nextBackupDateTimeFactory, time) 
+            : base(provider, nextBackupDateTimeFactory, time)
         {
             _timeOfDay = time;
         }

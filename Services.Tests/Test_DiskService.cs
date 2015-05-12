@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using Services.Disk;
-using Services;
+﻿using Domain;
 using Moq;
-using TestHelpers;
-using System.IO;
-using Domain;
+using NUnit.Framework;
 using Queries;
+using Services.Disk;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using TestHelpers;
 
 namespace Services.Tests
 {
@@ -24,8 +20,8 @@ namespace Services.Tests
 
             var removableDisk = builder.WithDriveType(DriveType.Removable).Build();
             var fixedDisk = builder.WithDriveType(DriveType.Fixed).Build();
-            
-            var driveInfos = new[] 
+
+            var driveInfos = new[]
             {
                 removableDisk,
                 fixedDisk
@@ -52,7 +48,7 @@ namespace Services.Tests
 
             var fixedDisk = builder.WithDriveType(DriveType.Fixed).Build();
 
-            var driveInfos = new[] 
+            var driveInfos = new[]
             {
                 removableDisk,
                 fixedDisk
@@ -82,7 +78,7 @@ namespace Services.Tests
             var removableDisk = builder.WithDriveType(DriveType.Fixed).Build();
             var otherDriveType = builder.WithDriveType(driveType).Build();
 
-            var driveInfos = new[] 
+            var driveInfos = new[]
             {
                 removableDisk,
                 otherDriveType

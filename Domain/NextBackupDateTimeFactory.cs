@@ -1,10 +1,5 @@
 ﻿using Registrar;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper;
 
 namespace Domain
 {
@@ -21,10 +16,10 @@ namespace Domain
             return new NextBackupDateTime(
                 new DateTime(
                         date.Year,
-                        date.Month, 
-                        date.Day, 
-                        time.Hours, 
-                        time.Minutes, 
+                        date.Month,
+                        date.Day,
+                        time.Hours,
+                        time.Minutes,
                         time.Seconds));
         }
     }

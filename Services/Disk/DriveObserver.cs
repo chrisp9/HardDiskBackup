@@ -1,13 +1,10 @@
 ﻿using Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
-    class DiskObserver : IObserver<IDriveInfoWrap>
+    internal class DiskObserver : IObserver<IDriveInfoWrap>
     {
         private List<IDriveInfoWrap> _previouslySeenDrives =
             new List<IDriveInfoWrap>();
@@ -37,7 +34,6 @@ namespace Services
                 _previouslySeenDrives.Add(value);
                 _action(value);
             }
-
         }
     }
 }

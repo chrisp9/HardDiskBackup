@@ -1,17 +1,16 @@
 ﻿using Domain;
+using HardDiskBackup.Commands;
 using HardDiskBackup.ViewModel;
 using Moq;
 using NUnit.Framework;
 using Services.Disk;
+using Services.Disk.FileSystem;
 using Services.Factories;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using SystemWrapper.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Services.Disk.FileSystem;
-using HardDiskBackup.Commands;
+using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
 {
@@ -51,7 +50,7 @@ namespace HardDiskBackup.Tests
         public void Setup()
         {
             _existingBackupsPoller = new Mock<IExistingBackupsPoller>();
-            
+
             _existingBackupsPoller.Setup(x => x.Subscribe(It.IsAny<Action<BackupRootDirectory>>(), It.IsAny<Action<BackupRootDirectory>>()))
                 .Callback<Action<BackupRootDirectory>, Action<BackupRootDirectory>>((x, y) => { _onAddCallback = x; _onRemoveCallback = y; });
 
@@ -69,9 +68,9 @@ namespace HardDiskBackup.Tests
                 .Returns(Task.FromResult(_existingBackups));
 
             _sut = new ManageBackupsViewModel(
-                _existingBackupsPoller.Object, 
-                _existingBackupsFactory.Object, 
-                _mockDeleteBackupCommand.Object, 
+                _existingBackupsPoller.Object,
+                _existingBackupsFactory.Object,
+                _mockDeleteBackupCommand.Object,
                 _mockExistingBackupsModel.Object);
         }
 

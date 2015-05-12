@@ -12,6 +12,7 @@ namespace Services.Disk
     public interface IExistingBackupsPoller
     {
         void Subscribe(Action<BackupRootDirectory> onAddedCallback, Action<BackupRootDirectory> onRemovedCallback);
+
         void Unsubscribe();
     }
 
@@ -34,18 +35,18 @@ namespace Services.Disk
             if (_subscription != null)
                 throw new InvalidOperationException("Cannot subscribe when subscription already exists. Call Unsubscribe first");
 
-            var directoryObserver = Observer.Create<long>(_ => 
-                { 
+            var directoryObserver = Observer.Create<long>(_ =>
+                {
                     var directory = _diskService.GetDrives()
                         .SelectMany(x => x.RootDirectory.GetDirectories())
                         .FirstOrDefault(x => x.FullName.ToLower().Contains("diskbackupapp"));
 
                     // The directory does not exist this time, but did exist last time -> Removed drive
-                    if(directory == null && _lastObservedDirectory != null)
+                    if (directory == null && _lastObservedDirectory != null)
                         onRemovedCallback(new BackupRootDirectory(_lastObservedDirectory));
 
                     // The directory exists now but did not exist last time --> Added drive
-                    if(directory != null && _lastObservedDirectory == null)
+                    if (directory != null && _lastObservedDirectory == null)
                         onAddedCallback(new BackupRootDirectory(directory));
 
                     _lastObservedDirectory = directory;

@@ -4,12 +4,8 @@ using Moq;
 using NUnit.Framework;
 using Services.Disk;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 using TestHelpers;
 

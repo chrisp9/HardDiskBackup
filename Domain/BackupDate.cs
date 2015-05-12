@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper;
 
 namespace Domain
 {
@@ -40,7 +35,9 @@ namespace Domain
         }
 
         public int Day { get { return _date.Day; } }
+
         public int Month { get { return _date.Month; } }
+
         public int Year { get { return _date.Year; } }
     }
 }

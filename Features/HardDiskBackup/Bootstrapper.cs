@@ -9,8 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup
@@ -51,11 +49,11 @@ namespace HardDiskBackup
 
             _containerBuilder.RegisterGeneric(typeof(WindowPresenter<,>)).AsImplementedInterfaces();
 
-            _containerBuilder.RegisterType<FileWrap>().As<IFileWrap>().InstancePerDependency();/// Need manual 
+            _containerBuilder.RegisterType<FileWrap>().As<IFileWrap>().InstancePerDependency();/// Need manual
             _containerBuilder.RegisterType<DirectoryWrap>().As<IDirectoryWrap>().InstancePerDependency(); // Need manual
             _containerBuilder.RegisterType<DriveInfoWrap>().As<IDriveInfoWrap>().InstancePerDependency(); // Need manual
             _containerBuilder.RegisterType<EnvironmentWrap>().As<IEnvironmentWrap>().InstancePerDependency(); // Need manual
-                  
+
             _containerBuilder.RegisterInstance<DefaultScheduler>(DefaultScheduler.Instance).As<IScheduler>();
 
             return _containerBuilder;
@@ -93,9 +91,11 @@ namespace HardDiskBackup
                 case LifeTime.Transient:
                     regBuilder.InstancePerDependency();
                     return;
+
                 case LifeTime.SingleInstance:
                     regBuilder.SingleInstance();
                     return;
+
                 default:
                     throw new ArgumentException("Invalid scope");
             }

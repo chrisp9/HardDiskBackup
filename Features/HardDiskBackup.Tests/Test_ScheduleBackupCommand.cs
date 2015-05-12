@@ -42,7 +42,7 @@ namespace HardDiskBackup.Tests
                 _mockDispatcher.Object,
                 _mockJsonSerializer.Object);
         }
-        
+
         [Test]
         public void Command_can_execute()
         {
@@ -89,12 +89,12 @@ namespace HardDiskBackup.Tests
             _mockBackupScheduleService.Setup(x => x.ScheduleNextBackup(
                 It.IsAny<BackupDirectoriesAndSchedule>(), It.IsAny<Action>()))
                 .Callback<BackupDirectoriesAndSchedule, Action>((b, a) => a());
-           
+
             _mockDispatcher.Setup(x => x.InvokeAsync(It.IsAny<Action>()))
                 .Callback<Action>(a => a());
-           
+
             _sut.Execute(null);
-           
+
             _mockPresenter.Verify(x => x.Present(), Times.Once());
         }
 
@@ -107,8 +107,8 @@ namespace HardDiskBackup.Tests
 
         private void SetHasDirectories(bool value)
         {
-            var directories = value 
-                ? new ReadOnlyCollection<BackupDirectory>(new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>())}.ToList())
+            var directories = value
+                ? new ReadOnlyCollection<BackupDirectory>(new[] { new BackupDirectory(Mock.Of<IDirectoryInfoWrap>()) }.ToList())
                 : new ReadOnlyCollection<BackupDirectory>(Enumerable.Empty<BackupDirectory>().ToList());
 
             _mockBackupDirectoryModel

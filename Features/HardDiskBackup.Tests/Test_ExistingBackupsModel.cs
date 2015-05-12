@@ -3,10 +3,6 @@ using Moq;
 using NUnit.Framework;
 using Services.Disk.FileSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
@@ -27,7 +23,7 @@ namespace HardDiskBackup.Tests
 
             Assert.IsEmpty(_sut.ExistingBackups);
         }
-        
+
         [SetUp]
         public void SetupSut()
         {

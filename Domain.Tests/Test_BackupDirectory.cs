@@ -38,6 +38,5 @@ namespace Test_Domain
 
             return new BackupDirectory(directoryInfoWrap.Object);
         }
-
     }
 }

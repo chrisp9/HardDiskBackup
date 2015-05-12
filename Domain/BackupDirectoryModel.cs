@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace Domain
 {
     public interface IBackupDirectoryModel : INotifyPropertyChanged
     {
         ReadOnlyCollection<BackupDirectory> BackupDirectories { get; }
+
         void Add(BackupDirectory backupDirectory);
+
         void Remove(BackupDirectory backupDirectory);
 
         bool IsSubdirectoryOfExisting(string backupDirectoryPath);
@@ -59,7 +59,7 @@ namespace Domain
 
         public bool IsSubdirectoryOfExisting(string backupDirectory)
         {
-            var newPath = backupDirectory.ToLower().Replace('/','\\');
+            var newPath = backupDirectory.ToLower().Replace('/', '\\');
 
             return _backupDirectories
                 .Where(x => newPath.Contains(x.ToString()))

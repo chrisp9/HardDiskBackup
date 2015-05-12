@@ -6,7 +6,6 @@ using Services.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
 
@@ -21,7 +20,7 @@ namespace Services.Tests
 
             var date = ParseDate(_firstDirectoryName);
 
-            Assert.AreEqual(date.Day,  existingBackups.First().BackupDate.Day);
+            Assert.AreEqual(date.Day, existingBackups.First().BackupDate.Day);
             Assert.AreEqual(date.Month, existingBackups.First().BackupDate.Month);
             Assert.AreEqual(date.Year, existingBackups.First().BackupDate.Year);
         }

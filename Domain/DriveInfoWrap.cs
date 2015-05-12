@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace Domain
@@ -11,13 +7,21 @@ namespace Domain
     public interface IDriveInfoWrap
     {
         long AvailableFreeSpace { get; }
+
         string DriveFormat { get; }
+
         DriveType DriveType { get; }
+
         bool IsReady { get; }
+
         string Name { get; }
+
         IDirectoryInfoWrap RootDirectory { get; }
+
         long TotalFreeSpace { get; }
+
         long TotalSize { get; }
+
         string VolumeLabel { get; set; }
     }
 

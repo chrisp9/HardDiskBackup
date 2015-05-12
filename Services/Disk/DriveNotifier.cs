@@ -1,7 +1,6 @@
 ﻿using Domain;
 using Registrar;
 using System;
-using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -11,6 +10,7 @@ namespace Services.Disk
     public interface IDriveNotifier
     {
         void Subscribe(Func<IDriveInfoWrap, Task> onNewDisk);
+
         void Unsubscribe();
     }
 

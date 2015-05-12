@@ -10,7 +10,7 @@ namespace HardDiskBackup.ViewModel
     }
 
     public class WindowPresenter<T, U> : IWindowPresenter<T, U>
-        where T : ViewModelBase 
+        where T : ViewModelBase
         where U : IView
     {
         private Func<T> _viewModelFactory;
@@ -32,7 +32,7 @@ namespace HardDiskBackup.ViewModel
             view.DataContext = viewModel;
             return view;
         }
-        
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels?

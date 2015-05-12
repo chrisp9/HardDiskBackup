@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain;
-using System.IO;
+﻿using Domain;
 using Registrar;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Queries
 {
