@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Services.Scheduling
 {
-    public interface ISetScheduleModel : IDataErrorInfo
+    public interface ISetScheduleModel : IDataErrorInfo, INotifyPropertyChanged
     {
         TimeSpan? Time { get; set; }
         int? DayOfMonth { get; set; }
@@ -16,6 +16,7 @@ namespace Services.Scheduling
         BackupSchedule CreateSchedule();
         bool IsScheduleValid();
         void SetScheduleType(BackupScheduleType backupScheduleType);
+        void Load(ISetScheduleModel setScheduleModel);
     }
 
     [Register(LifeTime.SingleInstance), JsonObject(MemberSerialization.OptIn)]
@@ -79,6 +80,14 @@ namespace Services.Scheduling
             return _backupScheduleFactory.Create(ScheduleType.Value, new Domain.BackupTime(Time.Value));
         }
 
+        public void Load(ISetScheduleModel toLoad)
+        {
+            Time = toLoad.Time;
+            DayOfMonth = toLoad.DayOfMonth;
+            DayOfWeek = toLoad.DayOfWeek;
+            ScheduleType = toLoad.ScheduleType;
+        }
+
         public bool IsScheduleValid()
         {
             if (ScheduleType == null) return false;
@@ -136,5 +145,15 @@ namespace Services.Scheduling
                 ? null
                 : "Time of Day must be set";
         }
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            var evt = PropertyChanged;
+
+            if (evt != null)
+                evt(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

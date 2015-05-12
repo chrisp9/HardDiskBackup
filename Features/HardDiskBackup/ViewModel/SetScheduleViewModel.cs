@@ -14,58 +14,57 @@ namespace HardDiskBackup.ViewModel
     {
         public int? DayOfMonth 
         {
-            get { return _dayOfMonth; }
+            get { return _setScheduleModel.DayOfMonth; }
             set 
             { 
-                _dayOfMonth = value; 
-                if(_dayOfMonth != null)
-                    _setScheduleModel.DayOfMonth = _dayOfMonth; 
+                if(value != null)
+                    _setScheduleModel.DayOfMonth = value; 
             }
         }
 
         public int? DayOfWeek
         {
-            get { return _dayOfWeek; }
+            get { return (int?) _setScheduleModel.DayOfWeek; }
             set 
             { 
-                _dayOfWeek = value; 
-                if(_dayOfWeek != null)
-                    _setScheduleModel.DayOfWeek = (DayOfWeek?) _dayOfWeek; 
+                if(value != null)
+                    _setScheduleModel.DayOfWeek = (DayOfWeek?) value; 
             }
         }
 
         public DateTime? TimeOfDay 
-        { 
-            get { return _timeOfDay; }
+        {
+            get 
+            {
+                if (_setScheduleModel.Time == null)
+                    return null;
+
+                return DateTime.MinValue.Add(_setScheduleModel.Time.Value);
+            }
             set 
-            { 
-                _timeOfDay = value; 
-                if(_timeOfDay.HasValue)
-                    _setScheduleModel.Time = _timeOfDay.Value.TimeOfDay; 
+            {
+                if (value.HasValue)
+                    _setScheduleModel.Time = _setScheduleModel.Time = value.Value.TimeOfDay;
             } 
         }
 
         public bool IsDaily 
-        { 
-            get { return _isDaily; }
+        {
+            get { return _setScheduleModel.ScheduleType == BackupScheduleType.Daily; }
             set { _isDaily = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
         }
 
         public bool IsWeekly
         {
-            get { return _isWeekly; }
+            get { return _setScheduleModel.ScheduleType == BackupScheduleType.Weekly; }
             set { _isWeekly = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
         }
 
         public bool IsMonthly
         {
-            get { return _isMonthly; }
+            get { return _setScheduleModel.ScheduleType == BackupScheduleType.Monthly; }
             set { _isMonthly = value; if(value) _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
         }
-
-        private int? _dayOfMonth;
-        private int? _dayOfWeek;
-        private DateTime? _timeOfDay;
 
         private bool _isDaily;
         private bool _isWeekly;
@@ -83,6 +82,13 @@ namespace HardDiskBackup.ViewModel
             _dateTimeProvider = dateTimeProvider;
             _backupScheduleFactory = backupScheduleFactory;
             _setScheduleModel = setScheduleModel;
+            _setScheduleModel.PropertyChanged += (o, e) =>
+            {
+                RaisePropertyChanged<bool>();
+                RaisePropertyChanged<DayOfWeek>();
+                RaisePropertyChanged<DateTime?>();
+                RaisePropertyChanged<int?>();
+            };
         }
 
         public BackupSchedule CreateSchedule()

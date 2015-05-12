@@ -12,6 +12,8 @@ using System;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HardDiskBackup
 {
@@ -69,6 +71,14 @@ namespace HardDiskBackup
             RemovePathCommand = new RelayCommand<BackupDirectory>(
                 (item) => { BackupDirectoryModel.Remove(item); },
                 _      => { return true; });
+
+            if (_jsonSerializer.FileExists)
+            {
+                _setScheduleModel.Load(_jsonSerializer.DeserializeSetScheduleModelFromFile());
+
+                var directories = _jsonSerializer.DeserializeBackupDirectoriesFromFile();
+                directories.ToList().ForEach(x => BackupDirectoryModel.Add(x));
+            }
         }
 
         public string Error

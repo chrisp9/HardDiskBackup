@@ -43,7 +43,7 @@ namespace Services.Tests
             // Assert
             Assert.AreEqual(_removableDisk, result);
         }
-
+        
         [Test]
         public void If_a_disk_is_added_after_unsubscribing_then_this_is_not_detected()
         {
