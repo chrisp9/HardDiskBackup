@@ -26,8 +26,8 @@
                                                 <TextBlock Text="Manage Backups" Style="{StaticResource Header1}"/>
                                                 <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding DataContext.FormattedExistingBackups, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ScrollViewer}}}">
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn Binding="{Binding DateTime}" Header="Date of backup" SortDirection="Descending"></DataGridTextColumn>
-                                                        <DataGridTextColumn Binding="{Binding Size}" Header="Size (MB)"></DataGridTextColumn>
+                                                        <DataGridTextColumn Binding="{Binding DateTime, Mode=OneWay}" Header="Date of backup" SortDirection="Descending"></DataGridTextColumn>
+                                                        <DataGridTextColumn Binding="{Binding Size, Mode=OneWay}" Header="Size (MB)"></DataGridTextColumn>
 
                                                         <DataGridTemplateColumn Header="Delete" Width="75">
                                                             <DataGridTemplateColumn.CellTemplate> 
