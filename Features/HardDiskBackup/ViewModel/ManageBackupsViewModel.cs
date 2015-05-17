@@ -40,22 +40,33 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
+        public ICommand RestoreBackupCommand
+        {
+            get
+            {
+                return _restoreBackupCommand;
+            }
+        }
+
         private bool _deviceWithBackupsExists = false;
         private IExistingBackupsPoller _existingBackupsPoller;
         private IExistingBackupsFactory _existingBackupsFactory;
         private IDeleteBackupCommand _deleteBackupCommand;
+        private IRestoreBackupCommand _restoreBackupCommand;
         private IExistingBackupsModel _existingBackupsModel;
 
         public ManageBackupsViewModel(
             IExistingBackupsPoller existingBackupsPoller,
             IExistingBackupsFactory existingBackupsFactory,
             IDeleteBackupCommand deleteBackupCommand,
+            IRestoreBackupCommand restoreBackupCommand,
             IExistingBackupsModel existingBackupsModel)
         {
             _deleteBackupCommand = deleteBackupCommand;
             _existingBackupsPoller = existingBackupsPoller;
             _existingBackupsFactory = existingBackupsFactory;
             _existingBackupsModel = existingBackupsModel;
+            _restoreBackupCommand = restoreBackupCommand;
 
             _existingBackupsPoller.Subscribe(
                 onAddedCallback: async dir =>

@@ -29,6 +29,13 @@ namespace Domain
             set { _deleteIsInProgress = value; OnPropertyChanged("DeleteIsInProgress"); }
         }
 
+        public bool RestoreIsInProgress
+        {
+            get { return _restoreIsInProgress; }
+            set { _restoreIsInProgress = value; OnPropertyChanged("RestoreIsnProgress"); }
+        }
+
+        private bool _restoreIsInProgress;
         private bool _deleteIsInProgress;
 
         public FormattedExistingBackup(ExistingBackup existingBackup)

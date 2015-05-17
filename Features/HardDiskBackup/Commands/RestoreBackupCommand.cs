@@ -10,10 +10,10 @@ using System.Windows.Input;
 
 namespace HardDiskBackup.Commands
 {
-    public interface IManageBackupCommand : ICommand { }
+    public interface IRestoreBackupCommand : ICommand { }
 
     [Register(LifeTime.SingleInstance)]
-    public class RestoreBackupCommand
+    public class RestoreBackupCommand : IRestoreBackupCommand
     {
         private IBackupFileSystem _backupFileSystem;
         private IExistingBackupsModel _existingBackupsModel;

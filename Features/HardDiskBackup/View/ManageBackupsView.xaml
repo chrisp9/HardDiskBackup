@@ -33,9 +33,9 @@
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
                                                                     <Button
-                                                                    IsEnabled="{Binding Path=DeleteIsInProgress, Converter={StaticResource InverseBoolToVis}}"
+                                                                    IsEnabled="{Binding Path=RestoreIsInProgress, Converter={StaticResource InverseBoolToVis}}"
                                                                         Content="Restore" Command=
-                                                                            "{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"
+                                                                            "{Binding DataContext.RestoreBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"
                                                                             CommandParameter="{Binding}" />
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>

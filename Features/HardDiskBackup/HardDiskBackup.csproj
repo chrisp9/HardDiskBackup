@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Commands\DeleteBackupCommand.cs" />
+    <Compile Include="Commands\RestoreBackupCommand.cs" />
     <Compile Include="Commands\ScheduleBackupCommand.cs" />
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
