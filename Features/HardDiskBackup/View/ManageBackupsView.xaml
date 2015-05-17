@@ -29,6 +29,18 @@
                                                         <DataGridTextColumn Binding="{Binding DateTime, Mode=OneWay}" Header="Date of backup" SortDirection="Descending"></DataGridTextColumn>
                                                         <DataGridTextColumn Binding="{Binding Size, Mode=OneWay}" Header="Size (MB)"></DataGridTextColumn>
 
+                                                        <DataGridTemplateColumn Header="Restore" Width="75">
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button
+                                                                    IsEnabled="{Binding Path=DeleteIsInProgress, Converter={StaticResource InverseBoolToVis}}"
+                                                                        Content="Restore" Command=
+                                                                            "{Binding DataContext.DeleteBackupCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ManageBackupsView}}}"
+                                                                            CommandParameter="{Binding}" />
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>
+
                                                         <DataGridTemplateColumn Header="Delete" Width="75">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
