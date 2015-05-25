@@ -32,7 +32,8 @@ namespace Domain
         public bool RestoreIsInProgress
         {
             get { return _restoreIsInProgress; }
-            set { _restoreIsInProgress = value; OnPropertyChanged("RestoreIsnProgress"); }
+            set { _restoreIsInProgress = value; OnPropertyChanged("RestoreIsnProgress");
+            }
         }
 
         private bool _restoreIsInProgress;

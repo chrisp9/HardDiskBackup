@@ -71,6 +71,7 @@ namespace HardDiskBackup.Tests
                 _existingBackupsPoller.Object,
                 _existingBackupsFactory.Object,
                 _mockDeleteBackupCommand.Object,
+                _mockRestoreBackupCommand.Object,
                 _mockExistingBackupsModel.Object);
         }
 
@@ -105,6 +106,7 @@ namespace HardDiskBackup.Tests
         private Mock<IExistingBackupsFactory> _existingBackupsFactory;
         private Mock<IExistingBackupsModel> _mockExistingBackupsModel;
         private Mock<IDeleteBackupCommand> _mockDeleteBackupCommand;
+        private Mock<IRestoreBackupCommand> _mockRestoreBackupCommand;
 
         private Action<BackupRootDirectory> _onAddCallback;
         private Action<BackupRootDirectory> _onRemoveCallback;

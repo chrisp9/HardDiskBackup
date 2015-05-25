@@ -20,7 +20,7 @@ namespace Services.Disk.FileSystem
 
     public interface IBackupFileSystem
     {
-        Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
+        Task Copy(IEnumerable<IDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
 
         Task Delete(ExistingBackup existingBackup, Action onDeleteComplete);
 
@@ -75,7 +75,7 @@ namespace Services.Disk.FileSystem
         /// <param name="backupDirectories">The directories included in the backup</param>
         /// <param name="onFileCopied">A callback which executes after each file is copied</param>
         /// <returns>A task which allows the operation to be awaited</returns>
-        public async Task Copy(IEnumerable<BackupDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied)
+        public async Task Copy(IEnumerable<IDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied)
         {
             _errorLogger.SubscribeToErrors();
 
@@ -130,7 +130,7 @@ namespace Services.Disk.FileSystem
         }
 
         // Recursively copy source -> destination
-        private void Copy(BackupDirectory source, TimestampedBackupRoot destination, Action<IFileInfoWrap> onFileCopied)
+        private void Copy(IDirectory source, TimestampedBackupRoot destination, Action<IFileInfoWrap> onFileCopied)
         {
             var files = _safeActionLogger.SafeGet(() => source.Directory.GetFiles());
             var directories = _safeActionLogger.SafeGet(() => source.Directory.GetDirectories());
@@ -156,7 +156,7 @@ namespace Services.Disk.FileSystem
             }
         }
 
-        private MirroredDirectory CreateMirroredDirectory(BackupDirectory directory, TimestampedBackupRoot destination)
+        private MirroredDirectory CreateMirroredDirectory(IDirectory directory, TimestampedBackupRoot destination)
         {
             var path = directory.ToString();
             var backupRootPath = destination.ToString();
