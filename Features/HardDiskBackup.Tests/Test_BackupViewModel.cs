@@ -107,8 +107,8 @@ namespace HardDiskBackup.Tests
         {
             SetupSut();
 
-            _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<BackupDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
-                .Callback<IEnumerable<BackupDirectory>, Action<IFileInfoWrap>>((x, y) => Assert.AreEqual(0, _sut.BytesCopiedSoFar));
+            _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<IDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
+                .Callback<IEnumerable<IDirectory>, Action<IFileInfoWrap>>((x, y) => Assert.AreEqual(0, _sut.BytesCopiedSoFar));
 
             await _subscriptionAction(_mockDriveInfoWrap.Object);
 
@@ -150,8 +150,8 @@ namespace HardDiskBackup.Tests
 
             _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<BackupDirectory[]>())).Returns(Task.FromResult(5L));
 
-            _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<BackupDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
-                .Callback<IEnumerable<BackupDirectory>, Action<IFileInfoWrap>>((x, y) => y(_mockFileInfoWrap.Object));
+            _mockBackupFileSystem.Setup(x => x.Copy(It.IsAny<IEnumerable<IDirectory>>(), It.IsAny<Action<IFileInfoWrap>>()))
+                .Callback<IEnumerable<IDirectory>, Action<IFileInfoWrap>>((x, y) => y(_mockFileInfoWrap.Object));
         }
 
         public void SetupSut()

@@ -61,6 +61,7 @@ namespace HardDiskBackup.Tests
             _backupRootDirectory = new BackupRootDirectory(_mockDirectory.Object);
             _mockExistingBackupsModel = new Mock<IExistingBackupsModel>();
             _mockDeleteBackupCommand = new Mock<IDeleteBackupCommand>();
+            _mockRestoreBackupCommand = new Mock<IRestoreBackupCommand>();
 
             _existingBackups = CreateExistingBackups().ToArray();
 

@@ -2,7 +2,11 @@
 using Registrar;
 using Services.Disk.FileSystem;
 using System;
+using System.Linq;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
+using HardDiskBackup.View;
+using Services;
 
 namespace HardDiskBackup.Commands
 {
@@ -13,13 +17,16 @@ namespace HardDiskBackup.Commands
     {
         private IBackupFileSystem _backupFileSystem;
         private IExistingBackupsModel _existingBackupsmodel;
+        private IDialogService _dialogService;
 
         public DeleteBackupCommand(
             IBackupFileSystem backupFileSystem,
-            IExistingBackupsModel existingBackupsModel)
+            IExistingBackupsModel existingBackupsModel,
+            IDialogService dialogService)
         {
             _backupFileSystem = backupFileSystem;
             _existingBackupsmodel = existingBackupsModel;
+            _dialogService = dialogService;
         }
 
         public bool CanExecute(object parameter)
@@ -33,12 +40,16 @@ namespace HardDiskBackup.Commands
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
+            var dialogResult = await _dialogService.PresentDialog<MainWindow>("Are you sure?", "Once deleted, backups cannot be restored");
+            if (dialogResult == MessageDialogResult.Negative)
+                return;
+
             var formattedBackup = parameter as FormattedExistingBackup;
             formattedBackup.DeleteIsInProgress = true;
 
-            _backupFileSystem.Delete(formattedBackup.ExistingBackup, () => _existingBackupsmodel.Remove(formattedBackup));
+            await _backupFileSystem.Delete(formattedBackup.ExistingBackup, () => _existingBackupsmodel.Remove(formattedBackup));
         }
     }
 }

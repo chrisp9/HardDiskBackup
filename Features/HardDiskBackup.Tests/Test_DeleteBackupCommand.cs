@@ -1,9 +1,13 @@
 ﻿using Domain;
 using HardDiskBackup.Commands;
+using HardDiskBackup.View;
+using MahApps.Metro.Controls.Dialogs;
 using Moq;
 using NUnit.Framework;
+using Services;
 using Services.Disk.FileSystem;
 using System;
+using System.Threading.Tasks;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
@@ -38,9 +42,13 @@ namespace HardDiskBackup.Tests
             _mockBackupFileSystem = new Mock<IBackupFileSystem>();
             _mockExistingBackupModel = new Mock<IExistingBackupsModel>();
             _formattedExistingBackup = new FormattedExistingBackup(_existingBackup);
+            _mockDialogService = new Mock<IDialogService>();
 
-            _sut = new DeleteBackupCommand(_mockBackupFileSystem.Object, _mockExistingBackupModel.Object);
+            _mockDialogService.Setup(x => x.PresentDialog<MainWindow>(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(MessageDialogResult.Affirmative));
 
+            _sut = new DeleteBackupCommand(_mockBackupFileSystem.Object, _mockExistingBackupModel.Object, _mockDialogService.Object);
+            
             _existingBackup = new ExistingBackup(
                 new BackupDate(DateTime.Now), new BackupTime(TimeSpan.FromSeconds(1)),
                 new TimestampedBackupRoot(Mock.Of<IDirectoryInfoWrap>()),
@@ -52,5 +60,6 @@ namespace HardDiskBackup.Tests
         private Mock<IBackupFileSystem> _mockBackupFileSystem;
         private IDeleteBackupCommand _sut;
         private Mock<IExistingBackupsModel> _mockExistingBackupModel;
+        private Mock<IDialogService> _mockDialogService;
     }
 }
