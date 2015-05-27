@@ -1,0 +1,26 @@
+﻿<metro:MetroWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="HardDiskBackup.View.RestoreBackupWizard"
+        xmlns:VM="clr-namespace:HardDiskBackup"
+        xmlns:controls="clr-namespace:HardDiskBackup.View;assembly="
+        xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Restore Backup"
+        BorderBrush="Green"
+        BorderThickness="1"
+        Width="300">
+
+    <ScrollViewer>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Choose how to restore the backup" Grid.Row="0" Style="{StaticResource Header1}"/>
+            <RadioButton Name="Desktop" GroupName="Frequency" Grid.Row="1" Content="Restore to Desktop" Margin="10" IsChecked="{Binding Path=IsDaily}" />
+            <RadioButton Name="OriginalLocation" GroupName="Frequency" Grid.Row="2" Content="Restore to original location" Margin="10" IsChecked="{Binding Path=IsWeekly}" />
+        </Grid>
+    </ScrollViewer>
+</metro:MetroWindow>
