@@ -25,8 +25,12 @@ namespace HardDiskBackup.Tests
         [Test]
         public void Nothing_is_deleted_if_dialog_result_is_negative()
         {
-            _mockBackupFileSystem.Verify(x => x.Delete(It.IsAny<ExistingBackup>(), It.IsAny<Action>()), Times.Never());
+            _mockDialogService.Setup(x => x.PresentDialog<MainWindow>(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(MessageDialogResult.Negative));
+
             _sut.Execute(_formattedExistingBackup);
+            _mockBackupFileSystem.Verify(x => x.Delete(It.IsAny<ExistingBackup>(), It.IsAny<Action>()), Times.Never());
+
         }
 
         [Test]
