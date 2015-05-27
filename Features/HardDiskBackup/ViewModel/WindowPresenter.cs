@@ -9,16 +9,16 @@ namespace HardDiskBackup.ViewModel
         IView Present();
     }
 
-    public class WindowPresenter<T, U> : IWindowPresenter<T, U>
-        where T : ViewModelBase
-        where U : IView
+    public class WindowPresenter<TViewModel, TView> : IWindowPresenter<TViewModel, TView>
+        where TViewModel : ViewModelBase
+        where TView : IView
     {
-        private Func<T> _viewModelFactory;
-        private Func<U> viewFactory;
+        private Func<TViewModel> _viewModelFactory;
+        private Func<TView> viewFactory;
 
         public WindowPresenter(
-            Func<T> mainWindowViewModelFactory,
-            Func<U> mainWindowFactory)
+            Func<TViewModel> mainWindowViewModelFactory,
+            Func<TView> mainWindowFactory)
         {
             _viewModelFactory = mainWindowViewModelFactory;
             viewFactory = mainWindowFactory;
