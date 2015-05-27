@@ -23,6 +23,13 @@ namespace HardDiskBackup.Tests
         }
 
         [Test]
+        public void Nothing_is_deleted_if_dialog_result_is_negative()
+        {
+            _mockBackupFileSystem.Verify(x => x.Delete(It.IsAny<ExistingBackup>(), It.IsAny<Action>()), Times.Never());
+            _sut.Execute(_formattedExistingBackup);
+        }
+
+        [Test]
         public void Delete_in_progress_is_set_to_true_when_delete_in_progress()
         {
             _sut.Execute(_formattedExistingBackup);
