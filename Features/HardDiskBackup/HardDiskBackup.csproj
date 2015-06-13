@@ -126,6 +126,7 @@
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
     <Compile Include="ViewModel\ManageBackupsViewModel.cs" />
+    <Compile Include="ViewModel\RestoreBackupViewModel.cs" />
     <Compile Include="ViewModel\SetScheduleViewModel.cs" />
     <Compile Include="ViewModel\WindowPresenter.cs" />
     <Compile Include="View\BackupView.xaml.cs">
@@ -137,6 +138,9 @@
     </Compile>
     <Compile Include="View\ScheduleControl.xaml.cs">
       <DependentUpon>ScheduleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RestoreBackupWizard.xaml.cs">
+      <DependentUpon>RestoreBackupWizard.xaml</DependentUpon>
     </Compile>
     <Page Include="View\BackupView.xaml">
       <SubType>Designer</SubType>
@@ -164,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ScheduleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RestoreBackupWizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

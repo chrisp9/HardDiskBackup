@@ -18,9 +18,9 @@ namespace HardDiskBackup.View
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class RestoreBackupWizard : UserControl
     {
-        public UserControl1()
+        public RestoreBackupWizard()
         {
             InitializeComponent();
         }
