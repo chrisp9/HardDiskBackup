@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Services
         Task<MessageDialogResult> PresentDialog<T>(string title, string message) where T : MetroWindow;
     }
 
+    [Register(LifeTime.Transient)]
     public class DialogService : IDialogService
     {
         private ICurrentApplication _currentApplication;

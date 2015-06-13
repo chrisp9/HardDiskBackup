@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace HardDiskBackup.View
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class RestoreBackupWizard : UserControl
+    public partial class RestoreBackupWizard : MetroWindow
     {
         public RestoreBackupWizard()
         {
