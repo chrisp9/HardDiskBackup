@@ -161,7 +161,7 @@ namespace Services.Disk.FileSystem
             var path = directory.ToString();
             var backupRootPath = destination.ToString();
 
-            var mirroredPath = ReplaceRootWith(path, backupRootPath);
+            var mirroredPath = Path.Combine(backupRootPath, path.Replace(":", ""));
 
             // This will do nothing if the directory already exists,
             // however the application will crash here if the directory
@@ -173,7 +173,7 @@ namespace Services.Disk.FileSystem
 
         private string ReplaceRootWith(string path, string newRoot)
         {
-            var endPart = path.Substring(3); //TODO: Will this be flaky?
+            var endPart = path; //TODO: Will this be flaky?
             return Path.Combine(newRoot, endPart);
         }
 
