@@ -20,7 +20,11 @@ namespace Services.Disk.FileSystem
 
     public interface IBackupFileSystem
     {
+        void Copy(IDirectory source, IDirectory destination, Action<IFileInfoWrap> onFileCopied);
+
         Task Copy(IEnumerable<IDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
+
+        Task Restore(ExistingBackup existingBackup, Action<IFileInfoWrap> onFileRestored);
 
         Task Delete(ExistingBackup existingBackup, Action onDeleteComplete);
 
@@ -90,6 +94,25 @@ namespace Services.Disk.FileSystem
             _errorLogger.UnsubscribeFromErrors();
         }
 
+        public async Task Restore(ExistingBackup existingBackup, Action<IFileInfoWrap> onFileRestore)
+        {
+            var directory = existingBackup.BackupDirectory.Directory.FullName;
+            var index  = directory.LastIndexOf(Constants.DiskBackupApp);
+
+            var targetRestoreLocation = directory.Substring(index);
+
+            _errorLogger.SubscribeToErrors();
+
+            await Task.Run(() =>
+            {
+                Copy(existingBackup.BackupDirectory,
+                    BackupDirectoryFactory.Create(targetRestoreLocation), 
+                    onFileRestore);
+            });
+
+            _errorLogger.UnsubscribeFromErrors();
+        }
+
         public async Task Delete(ExistingBackup existingBackup, Action onDeleteComplete)
         {
             var toDelete = existingBackup.BackupDirectory.Directory;
@@ -130,7 +153,7 @@ namespace Services.Disk.FileSystem
         }
 
         // Recursively copy source -> destination
-        private void Copy(IDirectory source, TimestampedBackupRoot destination, Action<IFileInfoWrap> onFileCopied)
+        public void Copy(IDirectory source, IDirectory destination, Action<IFileInfoWrap> onFileCopied)
         {
             var files = _safeActionLogger.SafeGet(() => source.Directory.GetFiles());
             var directories = _safeActionLogger.SafeGet(() => source.Directory.GetDirectories());
@@ -156,7 +179,7 @@ namespace Services.Disk.FileSystem
             }
         }
 
-        private MirroredDirectory CreateMirroredDirectory(IDirectory directory, TimestampedBackupRoot destination)
+        private MirroredDirectory CreateMirroredDirectory(IDirectory directory, IDirectory destination)
         {
             var path = directory.ToString();
             var backupRootPath = destination.ToString();

@@ -26,7 +26,7 @@ namespace HardDiskBackup.ViewModel
             RestoreBackupCommand = new RelayCommand(
                 () =>
                 {
-                 //   _backupFileSystem.Copy()
+                 //   _backupFileSystem.
 
                 },
                 () => true);

@@ -12,8 +12,6 @@ namespace Services.Disk.FileSystem
     [Register(LifeTime.Transient)]
     public class FileSystemRootProvider : IFileSystemRootProvider
     {
-        private const string DiskBackup = "DiskBackupApp";
-
         public string GetFileSystemRoot(IDriveInfoWrap driveInfoWrap)
         {
             var root =
@@ -21,7 +19,7 @@ namespace Services.Disk.FileSystem
                 .RootDirectory
                 .FullName;
 
-            return Path.Combine(root, DiskBackup).ToString();
+            return Path.Combine(root, Constants.DiskBackupApp).ToString();
         }
     }
 }

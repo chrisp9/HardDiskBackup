@@ -39,7 +39,7 @@ namespace Services.Disk
                 {
                     var directory = _diskService.GetDrives()
                         .SelectMany(x => x.RootDirectory.GetDirectories())
-                        .FirstOrDefault(x => x.FullName.ToLower().Contains("diskbackupapp"));
+                        .FirstOrDefault(x => x.FullName.ToLower().Contains(Constants.DiskBackupApp.ToLower()));
 
                     // The directory does not exist this time, but did exist last time -> Removed drive
                     if (directory == null && _lastObservedDirectory != null)

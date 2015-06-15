@@ -35,7 +35,6 @@ namespace Services.Factories
     public class BackupFactory : IDirectoryFactory
     {
         private IFileSystemRootProvider _rootProvider;
-        private const string DiskBackup = "DiskBackupApp";
 
         public BackupFactory(IFileSystemRootProvider rootProvider)
         {
