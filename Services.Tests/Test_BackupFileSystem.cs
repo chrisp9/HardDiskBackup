@@ -11,9 +11,9 @@ namespace Services.Tests
 {
     public class Test_BackupFileSystem
     {
-        [TestCase(@"e:\backups\now\foo")]
-        [TestCase(@"e:\backups\now\bar")]
-        [TestCase(@"e:\backups\now\foo\fizz")]
+        [TestCase(@"e:\backups\now\c\foo")]
+        [TestCase(@"e:\backups\now\c\bar")]
+        [TestCase(@"e:\backups\now\c\foo\fizz")]
         public async void Copy_creates_correct_mirrored_directory(string directoryPath)
         {
             _sut.Target(_backupRootDirectory);
@@ -22,8 +22,8 @@ namespace Services.Tests
             _directoryWrap.Verify(x => x.CreateDirectory(directoryPath), Times.Once());
         }
 
-        [TestCase(@"c:\bar\test.txt", @"e:\backups\now\bar\test.txt")]
-        [TestCase(@"c:\foo\amazing.txt", @"e:\backups\now\foo\amazing.txt")]
+        [TestCase(@"c:\bar\test.txt", @"e:\backups\now\c\bar\test.txt")]
+        [TestCase(@"c:\foo\amazing.txt", @"e:\backups\now\c\foo\amazing.txt")]
         public async void Copy_copies_files_to_correct_directory(string sourceFileName, string destFileName)
         {
             _sut.Target(_backupRootDirectory);
