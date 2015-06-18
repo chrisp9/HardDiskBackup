@@ -18,6 +18,8 @@ namespace Services
     [Register(LifeTime.SingleInstance)]
     public class SafeActionPerformer : ISafeActionPerformer
     {
+        private readonly object _locker = new Object();
+
         public delegate void OnErrorEventHandler(object e, ExceptionEventArgs args);
 
         public event OnErrorEventHandler OnError;
@@ -26,7 +28,10 @@ namespace Services
         {
             try
             {
-                action();
+                lock (_locker)
+                {
+                    action();
+                }
             }
             catch (Exception e)
             {
@@ -47,7 +52,10 @@ namespace Services
         {
             try
             {
-                return fun();
+                lock (_locker)
+                {
+                    return fun();
+                }
             }
             catch (Exception e)
             {

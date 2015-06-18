@@ -20,12 +20,16 @@ namespace Services
     {
         private ISafeActionPerformer _safeActionPerformer;
         private List<Exception> _exceptions;
+        private object _locker = new Object();
 
         public IReadOnlyCollection<Exception> Errors
         {
             get
             {
-                return new ReadOnlyCollection<Exception>(_exceptions);
+                lock (_locker)
+                {
+                    return new ReadOnlyCollection<Exception>(_exceptions);
+                }
             }
         }
 
@@ -47,7 +51,10 @@ namespace Services
 
         private void OnError(object o, ExceptionEventArgs e)
         {
-            _exceptions.Add(e.Exception);
+            lock (_locker)
+            {
+                _exceptions.Add(e.Exception);
+            }
         }
     }
 }
