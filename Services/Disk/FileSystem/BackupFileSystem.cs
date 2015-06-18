@@ -24,8 +24,6 @@ namespace Services.Disk.FileSystem
 
         Task Copy(IEnumerable<IDirectory> backupDirectories, Action<IFileInfoWrap> onFileCopied);
 
-        Task Restore(ExistingBackup existingBackup, Action<IFileInfoWrap> onFileRestored);
-
         Task Delete(ExistingBackup existingBackup, Action onDeleteComplete);
 
         Task<long> CalculateTotalSize(params IDirectory[] backupDirectories);
@@ -89,25 +87,6 @@ namespace Services.Disk.FileSystem
             {
                 foreach (var backupDirectory in backupDirectories)
                     Copy(backupDirectory, timestampedRoot, onFileCopied);
-            });
-
-            _errorLogger.UnsubscribeFromErrors();
-        }
-
-        public async Task Restore(ExistingBackup existingBackup, Action<IFileInfoWrap> onFileRestore)
-        {
-            var directory = existingBackup.BackupDirectory.Directory.FullName;
-            var index  = directory.LastIndexOf(Constants.DiskBackupApp);
-
-            var targetRestoreLocation = directory.Substring(index);
-
-            _errorLogger.SubscribeToErrors();
-
-            await Task.Run(() =>
-            {
-                Copy(existingBackup.BackupDirectory,
-                    BackupDirectoryFactory.Create(targetRestoreLocation), 
-                    onFileRestore);
             });
 
             _errorLogger.UnsubscribeFromErrors();

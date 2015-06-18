@@ -77,7 +77,6 @@
     <Compile Include="Disk\ExistingBackupsManager.cs" />
     <Compile Include="Disk\ExistingBackupsPoller.cs" />
     <Compile Include="Disk\FileSystem\ExistingBackupsModel.cs" />
-    <Compile Include="Disk\FileSystem\FileRestorer.cs" />
     <Compile Include="Disk\FileSystem\IBackupStrategy.cs" />
     <Compile Include="Disk\FileSystem\RestoreToOriginalLocationBackupStrategy.cs" />
     <Compile Include="ErrorLogger.cs" />

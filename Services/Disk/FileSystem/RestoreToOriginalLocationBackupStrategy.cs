@@ -4,17 +4,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemWrapper.IO;
 
 namespace Services.Disk.FileSystem
 {
     public class RestoreToOriginalLocationBackupStrategy : IBackupStrategy
     {
-        public async Task Restore(ExistingBackup existingBackup)
+        private IErrorLogger _errorLogger;
+        private IBackupFileSystem _backupFileSystem;
+
+        public RestoreToOriginalLocationBackupStrategy(
+            IErrorLogger errorLogger,
+            IBackupFileSystem backupFileSystem)
         {
-            var timestampedBackupRoot = existingBackup.BackupDirectory;
+            _errorLogger = errorLogger;
+            _backupFileSystem = backupFileSystem;
+        }
 
-           // timestampedBackupRoot.Directory;
+        public async Task Restore(
+            ExistingBackup existingBackup, 
+            Action<IFileInfoWrap> onFileRestore)
+        {
+            var directory = existingBackup.BackupDirectory.Directory.FullName;
+            var index = directory.LastIndexOf(Constants.DiskBackupApp);
 
+            var targetRestoreLocation = directory.Substring(index);
+
+            _errorLogger.SubscribeToErrors();
+
+            await Task.Run(() =>
+            {
+                _backupFileSystem.Copy(existingBackup.BackupDirectory,
+                    BackupDirectoryFactory.Create(targetRestoreLocation),
+                    onFileRestore);
+            });
+
+            _errorLogger.UnsubscribeFromErrors();
         }
     }
 }

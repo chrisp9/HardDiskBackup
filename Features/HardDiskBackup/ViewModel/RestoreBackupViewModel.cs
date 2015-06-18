@@ -15,18 +15,21 @@ namespace HardDiskBackup.ViewModel
         public RelayCommand RestoreBackupCommand;
 
         private IBackupFileSystem _backupFileSystem;
+        private RestoreToOriginalLocationBackupStrategy _originalLocationStrat;
 
         public RestoreBackupViewModel(
             FormattedExistingBackup backup,
-            IBackupFileSystem backupFileSystem)
+            IBackupFileSystem backupFileSystem,
+            RestoreToOriginalLocationBackupStrategy originalLocationStrat)
         {
             FormattedExistingBackup = backup;
             _backupFileSystem = backupFileSystem;
+            _originalLocationStrat = originalLocationStrat;
 
             RestoreBackupCommand = new RelayCommand(
-                () =>
+                async () =>
                 {
-                 //   _backupFileSystem.
+                    await _originalLocationStrat.Restore(backup.ExistingBackup, (_) => { });
 
                 },
                 () => true);
