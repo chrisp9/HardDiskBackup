@@ -31,6 +31,7 @@ namespace Services.Tests
         [Test]
         public void Restore_restores_to_correct_location()
         {
+            var existingBackup = CreateExistingBackup();
 
         }
 

@@ -52,11 +52,14 @@
     <Compile Include="BackupRootDirectory.cs" />
     <Compile Include="BackupRootEventArgs.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Exceptions\Error.cs" />
     <Compile Include="Exceptions\ExceptionEventArgs.cs" />
     <Compile Include="ExistingBackup.cs" />
     <Compile Include="FormattedExistingBackup.cs" />
     <Compile Include="IDirectory.cs" />
     <Compile Include="MirroredDirectory.cs" />
+    <Compile Include="Result.cs" />
+    <Compile Include="ResultBuilder.cs" />
     <Compile Include="Scheduling\BackupScheduleType.cs" />
     <Compile Include="Scheduling\DailyBackupSchedule.cs" />
     <Compile Include="NextBackupDateTimeFactory.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="EnvironmentWrap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimestampedBackupRoot.cs" />
+    <Compile Include="Unit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

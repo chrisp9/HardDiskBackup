@@ -76,7 +76,11 @@
     <Compile Include="Disk\BackupDirectoryFactory.cs" />
     <Compile Include="Disk\ExistingBackupsManager.cs" />
     <Compile Include="Disk\ExistingBackupsPoller.cs" />
+    <Compile Include="Disk\FileSystem\DirectoryCreator.cs" />
     <Compile Include="Disk\FileSystem\ExistingBackupsModel.cs" />
+    <Compile Include="Disk\FileSystem\DirectoryCopier.cs" />
+    <Compile Include="Disk\FileSystem\FileCopier.cs" />
+    <Compile Include="Disk\FileSystem\FileSystemExtensions.cs" />
     <Compile Include="Disk\FileSystem\IBackupStrategy.cs" />
     <Compile Include="Disk\FileSystem\RestoreToOriginalLocationBackupStrategy.cs" />
     <Compile Include="ErrorLogger.cs" />
