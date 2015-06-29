@@ -20,12 +20,17 @@ namespace Services.Tests
         private Mock<IFileWrap> _mockFileWrap;
         private DirectoryCopier _sut;
 
-
         private Mock<IFileInfoWrap> _rootFile1;
         private Mock<IFileInfoWrap> _rootFile2;
 
+        private Mock<IFileInfoWrap> _subDirectoryFile1;
+        private Mock<IFileInfoWrap> _subDirectoryFile2;
+
         private Exception _exceptionToThrow = new UnauthorizedAccessException("uh..");
         private string _testRootDirectory = @"c:\test";
+        private string _testSubDirectory = @"c:\test\subdir1";
+
+        private string _destinationDirectory = @"e:\test";
 
         [SetUp]
         public void Setup()
@@ -38,9 +43,17 @@ namespace Services.Tests
             _rootFile1 = new Mock<IFileInfoWrap>();
             _rootFile2 = new Mock<IFileInfoWrap>();
 
+            _subDirectoryFile1 = new Mock<IFileInfoWrap>();
+            _subDirectoryFile2 = new Mock<IFileInfoWrap>();
+
             _rootFile1.Setup(x => x.FullName).Returns(Path.Combine(_testRootDirectory, "rootFile1"));
             _rootFile2.Setup(x => x.FullName).Returns(Path.Combine(_testRootDirectory, "rootFile2"));
 
+            _subDirectoryFile1.Setup(x => x.FullName).Returns(Path.Combine(_testSubDirectory, "subFile1"));
+            _subDirectoryFile2.Setup(x => x.FullName).Returns(Path.Combine(_testRootDirectory, "subFile2"));
+
+            _subDirectoryFile1.Setup(x => x.Name).Returns("subFile1");
+            _subDirectoryFile2.Setup(x => x.Name).Returns("subFile2");
 
             _sut = new DirectoryCopier(
                 _mockFileCopier.Object,
@@ -88,21 +101,59 @@ namespace Services.Tests
             directoryInfoWrap.Setup(x => x.GetFiles())
                 .Returns(filesToCopy);
 
-            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(_testRootDirectory))
+            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(It.IsAny<string>()))
                 .Returns(Result.Success());
 
-            _mockFileCopier.Setup(x => x.CopyFiles(It.IsAny<IFileInfoWrap[]>(), It.IsAny<string>(), It.IsAny<Action<IFileInfoWrap>>()))
+            _mockFileCopier.Setup(x => x.CopyFiles(
+                It.IsAny<IFileInfoWrap[]>(), 
+                It.IsAny<string>(), 
+                It.IsAny<Action<IFileInfoWrap>>()))
                 .Returns(Result.Success());
 
             directoryInfoWrap.Setup(x => x.GetDirectories())
                 .Returns(Enumerable.Empty<IDirectoryInfoWrap>().ToArray());
 
-            var result = await _sut.CopySafe(directoryInfoWrap.Object, _testRootDirectory, (_) => {});
+            var result = await _sut.CopySafe(directoryInfoWrap.Object, @"e:\test", (_) => {});
 
-            _mockFileCopier.Verify(x => x.CopyFiles(filesToCopy, _testRootDirectory, It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
-               
+            _mockFileCopier.Verify(x => x.CopyFiles(
+                filesToCopy,  @"e:\test", It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
         }
 
+        [Test]
+        public async void Files_in_subdirectories_are_also_copied()
+        {
+            var filesToCopy = new[] { _rootFile1.Object, _rootFile2.Object }.ToArray();
+            var subDirFilesToCopy = new[] { _subDirectoryFile1.Object, _subDirectoryFile2.Object}.ToArray();
 
+            var directoryInfoWrap = new Mock<IDirectoryInfoWrap>();
+            directoryInfoWrap.Setup(x => x.GetFiles())
+                .Returns(filesToCopy);
+
+            var subDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
+            subDirectoryInfoWrap.Setup(x => x.GetFiles())
+                .Returns(subDirFilesToCopy);
+
+            subDirectoryInfoWrap.Setup(x => x.Name).Returns("subdir1");
+            subDirectoryInfoWrap.Setup(x => x.FullName).Returns(_testSubDirectory);
+
+            directoryInfoWrap.Setup(x => x.GetDirectories()).Returns(
+                new[] { subDirectoryInfoWrap.Object }.ToArray());
+
+            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(It.IsAny<string>()))
+                .Returns(Result.Success());
+
+            _mockFileCopier.Setup(x => x.CopyFiles(
+                It.IsAny<IFileInfoWrap[]>(), 
+                It.IsAny<string>(), 
+                It.IsAny<Action<IFileInfoWrap>>()))
+                .Returns(Result.Success());
+
+            directoryInfoWrap.Setup(x => x.GetDirectories())
+                .Returns(new[] {subDirectoryInfoWrap.Object}.ToArray());
+
+            var result = await _sut.CopySafe(directoryInfoWrap.Object, _destinationDirectory, (_) => { });
+
+            _mockFileCopier.Verify(x => x.CopyFiles(subDirFilesToCopy, @"e:\test\subdir1", It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
+        }
     }
 }
