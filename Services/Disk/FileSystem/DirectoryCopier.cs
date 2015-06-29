@@ -89,11 +89,9 @@ namespace Services.Disk.FileSystem
             if (filesResult.IsFail)
                 return filesResult.ToUnit();
 
-            var fileCopyResult = await Task.Run(() =>
-            {
-                return _fileCopier.CopyFiles(
-                    filesResult.Value, destination, onFileCopied);
-            });
+            var fileCopyResult = await Task.Run(() =>           
+                _fileCopier.CopyFiles(
+                    filesResult.Value, destination, onFileCopied));
 
             var subDirectoriesResult = source.GetDirectoriesSafe();
             if (subDirectoriesResult.IsFail)

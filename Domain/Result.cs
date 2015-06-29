@@ -98,6 +98,14 @@ namespace Domain
             }
         }
 
+        public IReadOnlyCollection<Exception> Exceptions
+        {
+            get
+            {
+                return new ReadOnlyCollection<Exception>(_exceptions.ToArray());
+            }
+        }
+
         public bool IsSuccess
         {
             get
@@ -118,7 +126,7 @@ namespace Domain
 
         public Result()
         {
-
+            _exceptions = Enumerable.Empty<Exception>().ToArray();
         }
 
         public Result(params Exception[] errors)
