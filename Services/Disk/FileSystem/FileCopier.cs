@@ -34,8 +34,9 @@ namespace Services.Disk.FileSystem
             {
                 try
                 {
-                    _fileWrap.Copy(file.FullName, Path.Combine(destination, file.Name));
-                
+                    var destinationPath = Path.Combine(destination, file.Name);
+                    _fileWrap.Copy(file.FullName, destinationPath);
+                    _fileWrap.SetAttributes(destinationPath, file.Attributes &= ~FileAttributes.ReadOnly);
                 }
                 catch (Exception e)
                 {
