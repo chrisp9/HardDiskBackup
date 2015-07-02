@@ -29,7 +29,7 @@ namespace Domain
 
         public T Value { get; private set; }
 
-        public bool IsSuccess
+        public virtual bool IsSuccess
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Domain
             }
         }
 
-        public bool IsFail
+        public virtual bool IsFail
         {
             get
             {
@@ -45,7 +45,7 @@ namespace Domain
             }
         }
 
-        private IEnumerable<Exception> _exceptions;
+        protected IEnumerable<Exception> _exceptions;
 
         private Result(T arg)
         {
@@ -53,7 +53,7 @@ namespace Domain
             Value = arg;
         }
 
-        private Result(params Exception[] exceptions)
+        protected Result(params Exception[] exceptions)
         {
             _exceptions = exceptions;
         }
@@ -87,26 +87,9 @@ namespace Domain
     }
 
     // C# sucks... Doesn't have unit...
-    public class Result
+    public class Result : Result<Unit>
     {
-        public IReadOnlyCollection<Error> Errors
-        {
-            get
-            {
-                return new ReadOnlyCollection<Error>(
-                    _exceptions.Select(x => new Error(x)).ToArray());
-            }
-        }
-
-        public IReadOnlyCollection<Exception> Exceptions
-        {
-            get
-            {
-                return new ReadOnlyCollection<Exception>(_exceptions.ToArray());
-            }
-        }
-
-        public bool IsSuccess
+        public override bool IsSuccess
         {
             get
             {
@@ -114,7 +97,7 @@ namespace Domain
             }
         }
 
-        public bool IsFail
+        public override bool IsFail
         {
             get
             {
@@ -122,34 +105,19 @@ namespace Domain
             }
         }
 
-        private Exception[] _exceptions;
-
-        public Result()
-        {
-            _exceptions = Enumerable.Empty<Exception>().ToArray();
-        }
-
-        public Result(params Exception[] errors)
+        private Result(params Exception[] errors)
         {
             _exceptions = errors;
-        }
-        
+        } 
+
         public static Result Success()
         {
             return new Result();
         }
 
-        public static Result Fail(params Exception[] errors)
+        public static new Result Fail(params Exception[] errors)
         {
             return new Result(errors);
-        }
-
-        public static Result Combine<T, U>(Result<T> result1, Result<U> result2)
-        {
-            var exceptions1 = result1.Errors.Select(x => x.UnderlyingException);
-            var exceptions2 = result2.Errors.Select(x => x.UnderlyingException);
-
-            return new Result(exceptions1.Concat(exceptions2).ToArray());
         }
 
         public static Result Combine(Result result1, Result result2)
