@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Services.Disk.FileSystem;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace Services.Tests
         private Mock<IFileInfoWrap> _secondFileToCopy;
 
         private IFileInfoWrap[] _filesToCopy;
+
+        private string _destination = @"e:\test";
 
         [SetUp]
         public void Setup()
@@ -42,7 +45,7 @@ namespace Services.Tests
         [Test]
         public void Everything_is_successful()
         {
-            var result = _sut.CopyFiles(_filesToCopy, @"e:\dest", (o) => {});
+            var result = _sut.CopyFiles(_filesToCopy, _destination, (o) => {});
 
             Assert.IsTrue(result.IsSuccess);
         }
@@ -50,12 +53,34 @@ namespace Services.Tests
         [Test]
         public void Only_the_second_copy_is_successful()
         {
-            _fileWrap.Setup(x => x.Copy(_firstFileToCopy.Object.FullName, @"e:\dest"))
+            _fileWrap.Setup(x => x.Copy(_firstFileToCopy.Object.FullName, @"e:\test\testFile.txt"))
                 .Throws<UnauthorizedAccessException>();
 
-            var result = _sut.CopyFiles(_filesToCopy, @"e:\dest", (o) => { });
+            var result = _sut.CopyFiles(_filesToCopy, _destination, (o) => { });
 
             Assert.IsTrue(result.IsFail);
+        }
+
+        [Test]
+        public void Files_are_actually_copied()
+        {
+            var result = _sut.CopyFiles(_filesToCopy, _destination, o => { });
+
+            _fileWrap.Verify(x => x.Copy(_firstFileToCopy.Object.FullName, @"e:\test\testFile.txt"), Times.Once());
+            _fileWrap.Verify(x => x.Copy(_secondFileToCopy.Object.FullName, @"e:\test\testFile2.txt"), Times.Once());
+        }
+
+        [Test]
+        public void Read_only_flag_is_removed()
+        {
+            FileAttributes attributes = FileAttributes.ReadOnly;
+
+            _fileWrap.Setup(x => x.SetAttributes(@"e:\test\testFile.txt", It.IsAny<FileAttributes>()))
+                .Callback<string, FileAttributes>((_, a) => attributes = a);
+
+            var result = _sut.CopyFiles(_filesToCopy, _destination, o => { });
+
+            Assert.IsFalse(attributes.HasFlag(FileAttributes.ReadOnly));
         }
     }
 }
