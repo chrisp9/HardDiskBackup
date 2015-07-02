@@ -15,12 +15,12 @@ namespace HardDiskBackup.Commands
     [Register(LifeTime.SingleInstance)]
     public class DeleteBackupCommand : IDeleteBackupCommand
     {
-        private IBackupFileSystem _backupFileSystem;
+        private IBackupFileSystem2 _backupFileSystem;
         private IExistingBackupsModel _existingBackupsmodel;
         private IDialogService _dialogService;
 
         public DeleteBackupCommand(
-            IBackupFileSystem backupFileSystem,
+            IBackupFileSystem2 backupFileSystem,
             IExistingBackupsModel existingBackupsModel,
             IDialogService dialogService)
         {
@@ -49,7 +49,9 @@ namespace HardDiskBackup.Commands
             var formattedBackup = parameter as FormattedExistingBackup;
             formattedBackup.DeleteIsInProgress = true;
 
-            await _backupFileSystem.Delete(formattedBackup.ExistingBackup, () => _existingBackupsmodel.Remove(formattedBackup));
+            await _backupFileSystem.Delete(
+                formattedBackup.ExistingBackup.BackupDirectory.Directory, 
+                () => _existingBackupsmodel.Remove(formattedBackup));
         }
     }
 }

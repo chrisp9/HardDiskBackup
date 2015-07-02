@@ -11,11 +11,11 @@ namespace Services.Disk.FileSystem
     public class RestoreToOriginalLocationBackupStrategy : IBackupStrategy
     {
         private IErrorLogger _errorLogger;
-        private IBackupFileSystem _backupFileSystem;
+        private IBackupFileSystem2 _backupFileSystem;
 
         public RestoreToOriginalLocationBackupStrategy(
             IErrorLogger errorLogger,
-            IBackupFileSystem backupFileSystem)
+            IBackupFileSystem2 backupFileSystem)
         {
             _errorLogger = errorLogger;
             _backupFileSystem = backupFileSystem;
@@ -34,8 +34,9 @@ namespace Services.Disk.FileSystem
 
             await Task.Run(() =>
             {
-                _backupFileSystem.Copy(existingBackup.BackupDirectory,
-                    BackupDirectoryFactory.Create(targetRestoreLocation),
+                _backupFileSystem.Copy(
+                    existingBackup.BackupDirectory.Directory,
+                    targetRestoreLocation,
                     onFileRestore);
             });
 

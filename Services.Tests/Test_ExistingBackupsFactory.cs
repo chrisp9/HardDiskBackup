@@ -42,7 +42,7 @@ namespace Services.Tests
         {
             var existingBackups = await _sut.Create(_backupRootDirectory);
 
-            _mockBackupFileSystem.Verify(x => x.CalculateTotalSize(It.IsAny<TimestampedBackupRoot>()), Times.Exactly(2));
+            _mockBackupFileSystem.Verify(x => x.CalculateTotalSize(It.IsAny<IDirectoryInfoWrap>()), Times.Exactly(2));
         }
 
         [Test]
@@ -66,9 +66,9 @@ namespace Services.Tests
 
             _backupRootDirectory = new BackupRootDirectory(_backupRootDirectoryWrap.Object);
 
-            _mockBackupFileSystem = new Mock<IBackupFileSystem>();
-            _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<BackupDirectory>()))
-                .Returns(Task.FromResult(5L));
+            _mockBackupFileSystem = new Mock<IBackupFileSystem2>();
+            _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<IDirectoryInfoWrap>()))
+                .Returns(Task.FromResult(Result<long>.Success(5L)));
 
             _sut = new ExistingBackupsFactory(_mockBackupFileSystem.Object);
         }
@@ -96,7 +96,7 @@ namespace Services.Tests
             }
         }
 
-        private Mock<IBackupFileSystem> _mockBackupFileSystem;
+        private Mock<IBackupFileSystem2> _mockBackupFileSystem;
         private ExistingBackupsFactory _sut;
 
         private IEnumerable<Mock<IDirectoryInfoWrap>> _subDirectories;

@@ -85,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test_BackupDirectoryValidator.cs" />
-    <Compile Include="Test_BackupFileSystem.cs" />
     <Compile Include="Test_BackupScheduleFactory.cs" />
     <Compile Include="Test_DirectoryCopier.cs" />
     <Compile Include="Test_DiskNotifier.cs" />

@@ -15,9 +15,9 @@ namespace Services.Factories
     [Register(LifeTime.SingleInstance)]
     public class ExistingBackupsFactory : IExistingBackupsFactory
     {
-        private IBackupFileSystem _backupFileSystem;
+        private IBackupFileSystem2 _backupFileSystem;
 
-        public ExistingBackupsFactory(IBackupFileSystem backupFileSystem)
+        public ExistingBackupsFactory(IBackupFileSystem2 backupFileSystem)
         {
             _backupFileSystem = backupFileSystem;
         }
@@ -33,13 +33,13 @@ namespace Services.Factories
                 var backupDateTime = DateTime.ParseExact(dir.Name, "yyyy-MM-dd_HH.mm.ss", null);
                 var timestampedDir = new TimestampedBackupRoot(dir);
 
-                var size = await _backupFileSystem.CalculateTotalSize(timestampedDir);
+                var size = await _backupFileSystem.CalculateTotalSize(timestampedDir.Directory);
 
                 existingBackups.Add(new ExistingBackup(
                     new BackupDate(backupDateTime),
                     new BackupTime(backupDateTime.TimeOfDay),
                     timestampedDir,
-                    size));
+                    size.Value));
             }
 
             return existingBackups.ToArray();

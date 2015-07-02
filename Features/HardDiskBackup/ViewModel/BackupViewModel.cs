@@ -49,14 +49,16 @@ namespace HardDiskBackup.ViewModel
 
         private IDriveNotifier _driveNotifier;
         private IBackupScheduleService _backupScheduleService;
-        private IBackupFileSystem _backupFileSystem;
+        private IBackupFileSystem2 _backupFileSystem;
         private IDirectoryFactory _backupDirectoryFactory;
+
+        private BackupRootDirectory _backupRootDirectory;
 
         public BackupViewModel(
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
-            IBackupFileSystem backupFileSystem)
+            IBackupFileSystem2 backupFileSystem)
         {
             _driveNotifier = driveNotifier;
             _backupScheduleService = backupScheduleService;
@@ -69,7 +71,8 @@ namespace HardDiskBackup.ViewModel
             _driveNotifier.Subscribe(async drive =>
             {
                 var rootDirectory = _backupDirectoryFactory.GetBackupRootDirectoryForDrive(drive);
-                _backupFileSystem.Target(rootDirectory);
+                _backupRootDirectory = rootDirectory;
+
                 await Backup(_backupScheduleService.NextBackup.BackupDirectories);
             });
         }
@@ -77,11 +80,29 @@ namespace HardDiskBackup.ViewModel
         public async Task Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             Status = "Calculating size of files to copy...";
-            TotalBytesToCopy = await Task.Run(() => _backupFileSystem.CalculateTotalSize(backupDirectories.ToArray()));
+            await Task.Run(async () =>
+            {
+                long size = 0L;
+                foreach (var b in backupDirectories)
+                {
+                    var currentsize = await _backupFileSystem.CalculateTotalSize(b.Directory);
+                    size += currentsize.Value;
+                }
+            });
 
             ProgressBarIsIndeterminate = false;
             Status = "Copying files...";
-            await Task.Run(() => (object)_backupFileSystem.Copy(backupDirectories, AddToTotal));
+
+            var mirroredDirectory = _backupDirectoryFactory.GetMirroredDirectoryFor(
+                _backupRootDirectory.Directory.FullName);
+
+            await Task.Run(async () => 
+            {
+                foreach(var b in backupDirectories) 
+                {
+                    var copyResult = await _backupFileSystem.Copy(b.Directory, mirroredDirectory.Directory.FullName, AddToTotal);
+                }
+            });
         }
 
         private void AddToTotal(IFileInfoWrap file)

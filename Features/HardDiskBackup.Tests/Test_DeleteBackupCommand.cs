@@ -19,7 +19,9 @@ namespace HardDiskBackup.Tests
         {
             _sut.Execute(_formattedExistingBackup);
 
-            _mockBackupFileSystem.Verify(x => x.Delete(_formattedExistingBackup.ExistingBackup, It.IsAny<Action>()), Times.Once());
+            _mockBackupFileSystem.Verify(x => x.Delete(
+                _formattedExistingBackup.ExistingBackup.BackupDirectory.Directory, 
+                It.IsAny<Action>()), Times.Once());
         }
 
         [Test]
@@ -29,7 +31,8 @@ namespace HardDiskBackup.Tests
                 .Returns(Task.FromResult(MessageDialogResult.Negative));
 
             _sut.Execute(_formattedExistingBackup);
-            _mockBackupFileSystem.Verify(x => x.Delete(It.IsAny<ExistingBackup>(), It.IsAny<Action>()), Times.Never());
+            _mockBackupFileSystem.Verify(x => x.Delete(
+                It.IsAny<IDirectoryInfoWrap>(), It.IsAny<Action>()), Times.Never());
 
         }
 
@@ -50,7 +53,7 @@ namespace HardDiskBackup.Tests
         [SetUp]
         public void Setup()
         {
-            _mockBackupFileSystem = new Mock<IBackupFileSystem>();
+            _mockBackupFileSystem = new Mock<IBackupFileSystem2>();
             _mockExistingBackupModel = new Mock<IExistingBackupsModel>();
             _formattedExistingBackup = new FormattedExistingBackup(_existingBackup);
             _mockDialogService = new Mock<IDialogService>();
@@ -68,7 +71,7 @@ namespace HardDiskBackup.Tests
 
         private FormattedExistingBackup _formattedExistingBackup;
         private ExistingBackup _existingBackup;
-        private Mock<IBackupFileSystem> _mockBackupFileSystem;
+        private Mock<IBackupFileSystem2> _mockBackupFileSystem;
         private IDeleteBackupCommand _sut;
         private Mock<IExistingBackupsModel> _mockExistingBackupModel;
         private Mock<IDialogService> _mockDialogService;

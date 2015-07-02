@@ -32,12 +32,12 @@ namespace HardDiskBackup.ViewModel
         private long _totalBytesToCopy;
         private long _bytesCopiedSoFar;
 
-        private IBackupFileSystem _backupFileSystem;
+        private IBackupFileSystem2 _backupFileSystem;
         private RestoreToOriginalLocationBackupStrategy _originalLocationStrat;
 
         public RestoreBackupViewModel(
             FormattedExistingBackup backup,
-            IBackupFileSystem backupFileSystem,
+            IBackupFileSystem2 backupFileSystem,
             RestoreToOriginalLocationBackupStrategy originalLocationStrat)
         {
             FormattedExistingBackup = backup;
@@ -47,8 +47,10 @@ namespace HardDiskBackup.ViewModel
             RestoreBackupCommand = new RelayCommand(
                 async () =>
                 {
-                    TotalBytesToCopy = await Task.Run(() => 
-                        _backupFileSystem.CalculateTotalSize(backup.ExistingBackup.BackupDirectory));
+                    var result = await Task.Run(() => 
+                        _backupFileSystem.CalculateTotalSize(backup.ExistingBackup.BackupDirectory.Directory));
+
+                    TotalBytesToCopy = result.Value;
 
                     await _originalLocationStrat.Restore(backup.ExistingBackup, 
                         file => { BytesCopiedSoFar += file.Length; });
