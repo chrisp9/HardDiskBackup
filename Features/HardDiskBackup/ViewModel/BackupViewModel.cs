@@ -77,7 +77,7 @@ namespace HardDiskBackup.ViewModel
             });
         }
 
-        public async Task Backup(IEnumerable<BackupDirectory> backupDirectories)
+        public async Task<Result> Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             Status = "Calculating size of files to copy...";
             await Task.Run(async () =>
@@ -88,6 +88,8 @@ namespace HardDiskBackup.ViewModel
                     var currentsize = await _backupFileSystem.CalculateTotalSize(b.Directory);
                     size += currentsize.Value;
                 }
+
+                TotalBytesToCopy = size;
             });
 
             ProgressBarIsIndeterminate = false;
@@ -96,13 +98,20 @@ namespace HardDiskBackup.ViewModel
             var mirroredDirectory = _backupDirectoryFactory.GetMirroredDirectoryFor(
                 _backupRootDirectory.Directory.FullName);
 
+            var result = Result.Success();
+
             await Task.Run(async () => 
             {
                 foreach(var b in backupDirectories) 
                 {
-                    var copyResult = await _backupFileSystem.Copy(b.Directory, mirroredDirectory.Directory.FullName, AddToTotal);
+                    var currentResult = await 
+                        _backupFileSystem.Copy(b.Directory, mirroredDirectory.Directory.FullName, AddToTotal);
+
+                    result = Result.Combine(result, currentResult);
                 }
             });
+
+            return result;
         }
 
         private void AddToTotal(IFileInfoWrap file)
