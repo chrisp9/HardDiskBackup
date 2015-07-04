@@ -53,16 +53,19 @@ namespace HardDiskBackup.ViewModel
         private IDirectoryFactory _backupDirectoryFactory;
 
         private BackupRootDirectory _backupRootDirectory;
+        private ITimestampedBackupRootProvider _timestampedBackupRootProvider;
 
         public BackupViewModel(
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
-            IBackupFileSystem backupFileSystem)
+            IBackupFileSystem backupFileSystem,
+            ITimestampedBackupRootProvider timestampedBackupRootProvider)
         {
             _driveNotifier = driveNotifier;
             _backupScheduleService = backupScheduleService;
             _backupDirectoryFactory = backupDirectoryFactory;
+            _timestampedBackupRootProvider = timestampedBackupRootProvider;
             _backupFileSystem = backupFileSystem;
             ProgressBarIsIndeterminate = true;
 
@@ -95,8 +98,8 @@ namespace HardDiskBackup.ViewModel
             ProgressBarIsIndeterminate = false;
             Status = "Copying files...";
 
-            var mirroredDirectory = _backupDirectoryFactory.GetMirroredDirectoryFor(
-                _backupRootDirectory.Directory.FullName);
+            var mirroredDirectory = _timestampedBackupRootProvider
+                .CreateTimestampedBackup(_backupRootDirectory);
 
             var result = Result.Success();
 
@@ -105,12 +108,16 @@ namespace HardDiskBackup.ViewModel
                 foreach(var b in backupDirectories) 
                 {
                     var currentResult = await 
-                        _backupFileSystem.Copy(b.Directory, mirroredDirectory.Directory.FullName, AddToTotal);
+                        _backupFileSystem.Copy(
+                            b.Directory, 
+                            mirroredDirectory.Directory.FullName, 
+                            AddToTotal);
 
                     result = Result.Combine(result, currentResult);
                 }
             });
 
+            Status = "Complete";
             return result;
         }
 

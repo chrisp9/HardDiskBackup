@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,7 @@ namespace Services.Disk.FileSystem
             Action<IFileInfoWrap> onFileCopied);
     }
 
+    [Register(LifeTime.Transient)]
     public class FileCopier : IFileCopier
     {
         private readonly IFileWrap _fileWrap;

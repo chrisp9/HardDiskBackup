@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Exceptions;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,7 @@ namespace Services.Disk.FileSystem
             Action<IFileInfoWrap> onFileCopied);
     }
 
+    [Register(LifeTime.Transient)]
     public class DirectoryCopier : IDirectoryCopier
     {
         private readonly IFileWrap _fileWrap;
@@ -79,7 +81,7 @@ namespace Services.Disk.FileSystem
             Action<IFileInfoWrap> onFileCopied)
         {
             var sourcePath = source.FullName;
-            var destinationPath = destination;
+            var destinationPath = Path.Combine(destination, source.FullName.First().ToString());
 
             var result = _directoryCreator.CreateDirectoryIfNotExist(destination);
             if (result.IsFail) 

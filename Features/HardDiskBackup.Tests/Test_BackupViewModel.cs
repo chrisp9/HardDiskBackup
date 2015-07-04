@@ -51,11 +51,12 @@ namespace HardDiskBackup.Tests
         {
             SetupSut();
 
+
             await _subscriptionAction(_mockDriveInfoWrap.Object);
 
             _mockBackupFileSystem.Verify(x => x.Copy(
                 _mockDirectoryInfoWrap.Object, 
-                _mirroredFileName, 
+                _mirroredDirectoryName, 
                 It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
         }
 
@@ -135,14 +136,23 @@ namespace HardDiskBackup.Tests
             _mockDriveInfoWrap = new Mock<IDriveInfoWrap>();
             _mockDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
 
-            _mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(_fileName);
+            _mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(_directoryName);
 
             _backupRootDirectory = new BackupRootDirectory(_mockDirectoryInfoWrap.Object);
-            _mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(@"e:\backupApp");
+            _mockDirectoryInfoWrap.Setup(x => x.FullName).Returns(_directoryName);
 
             _backupDirectories = new[] { new BackupDirectory(_mockDirectoryInfoWrap.Object) }.ToArray();
 
             _mockDirectoryInfoWraps = new[] { _mockDirectoryInfoWrap.Object }.ToArray();
+            _mockTimestampedDirectory = new Mock<IDirectoryInfoWrap>();
+
+            _timestampedBackupRoot = new TimestampedBackupRoot(_mockTimestampedDirectory.Object);
+            _mockTimestampedBackupRootProvider = new Mock<ITimestampedBackupRootProvider>();
+
+            _mockTimestampedBackupRootProvider.Setup(x => x.CreateTimestampedBackup(It.IsAny<BackupRootDirectory>()))
+                .Returns(_timestampedBackupRoot);
+
+            _mockTimestampedDirectory.Setup(x => x.FullName).Returns(_mirroredDirectoryName);
 
             _mockBackupDirectoryFactory
                 .Setup(x => x.GetBackupRootDirectoryForDrive(_mockDriveInfoWrap.Object))
@@ -169,13 +179,11 @@ namespace HardDiskBackup.Tests
                 _mockDriveNotifier.Object,
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryFactory.Object,
-                _mockBackupFileSystem.Object);
-
-            _fileName = @"c:\testDir";
-            _mirroredFileName = @"e:\backupApp\testDir";
+                _mockBackupFileSystem.Object,
+                _mockTimestampedBackupRootProvider.Object);
 
             _mirroredDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
-            _mirroredDirectoryInfoWrap.Setup(x => x.FullName).Returns(_mirroredFileName);
+            _mirroredDirectoryInfoWrap.Setup(x => x.FullName).Returns(_mirroredDirectoryName);
 
             // Jesus...
             _mockBackupScheduleService.Setup(x => x.NextBackup).Returns(
@@ -192,12 +200,13 @@ namespace HardDiskBackup.Tests
 
         }
 
+        private Mock<ITimestampedBackupRootProvider> _mockTimestampedBackupRootProvider;
         private Mock<IDirectoryInfoWrap> _mirroredDirectoryInfoWrap;
         private MirroredDirectory _mirroredDirectory;
         private BackupViewModel _sut;
         private Func<IDriveInfoWrap, Task> _subscriptionAction;
-        private string _fileName;
-        private string _mirroredFileName;
+        private string _directoryName = @"c:\testDir";
+        private string _mirroredDirectoryName = @"e:\backupApp\c\testDir";
 
         private Mock<IFileInfoWrap> _mockFileInfoWrap;
         private BackupRootDirectory _backupRootDirectory;
@@ -208,6 +217,9 @@ namespace HardDiskBackup.Tests
         private Mock<IDriveNotifier> _mockDriveNotifier;
         private Mock<IDriveInfoWrap> _mockDriveInfoWrap;
         private Mock<IDirectoryInfoWrap> _mockDirectoryInfoWrap;
+
+        private TimestampedBackupRoot _timestampedBackupRoot;
+        private Mock<IDirectoryInfoWrap> _mockTimestampedDirectory;
 
         private IDirectoryInfoWrap[] _mockDirectoryInfoWraps;
     }

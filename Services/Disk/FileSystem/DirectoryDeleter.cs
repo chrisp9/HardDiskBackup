@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace Services.Disk.FileSystem
     {
         Task<Result> Delete(IDirectoryInfoWrap existingBackup, Action onDeleteComplete);
     }
-
+    
+    [Register(LifeTime.Transient)]
     public class DirectoryDeleter : IDirectoryDeleter
     {
         public async Task<Result> Delete(

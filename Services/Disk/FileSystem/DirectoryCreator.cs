@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Exceptions;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Services.Disk.FileSystem
         Result CreateDirectoryIfNotExist(string directory);
     }
 
+    [Register(LifeTime.Transient)]
     public class DirectoryCreator : IDirectoryCreator
     {
         private IDirectoryWrap _directoryWrap;
