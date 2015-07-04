@@ -15,13 +15,13 @@ namespace Services.Tests
     {
         private RestoreToOriginalLocationBackupStrategy _sut;
         private Mock<IErrorLogger> _mockErrorLogger;
-        private Mock<IBackupFileSystem2> _mockBackupFileSystem;
+        private Mock<IBackupFileSystem> _mockBackupFileSystem;
 
         [SetUp]
         public void SetUp()
         {
             _mockErrorLogger = new Mock<IErrorLogger>();
-            _mockBackupFileSystem = new Mock<IBackupFileSystem2>();
+            _mockBackupFileSystem = new Mock<IBackupFileSystem>();
 
             _sut = new RestoreToOriginalLocationBackupStrategy(
                 _mockErrorLogger.Object,

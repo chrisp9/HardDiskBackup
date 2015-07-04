@@ -32,12 +32,12 @@ namespace HardDiskBackup.ViewModel
         private long _totalBytesToCopy;
         private long _bytesCopiedSoFar;
 
-        private IBackupFileSystem2 _backupFileSystem;
+        private IBackupFileSystem _backupFileSystem;
         private RestoreToOriginalLocationBackupStrategy _originalLocationStrat;
 
         public RestoreBackupViewModel(
             FormattedExistingBackup backup,
-            IBackupFileSystem2 backupFileSystem,
+            IBackupFileSystem backupFileSystem,
             RestoreToOriginalLocationBackupStrategy originalLocationStrat)
         {
             FormattedExistingBackup = backup;

@@ -15,11 +15,11 @@ namespace HardDiskBackup.Commands
     [Register(LifeTime.SingleInstance)]
     public class RestoreBackupCommand : IRestoreBackupCommand
     {
-        private IBackupFileSystem2 _backupFileSystem;
+        private IBackupFileSystem _backupFileSystem;
         private IExistingBackupsModel _existingBackupsModel;
 
         public RestoreBackupCommand(
-                IBackupFileSystem2 backupFileSystem,
+                IBackupFileSystem backupFileSystem,
                 IExistingBackupsModel existingBackupsModel)
         {
             _backupFileSystem = backupFileSystem;

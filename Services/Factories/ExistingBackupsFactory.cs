@@ -15,9 +15,9 @@ namespace Services.Factories
     [Register(LifeTime.SingleInstance)]
     public class ExistingBackupsFactory : IExistingBackupsFactory
     {
-        private IBackupFileSystem2 _backupFileSystem;
+        private IBackupFileSystem _backupFileSystem;
 
-        public ExistingBackupsFactory(IBackupFileSystem2 backupFileSystem)
+        public ExistingBackupsFactory(IBackupFileSystem backupFileSystem)
         {
             _backupFileSystem = backupFileSystem;
         }

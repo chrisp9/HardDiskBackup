@@ -66,7 +66,7 @@ namespace Services.Tests
 
             _backupRootDirectory = new BackupRootDirectory(_backupRootDirectoryWrap.Object);
 
-            _mockBackupFileSystem = new Mock<IBackupFileSystem2>();
+            _mockBackupFileSystem = new Mock<IBackupFileSystem>();
             _mockBackupFileSystem.Setup(x => x.CalculateTotalSize(It.IsAny<IDirectoryInfoWrap>()))
                 .Returns(Task.FromResult(Result<long>.Success(5L)));
 
@@ -96,7 +96,7 @@ namespace Services.Tests
             }
         }
 
-        private Mock<IBackupFileSystem2> _mockBackupFileSystem;
+        private Mock<IBackupFileSystem> _mockBackupFileSystem;
         private ExistingBackupsFactory _sut;
 
         private IEnumerable<Mock<IDirectoryInfoWrap>> _subDirectories;

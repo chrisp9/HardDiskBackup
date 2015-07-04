@@ -53,7 +53,7 @@ namespace HardDiskBackup.Tests
         [SetUp]
         public void Setup()
         {
-            _mockBackupFileSystem = new Mock<IBackupFileSystem2>();
+            _mockBackupFileSystem = new Mock<IBackupFileSystem>();
             _mockExistingBackupModel = new Mock<IExistingBackupsModel>();
             _formattedExistingBackup = new FormattedExistingBackup(_existingBackup);
             _mockDialogService = new Mock<IDialogService>();
@@ -71,7 +71,7 @@ namespace HardDiskBackup.Tests
 
         private FormattedExistingBackup _formattedExistingBackup;
         private ExistingBackup _existingBackup;
-        private Mock<IBackupFileSystem2> _mockBackupFileSystem;
+        private Mock<IBackupFileSystem> _mockBackupFileSystem;
         private IDeleteBackupCommand _sut;
         private Mock<IExistingBackupsModel> _mockExistingBackupModel;
         private Mock<IDialogService> _mockDialogService;

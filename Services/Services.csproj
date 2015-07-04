@@ -76,7 +76,7 @@
     <Compile Include="Disk\BackupDirectoryFactory.cs" />
     <Compile Include="Disk\ExistingBackupsManager.cs" />
     <Compile Include="Disk\ExistingBackupsPoller.cs" />
-    <Compile Include="Disk\FileSystem\BackupFileSystem2.cs" />
+    <Compile Include="Disk\FileSystem\BackupFileSystem.cs" />
     <Compile Include="Disk\FileSystem\DirectoryCreator.cs" />
     <Compile Include="Disk\FileSystem\DirectoryDeleter.cs" />
     <Compile Include="Disk\FileSystem\ExistingBackupsModel.cs" />

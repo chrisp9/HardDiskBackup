@@ -49,7 +49,7 @@ namespace HardDiskBackup.ViewModel
 
         private IDriveNotifier _driveNotifier;
         private IBackupScheduleService _backupScheduleService;
-        private IBackupFileSystem2 _backupFileSystem;
+        private IBackupFileSystem _backupFileSystem;
         private IDirectoryFactory _backupDirectoryFactory;
 
         private BackupRootDirectory _backupRootDirectory;
@@ -58,7 +58,7 @@ namespace HardDiskBackup.ViewModel
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
-            IBackupFileSystem2 backupFileSystem)
+            IBackupFileSystem backupFileSystem)
         {
             _driveNotifier = driveNotifier;
             _backupScheduleService = backupScheduleService;

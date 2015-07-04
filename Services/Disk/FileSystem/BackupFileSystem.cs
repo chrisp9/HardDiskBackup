@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using SystemWrapper.IO;
 
 namespace Services.Disk.FileSystem
 {
-    public interface IBackupFileSystem2
+    public interface IBackupFileSystem
     {
         Task<Result> Copy(
             IDirectoryInfoWrap source,
@@ -20,12 +21,13 @@ namespace Services.Disk.FileSystem
         Task<Result> Delete(IDirectoryInfoWrap directory, Action onDeleteComplete);
     }
 
-    public class BackupFileSystem2 : IBackupFileSystem2
+    [Register(LifeTime.Transient)]
+    public class BackupFileSystem : IBackupFileSystem
     {
         private IDirectoryCopier _directoryCopier;
         private IDirectoryDeleter _directoryDeleter;
 
-        public BackupFileSystem2(
+        public BackupFileSystem(
             IDirectoryCopier directoryCopier,
             IDirectoryDeleter directoryDeleter)
         {

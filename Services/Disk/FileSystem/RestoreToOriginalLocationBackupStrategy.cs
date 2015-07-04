@@ -11,11 +11,11 @@ namespace Services.Disk.FileSystem
     public class RestoreToOriginalLocationBackupStrategy : IBackupStrategy
     {
         private IErrorLogger _errorLogger;
-        private IBackupFileSystem2 _backupFileSystem;
+        private IBackupFileSystem _backupFileSystem;
 
         public RestoreToOriginalLocationBackupStrategy(
             IErrorLogger errorLogger,
-            IBackupFileSystem2 backupFileSystem)
+            IBackupFileSystem backupFileSystem)
         {
             _errorLogger = errorLogger;
             _backupFileSystem = backupFileSystem;

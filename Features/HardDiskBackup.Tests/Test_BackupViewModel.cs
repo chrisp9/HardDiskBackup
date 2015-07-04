@@ -129,7 +129,7 @@ namespace HardDiskBackup.Tests
             _mockFileInfoWrap.Setup(x => x.Length).Returns(5L);
 
             _mockBackupScheduleService = new Mock<IBackupScheduleService>();
-            _mockBackupFileSystem = new Mock<IBackupFileSystem2>();
+            _mockBackupFileSystem = new Mock<IBackupFileSystem>();
             _mockBackupDirectoryFactory = new Mock<IDirectoryFactory>();
             _mockDriveNotifier = new Mock<IDriveNotifier>();
             _mockDriveInfoWrap = new Mock<IDriveInfoWrap>();
@@ -203,7 +203,7 @@ namespace HardDiskBackup.Tests
         private BackupRootDirectory _backupRootDirectory;
         private BackupDirectory[] _backupDirectories;
         private Mock<IBackupScheduleService> _mockBackupScheduleService;
-        private Mock<IBackupFileSystem2> _mockBackupFileSystem;
+        private Mock<IBackupFileSystem> _mockBackupFileSystem;
         private Mock<IDirectoryFactory> _mockBackupDirectoryFactory;
         private Mock<IDriveNotifier> _mockDriveNotifier;
         private Mock<IDriveInfoWrap> _mockDriveInfoWrap;

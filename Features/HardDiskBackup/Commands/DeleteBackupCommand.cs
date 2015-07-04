@@ -15,12 +15,12 @@ namespace HardDiskBackup.Commands
     [Register(LifeTime.SingleInstance)]
     public class DeleteBackupCommand : IDeleteBackupCommand
     {
-        private IBackupFileSystem2 _backupFileSystem;
+        private IBackupFileSystem _backupFileSystem;
         private IExistingBackupsModel _existingBackupsmodel;
         private IDialogService _dialogService;
 
         public DeleteBackupCommand(
-            IBackupFileSystem2 backupFileSystem,
+            IBackupFileSystem backupFileSystem,
             IExistingBackupsModel existingBackupsModel,
             IDialogService dialogService)
         {
