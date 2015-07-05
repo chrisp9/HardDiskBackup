@@ -60,7 +60,7 @@ namespace Services.Tests
 
             _filesToCopy = new[] { _rootFile1.Object, _rootFile2.Object }.ToArray();
             _subDirFilesToCopy = new[] { _subDirectoryFile1.Object, _subDirectoryFile2.Object }.ToArray();
-		  
+          
             _sut = new DirectoryCopier(
                 _mockFileCopier.Object,
                 _mockFileWrap.Object,
@@ -75,12 +75,13 @@ namespace Services.Tests
             directoryInfoWrap.Setup(x => x.GetFiles())
                 .Throws(_exceptionToThrow);
             directoryInfoWrap.Setup(x => x.FullName).Returns(@"c:\test");
+            directoryInfoWrap.Setup(x => x.Name).Returns(@"test");
 
 
-            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(_testRootDirectory))
+            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(@"e:\test\c\test"))
                 .Returns(Result.Fail(_exceptionToThrow));
 
-            var result = await _sut.CopySafe(directoryInfoWrap.Object, _testRootDirectory, (_) => { });
+            var result = await _sut.CopySafe(directoryInfoWrap.Object, @"e:\test", (_) => { });
             Assert.AreEqual(true, result.IsFail);
             Assert.Contains(_exceptionToThrow, result.Exceptions.ToArray());
         }
@@ -93,11 +94,12 @@ namespace Services.Tests
                 .Throws(_exceptionToThrow);
 
             directoryInfoWrap.Setup(x => x.FullName).Returns(@"c:\test");
+            directoryInfoWrap.Setup(x => x.Name).Returns("test");
 
-            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(_testRootDirectory))
+            _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(@"e:\test\c\test"))
                 .Returns(Result.Success());
 
-            var result = await _sut.CopySafe(directoryInfoWrap.Object, _testRootDirectory, (_) => { });
+            var result = await _sut.CopySafe(directoryInfoWrap.Object, @"e:\test", (_) => { });
             Assert.AreEqual(true, result.IsFail);
             Assert.Contains(_exceptionToThrow, result.Exceptions.ToArray());
         }
@@ -111,6 +113,7 @@ namespace Services.Tests
             directoryInfoWrap.Setup(x => x.GetFiles())
                 .Returns(filesToCopy);
             directoryInfoWrap.Setup(x => x.FullName).Returns(@"c:\test");
+            directoryInfoWrap.Setup(x => x.Name).Returns("test");
 
             _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(It.IsAny<string>()))
                 .Returns(Result.Success());
@@ -139,6 +142,7 @@ namespace Services.Tests
                 .Returns(filesToCopy);
 
             directoryInfoWrap.Setup(x => x.FullName).Returns(@"c:\test");
+            directoryInfoWrap.Setup(x => x.Name).Returns(@"test");
 
             _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(It.IsAny<string>()))
                 .Returns(Result.Success());
@@ -151,7 +155,7 @@ namespace Services.Tests
             var result = await _sut.CopySafe(directoryInfoWrap.Object, @"e:\test", (_) => {});
 
             _mockFileCopier.Verify(x => x.CopyFiles(
-                filesToCopy,  @"e:\test", It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
+                filesToCopy,  @"e:\test\c\test", It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
         }
 
         [Test]
@@ -162,6 +166,7 @@ namespace Services.Tests
                 .Returns(_filesToCopy);
 
             directoryInfoWrap.Setup(x => x.FullName).Returns(@"c:\test");
+            directoryInfoWrap.Setup(x => x.Name).Returns("test");
 
             var subDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
             subDirectoryInfoWrap.Setup(x => x.GetFiles())
@@ -183,7 +188,10 @@ namespace Services.Tests
 
             var result = await _sut.CopySafe(directoryInfoWrap.Object, _destinationDirectory, (_) => { });
 
-            _mockFileCopier.Verify(x => x.CopyFiles(_subDirFilesToCopy, @"e:\test\subdir1", It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
+            _mockFileCopier.Verify(x => x.CopyFiles(
+                _subDirFilesToCopy, 
+                 @"e:\test\c\test\subdir1", 
+                 It.IsAny<Action<IFileInfoWrap>>()), Times.Once());
         }
 
         private void CopyFilesReturnsSuccess()

@@ -69,19 +69,30 @@ namespace Services.Disk.FileSystem
             return Result<long>.Success(totalSize);
         }
 
+        public Task<Result> CopySafe(
+            IDirectoryInfoWrap source, 
+            string destination,
+            Action<IFileInfoWrap> onFileCopied)
+        {
+            return CopySafeRecursive(
+                source, 
+                Path.Combine(destination, source.FullName.First().ToString(), source.Name),
+                onFileCopied);
+        }
+
         /// <summary>
         /// Safely copies files from source to destination
         /// </summary>
         /// <returns>
         /// A task indicating any errors during copy
         /// </returns>
-        public async Task<Result> CopySafe(
+        public async Task<Result> CopySafeRecursive(
             IDirectoryInfoWrap source, 
             string destination, 
             Action<IFileInfoWrap> onFileCopied)
         {
             var sourcePath = source.FullName;
-            var destinationPath = Path.Combine(destination, source.FullName.First().ToString());
+            var destinationPath = destination;
 
             var result = _directoryCreator.CreateDirectoryIfNotExist(destination);
             if (result.IsFail) 
@@ -102,7 +113,7 @@ namespace Services.Disk.FileSystem
             var directoryCopyResult = Result.Success();
             foreach (var directory in subDirectoriesResult.Value) 
             {
-                var recursiveResult = await CopySafe(
+                var recursiveResult = await CopySafeRecursive(
                     directory,
                     Path.Combine(destination, directory.Name),
                     onFileCopied);
