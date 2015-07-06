@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.Tests
@@ -115,6 +116,26 @@ namespace HardDiskBackup.Tests
         }
 
         [Test]
+        public async void We_are_in_error_state_if_copy_reports_errors()
+        {
+            SetupSut();
+
+            _mockBackupFileSystem.Setup(x => x.Copy(
+                    It.IsAny<IDirectoryInfoWrap>(),
+                    It.IsAny<string>(),
+                    It.IsAny<Action<IFileInfoWrap>>()))
+                .Callback<IDirectoryInfoWrap, string, Action<IFileInfoWrap>>((x, y, z) => Assert.AreEqual(0, _sut.BytesCopiedSoFar))
+                .Returns(Task.FromResult(Result.Fail(new Exception())));
+
+            await _subscriptionAction(_mockDriveInfoWrap.Object);
+
+            Assert.IsTrue(_sut.HasErrors);
+            Assert.AreEqual(Colors.Red.R, _sut.LabelColor.Color.R);
+            Assert.AreEqual(Colors.Red.G, _sut.LabelColor.Color.G);
+            Assert.AreEqual(Colors.Red.B, _sut.LabelColor.Color.B);
+        }
+
+        [Test]
         public async void Bytes_to_copy_is_updated_after_calculating_total_size()
         {
             SetupSut();
@@ -181,9 +202,7 @@ namespace HardDiskBackup.Tests
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryFactory.Object,
                 _mockBackupFileSystem.Object,
-                _mockTimestampedBackupRootProvider.Object,
-                Mock.Of<IDialogService>(),
-                Mock.Of<IDispatcher>());
+                _mockTimestampedBackupRootProvider.Object);
 
             _mirroredDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
             _mirroredDirectoryInfoWrap.Setup(x => x.FullName).Returns(_mirroredDirectoryName);
