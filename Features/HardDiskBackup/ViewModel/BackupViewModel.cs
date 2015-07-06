@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using SystemWrapper.IO;
 
 namespace HardDiskBackup.ViewModel
@@ -19,6 +20,16 @@ namespace HardDiskBackup.ViewModel
     [Register(LifeTime.SingleInstance)]
     public class BackupViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        public SolidColorBrush LabelColor
+        {
+            get
+            {
+                return HasErrors 
+                    ? new SolidColorBrush(Colors.Red) 
+                    : new SolidColorBrush(Colors.Green);
+            }
+        }
+
         public string Status
         {
             get { return _status; }
@@ -43,6 +54,15 @@ namespace HardDiskBackup.ViewModel
             set { _bytesCopiedSoFar = value; OnPropertyChanged(); }
         }
 
+        public bool HasErrors
+        {
+            get
+            {
+                return _backupResult != null 
+                    && _backupResult.IsFail;
+            }
+        }
+
         private object _lock = new object();
         private long _totalBytesToCopy;
         private long _bytesCopiedSoFar;
@@ -56,26 +76,21 @@ namespace HardDiskBackup.ViewModel
 
         private BackupRootDirectory _backupRootDirectory;
         private ITimestampedBackupRootProvider _timestampedBackupRootProvider;
-        private IDispatcher _dispatcher;
-        private IDialogService _dialogService;
 
+        private Result _backupResult;
 
         public BackupViewModel(
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
             IBackupFileSystem backupFileSystem,
-            ITimestampedBackupRootProvider timestampedBackupRootProvider,
-            IDialogService dialogService,
-            IDispatcher dispatcher)
+            ITimestampedBackupRootProvider timestampedBackupRootProvider)
         {
             _driveNotifier = driveNotifier;
             _backupScheduleService = backupScheduleService;
             _backupDirectoryFactory = backupDirectoryFactory;
             _timestampedBackupRootProvider = timestampedBackupRootProvider;
             _backupFileSystem = backupFileSystem;
-            _dialogService = dialogService;
-            _dispatcher = dispatcher;
 
             ProgressBarIsIndeterminate = true;
 
@@ -87,6 +102,7 @@ namespace HardDiskBackup.ViewModel
                 _backupRootDirectory = rootDirectory;
 
                 var result = await Backup(_backupScheduleService.NextBackup.BackupDirectories);
+                _backupResult = result;
 
                 if (result.IsSuccess)
                 {
@@ -95,17 +111,13 @@ namespace HardDiskBackup.ViewModel
                 else
                 {
                     Status = "Completed with errors";
-
-                    _dispatcher.InvokeAsync(() =>
-                    {
-                        _dialogService.PresentDialog<BackupView>
-                            ("Errors occurred during backup",
-                            "A log has been saved to your desktop");
-                    });
+                    OnPropertyChanged("HasErrors");
+                    OnPropertyChanged("LabelColor");
                 }
             });
         }
 
+        // TODO: I'd like to refactor this at some point.
         public async Task<Result> Backup(IEnumerable<BackupDirectory> backupDirectories)
         {
             Status = "Calculating size of files to copy...";
