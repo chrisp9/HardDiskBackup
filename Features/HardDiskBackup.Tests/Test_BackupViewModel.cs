@@ -3,6 +3,7 @@ using Domain.Scheduling;
 using HardDiskBackup.ViewModel;
 using Moq;
 using NUnit.Framework;
+using Services;
 using Services.Disk;
 using Services.Disk.FileSystem;
 using Services.Factories;
@@ -180,7 +181,9 @@ namespace HardDiskBackup.Tests
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryFactory.Object,
                 _mockBackupFileSystem.Object,
-                _mockTimestampedBackupRootProvider.Object);
+                _mockTimestampedBackupRootProvider.Object,
+                Mock.Of<IDialogService>(),
+                Mock.Of<IDispatcher>());
 
             _mirroredDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
             _mirroredDirectoryInfoWrap.Setup(x => x.FullName).Returns(_mirroredDirectoryName);
@@ -192,17 +195,10 @@ namespace HardDiskBackup.Tests
                 new DailyBackupSchedule(Mock.Of<INextBackupDateTimeFactory>(),
                     Mock.Of<IDateTimeProvider>(),
                     new BackupTime(TimeSpan.Parse("20:00:00")))));
-
-            _mirroredDirectory = new MirroredDirectory(_mirroredDirectoryInfoWrap.Object);
-
-            _mockBackupDirectoryFactory.Setup(x => x.GetMirroredDirectoryFor(@"e:\backupApp"))
-                .Returns(_mirroredDirectory);
-
         }
 
         private Mock<ITimestampedBackupRootProvider> _mockTimestampedBackupRootProvider;
         private Mock<IDirectoryInfoWrap> _mirroredDirectoryInfoWrap;
-        private MirroredDirectory _mirroredDirectory;
         private BackupViewModel _sut;
         private Func<IDriveInfoWrap, Task> _subscriptionAction;
         private string _directoryName = @"c:\testDir";

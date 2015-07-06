@@ -9,8 +9,6 @@ namespace Services.Factories
     {
         BackupDirectory GetBackupDirectoryFor(string path);
 
-        MirroredDirectory GetMirroredDirectoryFor(string path);
-
         BackupRootDirectory GetBackupRootDirectoryForDrive(IDriveInfoWrap drive);
     }
 
@@ -44,11 +42,6 @@ namespace Services.Factories
         public BackupDirectory GetBackupDirectoryFor(string path)
         {
             return new BackupDirectory(Sanitize(path));
-        }
-
-        public MirroredDirectory GetMirroredDirectoryFor(string path)
-        {
-            return new MirroredDirectory(Sanitize(path));
         }
 
         /// <summary>

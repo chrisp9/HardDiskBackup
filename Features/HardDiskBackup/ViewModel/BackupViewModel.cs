@@ -1,6 +1,8 @@
 ﻿using Domain;
 using GalaSoft.MvvmLight;
+using HardDiskBackup.View;
 using Registrar;
+using Services;
 using Services.Disk;
 using Services.Disk.FileSystem;
 using Services.Factories;
@@ -54,19 +56,27 @@ namespace HardDiskBackup.ViewModel
 
         private BackupRootDirectory _backupRootDirectory;
         private ITimestampedBackupRootProvider _timestampedBackupRootProvider;
+        private IDispatcher _dispatcher;
+        private IDialogService _dialogService;
+
 
         public BackupViewModel(
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
             IBackupFileSystem backupFileSystem,
-            ITimestampedBackupRootProvider timestampedBackupRootProvider)
+            ITimestampedBackupRootProvider timestampedBackupRootProvider,
+            IDialogService dialogService,
+            IDispatcher dispatcher)
         {
             _driveNotifier = driveNotifier;
             _backupScheduleService = backupScheduleService;
             _backupDirectoryFactory = backupDirectoryFactory;
             _timestampedBackupRootProvider = timestampedBackupRootProvider;
             _backupFileSystem = backupFileSystem;
+            _dialogService = dialogService;
+            _dispatcher = dispatcher;
+
             ProgressBarIsIndeterminate = true;
 
             Status = "Waiting for backup device to be plugged in...";
@@ -76,7 +86,23 @@ namespace HardDiskBackup.ViewModel
                 var rootDirectory = _backupDirectoryFactory.GetBackupRootDirectoryForDrive(drive);
                 _backupRootDirectory = rootDirectory;
 
-                await Backup(_backupScheduleService.NextBackup.BackupDirectories);
+                var result = await Backup(_backupScheduleService.NextBackup.BackupDirectories);
+
+                if (result.IsSuccess)
+                {
+                    Status = "Completed";
+                }
+                else
+                {
+                    Status = "Completed with errors";
+
+                    _dispatcher.InvokeAsync(() =>
+                    {
+                        _dialogService.PresentDialog<BackupView>
+                            ("Errors occurred during backup",
+                            "A log has been saved to your desktop");
+                    });
+                }
             });
         }
 
@@ -117,7 +143,6 @@ namespace HardDiskBackup.ViewModel
                 }
             });
 
-            Status = "Complete";
             return result;
         }
 
