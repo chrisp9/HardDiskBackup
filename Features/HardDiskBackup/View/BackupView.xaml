@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="A backup has been scheduled" Grid.Row="0" Style="{StaticResource Header1}" />
@@ -45,5 +46,10 @@
                 <Button Margin="5,5,5,5" Visibility="{Binding Path=HasErrors, Converter={StaticResource BoolToVis}}">View Errors</Button>
             </StackPanel>
         </Grid>
+        
+        <StackPanel Grid.Row="4">
+            
+        </StackPanel>
+        
     </Grid>
 </metro:MetroWindow>
