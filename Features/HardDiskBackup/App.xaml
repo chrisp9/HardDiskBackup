@@ -43,6 +43,7 @@
             <!--<vm:MainWindowPresenter x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:HardDiskBackup.ViewModel" />-->
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <local:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis" />
+            <local:BooleanToCollapsedConverter x:Key="BoolToVisCollapsed"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

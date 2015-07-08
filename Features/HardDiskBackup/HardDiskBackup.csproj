@@ -135,6 +135,7 @@
     <Compile Include="View\BackupView.xaml.cs">
       <DependentUpon>BackupView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Converters\BooleanToCollapsedConverter.cs" />
     <Compile Include="View\Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="View\ManageBackupsView.xaml.cs">
       <DependentUpon>ManageBackupsView.xaml</DependentUpon>

@@ -47,7 +47,7 @@
             </StackPanel>
         </Grid>
         
-        <StackPanel Grid.Row="4">
+        <StackPanel Grid.Row="4" Visibility="{Binding Path=HasErrors, Converter={StaticResource BoolToVisCollapsed}}">
             
         </StackPanel>
         
