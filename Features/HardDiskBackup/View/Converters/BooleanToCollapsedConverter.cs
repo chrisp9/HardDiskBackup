@@ -16,7 +16,7 @@ namespace HardDiskBackup.View.Converters
             if (boolVal == null)
                 return Visibility.Visible;
 
-            return boolVal.Value ? Visibility.Collapsed : Visibility.Visible;
+            return boolVal.Value ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

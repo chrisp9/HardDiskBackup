@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Registrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Services
         string FormatResult(Result result);
     }
 
+    [Register(LifeTime.Transient)]
     public class ResultFormatter : IResultFormatter
     {
         public string FormatResult(Result result)

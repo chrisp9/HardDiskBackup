@@ -29,11 +29,12 @@ namespace Services
 
         public void OnNext(IDriveInfoWrap value)
         {
-            if (!_previouslySeenDrives.Contains(value))
-            {
+          //  if (!_previouslySeenDrives.Contains(value))
+          //  {
                 _previouslySeenDrives.Add(value);
                 _action(value);
-            }
+          //  }
         }
     }
+
 }

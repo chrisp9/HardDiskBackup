@@ -63,6 +63,20 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
+        public string FormattedResult
+        {
+            get
+            {
+                return _formattedResult;
+            }
+            private set
+            {
+                _formattedResult = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _formattedResult;
         private object _lock = new object();
         private long _totalBytesToCopy;
         private long _bytesCopiedSoFar;
@@ -76,6 +90,7 @@ namespace HardDiskBackup.ViewModel
 
         private BackupRootDirectory _backupRootDirectory;
         private ITimestampedBackupRootProvider _timestampedBackupRootProvider;
+        private IResultFormatter _resultFormatter;
 
         private Result _backupResult;
 
@@ -84,13 +99,15 @@ namespace HardDiskBackup.ViewModel
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
             IBackupFileSystem backupFileSystem,
-            ITimestampedBackupRootProvider timestampedBackupRootProvider)
+            ITimestampedBackupRootProvider timestampedBackupRootProvider,
+            IResultFormatter resultFormatter)
         {
             _driveNotifier = driveNotifier;
             _backupScheduleService = backupScheduleService;
             _backupDirectoryFactory = backupDirectoryFactory;
             _timestampedBackupRootProvider = timestampedBackupRootProvider;
             _backupFileSystem = backupFileSystem;
+            _resultFormatter = resultFormatter;
 
             ProgressBarIsIndeterminate = true;
 
@@ -110,6 +127,8 @@ namespace HardDiskBackup.ViewModel
                 }
                 else
                 {
+                    FormattedResult = _resultFormatter.FormatResult(result);
+
                     Status = "Completed with errors";
                     OnPropertyChanged("HasErrors");
                     OnPropertyChanged("LabelColor");
