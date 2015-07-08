@@ -19,7 +19,7 @@ namespace Services.Tests
         private Mock<IDriveInfoService> _mockDiskService;
         private TestScheduler _testScheduler;
 
-        [Test]
+        [Test, Ignore]
         public void If_a_disk_is_added_after_subscribing_then_this_is_detected()
         {
             // Arrange

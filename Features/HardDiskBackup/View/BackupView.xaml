@@ -54,6 +54,5 @@
             <TextBox Text="{Binding Path=FormattedResult}"/>
             
         </StackPanel>
-        
     </Grid>
 </metro:MetroWindow>

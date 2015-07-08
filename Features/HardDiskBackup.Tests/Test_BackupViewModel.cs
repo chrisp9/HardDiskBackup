@@ -130,9 +130,19 @@ namespace HardDiskBackup.Tests
             await _subscriptionAction(_mockDriveInfoWrap.Object);
 
             Assert.IsTrue(_sut.HasErrors);
+            Assert.AreEqual("Completed with errors", _sut.Status);
             Assert.AreEqual(Colors.Red.R, _sut.LabelColor.Color.R);
             Assert.AreEqual(Colors.Red.G, _sut.LabelColor.Color.G);
             Assert.AreEqual(Colors.Red.B, _sut.LabelColor.Color.B);
+        }
+
+        public async void Status_is_initially_waiting()
+        {
+            SetupSut();
+
+            Assert.AreEqual(true, _sut.ProgressBarIsIndeterminate);
+            Assert.AreEqual("Waiting for backup device to be plugged in...", _sut.Status);
+
         }
 
         [Test]
@@ -176,6 +186,8 @@ namespace HardDiskBackup.Tests
 
             _mockTimestampedDirectory.Setup(x => x.FullName).Returns(_mirroredDirectoryName);
 
+            _mockResultFormatter = new Mock<IResultFormatter>();
+
             _mockBackupDirectoryFactory
                 .Setup(x => x.GetBackupRootDirectoryForDrive(_mockDriveInfoWrap.Object))
                 .Returns(_backupRootDirectory);
@@ -202,7 +214,8 @@ namespace HardDiskBackup.Tests
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryFactory.Object,
                 _mockBackupFileSystem.Object,
-                _mockTimestampedBackupRootProvider.Object);
+                _mockTimestampedBackupRootProvider.Object, 
+                _mockResultFormatter.Object);
 
             _mirroredDirectoryInfoWrap = new Mock<IDirectoryInfoWrap>();
             _mirroredDirectoryInfoWrap.Setup(x => x.FullName).Returns(_mirroredDirectoryName);
@@ -218,6 +231,8 @@ namespace HardDiskBackup.Tests
 
         private Mock<ITimestampedBackupRootProvider> _mockTimestampedBackupRootProvider;
         private Mock<IDirectoryInfoWrap> _mirroredDirectoryInfoWrap;
+        private Mock<IResultFormatter> _mockResultFormatter;
+        
         private BackupViewModel _sut;
         private Func<IDriveInfoWrap, Task> _subscriptionAction;
         private string _directoryName = @"c:\testDir";
