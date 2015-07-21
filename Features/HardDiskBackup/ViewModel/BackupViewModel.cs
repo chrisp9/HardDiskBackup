@@ -30,6 +30,21 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
+        public double TotalHeight
+        {
+            get
+            {
+                return _totalHeight;
+            }
+            set
+            {
+                _totalHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _totalHeight;
+
         public string Status
         {
             get { return _status; }
@@ -108,6 +123,7 @@ namespace HardDiskBackup.ViewModel
             _timestampedBackupRootProvider = timestampedBackupRootProvider;
             _backupFileSystem = backupFileSystem;
             _resultFormatter = resultFormatter;
+            TotalHeight = 150;
 
             ProgressBarIsIndeterminate = true;
 
@@ -128,8 +144,9 @@ namespace HardDiskBackup.ViewModel
                 else
                 {
                     FormattedResult = _resultFormatter.FormatResult(result);
-
+                    TotalHeight = 300;
                     Status = "Completed with errors";
+                    OnPropertyChanged("Height");
                     OnPropertyChanged("HasErrors");
                     OnPropertyChanged("LabelColor");
                 }
