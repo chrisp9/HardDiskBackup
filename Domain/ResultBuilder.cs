@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Exceptions;
 
 namespace Domain
 {
     public class ResultBuilder
     {
-        private IList<Exception> _exceptions;
+        private IList<Error> _exceptions;
 
         private ResultBuilder()
         {
-            _exceptions = new List<Exception>();
+            _exceptions = new List<Error>();
         }
 
         public static ResultBuilder Create()
@@ -18,7 +19,7 @@ namespace Domain
             return new ResultBuilder();
         }
 
-        public void Add(Exception e)
+        public void Add(Error e)
         {
             _exceptions.Add(e);
         }

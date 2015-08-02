@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using SystemWrapper.IO;
 using System.IO;
+using Domain.Exceptions;
 
 namespace Services.Tests
 {
@@ -80,12 +81,14 @@ namespace Services.Tests
             _mockDirectoryInfoWrap.Setup(x => x.GetFiles())
                 .Throws(_exceptionToThrow);
 
+            var errorToGenerate = new Error(_exceptionToThrow, "");
+
             _mockDirectoryCreator.Setup(x => x.CreateDirectoryIfNotExist(_testMirroredDirectory))
-                .Returns(Result.Fail(_exceptionToThrow));
+                .Returns(Result.Fail(errorToGenerate));
 
             var result = await _sut.CopySafe(_mockDirectoryInfoWrap.Object, _mirroredRootDirectory, (_) => { });
             Assert.AreEqual(true, result.IsFail);
-            Assert.Contains(_exceptionToThrow, result.Exceptions.ToArray());
+            Assert.Contains(errorToGenerate, result.Errors.ToArray());
         }
 
         [Test]
@@ -99,7 +102,8 @@ namespace Services.Tests
 
             var result = await _sut.CopySafe(_mockDirectoryInfoWrap.Object, _mirroredRootDirectory, (_) => { });
             Assert.AreEqual(true, result.IsFail);
-            Assert.Contains(_exceptionToThrow, result.Exceptions.ToArray());
+            Assert.AreEqual(_exceptionToThrow, result.Errors.Single().UnderlyingException);
+            Assert.AreEqual(@"c:\test", result.Errors.Single().Location);
         }
 
         [Test]

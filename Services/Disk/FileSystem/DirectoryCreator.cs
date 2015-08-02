@@ -2,6 +2,7 @@
 using Registrar;
 using System;
 using SystemWrapper.IO;
+using Domain.Exceptions;
 
 namespace Services.Disk.FileSystem
 {
@@ -29,7 +30,7 @@ namespace Services.Disk.FileSystem
             }
             catch (Exception e)
             {
-                return Result.Fail(e);
+                return Result.Fail(new Error(e, directory));
             }
 
             return Result.Success();

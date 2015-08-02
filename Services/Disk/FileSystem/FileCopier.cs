@@ -3,6 +3,7 @@ using Registrar;
 using System;
 using System.IO;
 using SystemWrapper.IO;
+using Domain.Exceptions;
 
 namespace Services.Disk.FileSystem
 {
@@ -38,7 +39,7 @@ namespace Services.Disk.FileSystem
                 }
                 catch (Exception e)
                 {
-                    resultBuilder.Add(e);
+                    resultBuilder.Add(new Error(e, file.FullName));
                 }
 
                 onFileCopied(file);

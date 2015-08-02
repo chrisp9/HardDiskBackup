@@ -43,11 +43,11 @@ namespace Services.Disk.FileSystem
         {
             var filesResult = directory.GetFilesSafe();
             if (filesResult.IsFail)
-                return Result<long>.Fail(filesResult.Exceptions.ToArray());
+                return Result<long>.Fail(filesResult.Errors.ToArray());
 
             var directoriesResult = directory.GetDirectoriesSafe();
             if (directoriesResult.IsFail)
-                return Result<long>.Fail(directoriesResult.Exceptions.ToArray());
+                return Result<long>.Fail(directoriesResult.Errors.ToArray());
 
             long totalSize = 0;
 

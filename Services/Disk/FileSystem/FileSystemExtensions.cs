@@ -1,6 +1,7 @@
 ﻿using Domain;
 using System;
 using SystemWrapper.IO;
+using Domain.Exceptions;
 
 namespace Services.Disk.FileSystem
 {
@@ -14,7 +15,7 @@ namespace Services.Disk.FileSystem
             }
             catch (Exception e)
             {
-                return Result<IFileInfoWrap[]>.Fail(e);
+                return Result<IFileInfoWrap[]>.Fail(new Error(e, directory.FullName));
             }
         }
 
@@ -26,7 +27,7 @@ namespace Services.Disk.FileSystem
             }
             catch (Exception e)
             {
-                return Result<IDirectoryInfoWrap[]>.Fail(e);
+                return Result<IDirectoryInfoWrap[]>.Fail(new Error(e, directory.FullName));
             }
         }
     }

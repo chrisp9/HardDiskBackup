@@ -3,6 +3,7 @@ using Registrar;
 using System;
 using System.Threading.Tasks;
 using SystemWrapper.IO;
+using Domain.Exceptions;
 
 namespace Services.Disk.FileSystem
 {
@@ -27,7 +28,7 @@ namespace Services.Disk.FileSystem
                 }
                 catch (Exception e)
                 {
-                    return Result.Fail(e);
+                    return Result.Fail(new Error(e, toDelete.FullName));
                 }
 
                 return Result.Success();

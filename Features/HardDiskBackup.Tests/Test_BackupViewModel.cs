@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using SystemWrapper.IO;
+using Domain.Exceptions;
 
 namespace HardDiskBackup.Tests
 {
@@ -124,7 +125,7 @@ namespace HardDiskBackup.Tests
                     It.IsAny<string>(),
                     It.IsAny<Action<IFileInfoWrap>>()))
                 .Callback<IDirectoryInfoWrap, string, Action<IFileInfoWrap>>((x, y, z) => Assert.AreEqual(0, _sut.BytesCopiedSoFar))
-                .Returns(Task.FromResult(Result.Fail(new Exception())));
+                .Returns(Task.FromResult(Result.Fail(new Error(new Exception(), ""))));
 
             await _subscriptionAction(_mockDriveInfoWrap.Object);
 

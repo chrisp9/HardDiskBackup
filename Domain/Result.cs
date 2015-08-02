@@ -13,15 +13,7 @@ namespace Domain
             get
             {
                 return new ReadOnlyCollection<Error>(
-                    _exceptions.Select(x => new Error(x)).ToArray());
-            }
-        }
-
-        public IReadOnlyCollection<Exception> Exceptions
-        {
-            get
-            {
-                return new ReadOnlyCollection<Exception>(_exceptions.ToArray());
+                    _exceptions.ToArray());
             }
         }
 
@@ -43,15 +35,15 @@ namespace Domain
             }
         }
 
-        protected IEnumerable<Exception> _exceptions;
+        protected IEnumerable<Error> _exceptions;
 
         private Result(T arg)
         {
-            _exceptions = Enumerable.Empty<Exception>();
+            _exceptions = Enumerable.Empty<Error>();
             Value = arg;
         }
 
-        protected Result(params Exception[] exceptions)
+        protected Result(params Error[] exceptions)
         {
             _exceptions = exceptions;
         }
@@ -62,7 +54,7 @@ namespace Domain
                 return Result.Success();
             else
                 return Result.Fail(
-                    Errors.Select(x => x.UnderlyingException).ToArray());
+                    Errors.ToArray());
         }
 
         public static Result<T> Success(T arg)
@@ -70,15 +62,15 @@ namespace Domain
             return new Result<T>(arg);
         }
 
-        public static Result<T> Fail(params Exception[] errors)
+        public static Result<T> Fail(params Error[] errors)
         {
             return new Result<T>(errors);
         }
 
         public static Result<T> Combine(Result<T> result1, Result<T> result2)
         {
-            var exceptions1 = result1.Errors.Select(x => x.UnderlyingException);
-            var exceptions2 = result2.Errors.Select(x => x.UnderlyingException);
+            var exceptions1 = result1.Errors;
+            var exceptions2 = result2.Errors;
 
             return new Result<T>(exceptions1.Concat(exceptions2).ToArray());
         }
@@ -103,7 +95,7 @@ namespace Domain
             }
         }
 
-        private Result(params Exception[] errors)
+        private Result(params Error[] errors)
         {
             _exceptions = errors;
         } 
@@ -113,15 +105,15 @@ namespace Domain
             return new Result();
         }
 
-        public static new Result Fail(params Exception[] errors)
+        public static new Result Fail(params Error[] errors)
         {
             return new Result(errors);
         }
 
         public static Result Combine(Result result1, Result result2)
         {
-            var exceptions1 = result1.Errors.Select(x => x.UnderlyingException);
-            var exceptions2 = result2.Errors.Select(x => x.UnderlyingException);
+            var exceptions1 = result1.Errors;
+            var exceptions2 = result2.Errors;
 
             return new Result(exceptions1.Concat(exceptions2).ToArray());
         }
