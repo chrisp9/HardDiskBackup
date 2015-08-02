@@ -9,7 +9,6 @@ using Services.Disk.FileSystem;
 using Services.Factories;
 using Services.Scheduling;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Media;

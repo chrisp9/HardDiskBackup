@@ -2,7 +2,6 @@
 using Registrar;
 using Services.Disk.FileSystem;
 using System;
-using System.Linq;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using HardDiskBackup.View;

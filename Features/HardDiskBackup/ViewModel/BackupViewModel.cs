@@ -1,6 +1,5 @@
 ﻿using Domain;
 using GalaSoft.MvvmLight;
-using HardDiskBackup.View;
 using Registrar;
 using Services;
 using Services.Disk;
@@ -9,7 +8,6 @@ using Services.Factories;
 using Services.Scheduling;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Media;
