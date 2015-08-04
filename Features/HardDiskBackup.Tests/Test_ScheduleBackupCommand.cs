@@ -1,4 +1,5 @@
 ﻿using Domain;
+using GalaSoft.MvvmLight.Messaging;
 using HardDiskBackup.Commands;
 using HardDiskBackup.View;
 using HardDiskBackup.ViewModel;
@@ -23,6 +24,7 @@ namespace HardDiskBackup.Tests
         private Mock<IDispatcher> _mockDispatcher;
         private Mock<IWindowPresenter<BackupViewModel, IBackupView>> _mockPresenter;
         private Mock<IJsonSerializer> _mockJsonSerializer;
+        private Messenger _messenger;
 
         [SetUp]
         public void Setup()
@@ -33,13 +35,14 @@ namespace HardDiskBackup.Tests
             _mockDispatcher = new Mock<IDispatcher>();
             _mockPresenter = new Mock<IWindowPresenter<BackupViewModel, IBackupView>>();
             _mockJsonSerializer = new Mock<IJsonSerializer>();
+            _messenger = new Messenger();
 
             _sut = new ScheduleBackupCommand(
                 _mockSetScheduleModel.Object,
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryModel.Object,
-                _mockPresenter.Object,
                 _mockDispatcher.Object,
+                _messenger,
                 _mockJsonSerializer.Object);
         }
 
@@ -84,18 +87,22 @@ namespace HardDiskBackup.Tests
         }
 
         [Test]
-        public void Presenter_present_is_scheduled_and_ran_on_the_dispatcher_when_execute_is_called()
+        public void Message_is_dispatched_when_backup_time_is_reached()
         {
+            var messageHasBeenReceived = false;
+            _messenger.Register<Messages>(this, m => 
+            {
+                if (m == Messages.PerformBackup)
+                    messageHasBeenReceived = true;
+            });
+
             _mockBackupScheduleService.Setup(x => x.ScheduleNextBackup(
                 It.IsAny<BackupDirectoriesAndSchedule>(), It.IsAny<Action>()))
                 .Callback<BackupDirectoriesAndSchedule, Action>((b, a) => a());
 
-            _mockDispatcher.Setup(x => x.InvokeAsync(It.IsAny<Action>()))
-                .Callback<Action>(a => a());
-
             _sut.Execute(null);
 
-            _mockPresenter.Verify(x => x.Present(), Times.Once());
+            Assert.IsTrue(messageHasBeenReceived);
         }
 
         public void SetIsScheduleValid(bool value)

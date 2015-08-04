@@ -8,6 +8,14 @@ namespace Services
         void InvokeAsync(Action action);
     }
 
+    public class TestDispatcher : IDispatcher
+    {
+        public void InvokeAsync(Action action)
+        {
+            action();
+        }
+    }
+
     [Register(LifeTime.SingleInstance)]
     public class Dispatcher : IDispatcher
     {
