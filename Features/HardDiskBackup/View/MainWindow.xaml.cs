@@ -1,4 +1,6 @@
-﻿using MahApps.Metro.Controls;
+﻿using Domain;
+using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 using Registrar;
 using Services;
 
@@ -12,9 +14,26 @@ namespace HardDiskBackup.View
     [Register(LifeTime.SingleInstance)]
     public partial class MainWindow : MetroWindow, IMainWindowView
     {
-        public MainWindow()
+        private IMessenger _messenger;
+        private IDispatcher _dispatcher;
+
+        public MainWindow(IMessenger messenger, IDispatcher dispatcher)
         {
             InitializeComponent();
+            _messenger = messenger;
+            _dispatcher = dispatcher;
+
+            _messenger.Register<Messages>(this, m =>
+            {
+                if (m == Messages.PerformBackup)
+                {
+                    _dispatcher.InvokeAsync(() =>
+                    {
+                        Focus();
+                        BringIntoView();
+                    }); 
+                }
+            });
         }
     }
 }

@@ -23,6 +23,12 @@
                     <controls:ManageBackupsView DockPanel.Dock="Right" HorizontalAlignment="Stretch" DataContext="{Binding Path=ManageBackupsViewModel}" />
                 </DockPanel>
             </TabItem>
+            <TabItem Header="Perform Backup">
+                <DockPanel LastChildFill="True">
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" DockPanel.Dock="Left" Stroke="Green" />
+                    <controls:BackupView DockPanel.Dock="Right" HorizontalAlignment="Stretch" DataContext="{Binding Path=BackupViewModel}" />
+                </DockPanel>
+            </TabItem>            
         </TabControl>
     </ScrollViewer>
 </metro:MetroWindow>

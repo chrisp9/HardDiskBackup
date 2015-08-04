@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Builder;
 using Domain;
+using GalaSoft.MvvmLight.Messaging;
 using HardDiskBackup.ViewModel;
 using Registrar;
 using System;
@@ -49,7 +50,8 @@ namespace HardDiskBackup
 
             _containerBuilder.RegisterGeneric(typeof(WindowPresenter<,>)).AsImplementedInterfaces();
 
-            _containerBuilder.RegisterType<FileWrap>().As<IFileWrap>().InstancePerDependency();/// Need manual
+            _containerBuilder.RegisterType<Messenger>().As<IMessenger>().SingleInstance();
+            _containerBuilder.RegisterType<FileWrap>().As<IFileWrap>().InstancePerDependency(); // Need manual
             _containerBuilder.RegisterType<DirectoryWrap>().As<IDirectoryWrap>().InstancePerDependency(); // Need manual
             _containerBuilder.RegisterType<DriveInfoWrap>().As<IDriveInfoWrap>().InstancePerDependency(); // Need manual
             _containerBuilder.RegisterType<EnvironmentWrap>().As<IEnvironmentWrap>().InstancePerDependency(); // Need manual

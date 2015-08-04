@@ -18,7 +18,7 @@ namespace Services
 
             foreach (var ex in result.Errors)
             {
-                stringBuilder.Append(ex.UnderlyingException.Message);
+                stringBuilder.Append(ex.UnderlyingException.Message + " at " + ex.Location);
                 stringBuilder.Append("\n");
             }
 

@@ -144,9 +144,9 @@ namespace HardDiskBackup.ViewModel
                     FormattedResult = _resultFormatter.FormatResult(result);
                     TotalHeight = 300;
                     Status = "Completed with errors";
-                    OnPropertyChanged("Height");
-                    OnPropertyChanged("HasErrors");
-                    OnPropertyChanged("LabelColor");
+                    OnPropertyChanged(nameof(TotalHeight));
+                    OnPropertyChanged(nameof(HasErrors));
+                    OnPropertyChanged(nameof(LabelColor));
                 }
             });
         }

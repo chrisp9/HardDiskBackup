@@ -58,6 +58,7 @@
     <Compile Include="ExistingBackup.cs" />
     <Compile Include="FormattedExistingBackup.cs" />
     <Compile Include="IDirectory.cs" />
+    <Compile Include="Messages.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="ResultBuilder.cs" />
     <Compile Include="Scheduling\BackupScheduleType.cs" />

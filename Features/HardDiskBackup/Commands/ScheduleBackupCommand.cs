@@ -1,4 +1,5 @@
 ﻿using Domain;
+using GalaSoft.MvvmLight.Messaging;
 using HardDiskBackup.View;
 using HardDiskBackup.ViewModel;
 using Registrar;
@@ -18,24 +19,24 @@ namespace HardDiskBackup.Commands
         private ISetScheduleModel _setScheduleModel;
         private IBackupScheduleService _backupScheduleService;
         private IBackupDirectoryModel _backupDirectoryModel;
-        private IWindowPresenter<BackupViewModel, IBackupView> _backupViewPresenter;
         private IDispatcher _dispatcher;
         private IJsonSerializer _jsonSerializer;
+        private IMessenger _messenger;
 
         public ScheduleBackupCommand(
             ISetScheduleModel setScheduleModel,
             IBackupScheduleService backupScheduleService,
             IBackupDirectoryModel backupDirectoryModel,
-            IWindowPresenter<BackupViewModel, IBackupView> backupViewPresenter,
             IDispatcher dispatcher,
+            IMessenger messenger,
             IJsonSerializer jsonSerializer)
         {
             _setScheduleModel = setScheduleModel;
             _backupScheduleService = backupScheduleService;
             _backupDirectoryModel = backupDirectoryModel;
-            _backupViewPresenter = backupViewPresenter;
             _dispatcher = dispatcher;
             _jsonSerializer = jsonSerializer;
+            _messenger = messenger;
         }
 
         public bool CanExecute(object parameter)
@@ -60,17 +61,8 @@ namespace HardDiskBackup.Commands
             _jsonSerializer.SerializeToFile(_setScheduleModel, directories);
             var backup = BackupDirectoriesAndSchedule.Create(directories, schedule);
 
-            _backupScheduleService.ScheduleNextBackup(backup, () =>
-            {
-                _dispatcher.InvokeAsync(() =>
-                {
-                    var window = _backupViewPresenter.Present();
-
-                    // Null check needed for tests. Not ideal but does the job.
-                    if (window != null)
-                        window.Show();
-                });
-            });
+            _backupScheduleService.ScheduleNextBackup(backup, 
+                () => _messenger.Send(Messages.PerformBackup));
         }
     }
 }

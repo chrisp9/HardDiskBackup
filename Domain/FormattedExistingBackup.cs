@@ -26,13 +26,13 @@ namespace Domain
         public bool DeleteIsInProgress
         {
             get { return _deleteIsInProgress; }
-            set { _deleteIsInProgress = value; OnPropertyChanged("DeleteIsInProgress"); }
+            set { _deleteIsInProgress = value; OnPropertyChanged(); }
         }
 
         public bool RestoreIsInProgress
         {
             get { return _restoreIsInProgress; }
-            set { _restoreIsInProgress = value; OnPropertyChanged("RestoreIsnProgress");
+            set { _restoreIsInProgress = value; OnPropertyChanged();
             }
         }
 
