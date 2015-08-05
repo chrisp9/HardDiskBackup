@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HardDiskBackup.View;assembly="
+             xmlns:controls="clr-namespace:HardDiskBackup.View;assembly=" 
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">             
     <Grid>
@@ -19,10 +20,8 @@
 
         <TextBlock Text="Perform a backup" Grid.Row="0" Style="{StaticResource Header1}" />
         <TextBlock Text="The following files will be backed up: " Grid.Row="1"/>
-        
-        <ListBox Grid.Row="2">
-            
-        </ListBox>
+
+        <controls:DirectoriesToBackupControl DataContext="{Binding Path=FirstRunViewModel}"  Grid.Row="2" Height="100"/>
         
         <TextBlock Text="Please plug in your backup device to continue" Grid.Row="3" Width="292" Style="{StaticResource Header2}" />
 

@@ -89,6 +89,8 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
+        public FirstRunViewModel FirstRunViewModel { get; private set; }
+
         private string _formattedResult;
         private object _lock = new object();
         private long _totalBytesToCopy;
@@ -108,6 +110,7 @@ namespace HardDiskBackup.ViewModel
         private Result _backupResult;
 
         public BackupViewModel(
+            FirstRunViewModel firstRunViewModel,
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
@@ -120,6 +123,7 @@ namespace HardDiskBackup.ViewModel
             _backupDirectoryFactory = backupDirectoryFactory;
             _timestampedBackupRootProvider = timestampedBackupRootProvider;
             _backupFileSystem = backupFileSystem;
+            FirstRunViewModel = firstRunViewModel;
             _resultFormatter = resultFormatter;
             TotalHeight = 150;
 
