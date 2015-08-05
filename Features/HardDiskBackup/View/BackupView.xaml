@@ -13,18 +13,26 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="A backup has been scheduled" Grid.Row="0" Style="{StaticResource Header1}" />
-        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="1" Width="292" Style="{StaticResource Header2}" />
+        <TextBlock Text="Perform a backup" Grid.Row="0" Style="{StaticResource Header1}" />
+        <TextBlock Text="The following files will be backed up: " Grid.Row="1"/>
+        
+        <ListBox Grid.Row="2">
+            
+        </ListBox>
+        
+        <TextBlock Text="Please plug in your backup device to continue" Grid.Row="3" Width="292" Style="{StaticResource Header2}" />
 
-        <ProgressBar Grid.Row="2" IsIndeterminate=
+        <ProgressBar Grid.Row="4" IsIndeterminate=
                      "{Binding Path=ProgressBarIsIndeterminate}"
                      Minimum="0" 
                      Maximum="{Binding Path=TotalBytesToCopy}"
                      Value="{Binding Path=BytesCopiedSoFar}" />
         
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition/>
@@ -39,7 +47,7 @@
         
         <StackPanel 
             Height="300"
-            Grid.Row="4" 
+            Grid.Row="6" 
             Visibility="{Binding Path=HasErrors, Converter={StaticResource BoolToVisCollapsed}}">
             
             <TextBox Text="{Binding Path=FormattedResult}"/>

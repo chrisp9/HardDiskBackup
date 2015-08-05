@@ -143,6 +143,9 @@
     </Compile>
     <Compile Include="View\Converters\BooleanToCollapsedConverter.cs" />
     <Compile Include="View\Converters\InverseBooleanToVisibilityConverter.cs" />
+    <Compile Include="View\DirectoriesToBackupControl.xaml.cs">
+      <DependentUpon>DirectoriesToBackupControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ManageBackupsView.xaml.cs">
       <DependentUpon>ManageBackupsView.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ConfigureBackupControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DirectoriesToBackupControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

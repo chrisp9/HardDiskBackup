@@ -37,32 +37,7 @@
             </TextBox>
 
             <Button Margin="10" Width="40" Grid.Row="2" Command="{Binding Path=AddPathCommand}">v</Button>
-            <ListBox Margin="10" Grid.Row="3" BorderBrush="#FFCCCCCC" Binding.TargetUpdated="Binding_TargetUpdated" BorderThickness="1" ItemsSource="{Binding Path=BackupDirectoryModel.BackupDirectories, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="{Binding Directory.FullName}" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <Button Grid.Column="1" HorizontalAlignment="Right" Content="X" Command="{Binding Path=DataContext.RemovePathCommand, RelativeSource={
-                                RelativeSource Mode=FindAncestor, AncestorType={x:Type DockPanel}}}" CommandParameter="{Binding}" />
-                            <!-- TODO: Make this look prettier-->
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <controls:DirectoriesToBackupControl Grid.Row="3"/>
             <Button Grid.Row="4" Margin="10" Command="{Binding Path=ScheduleBackupCommand}" CommandParameter="{Binding RelativeSource={
                                 RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">Schedule Backup</Button>
         </Grid>
