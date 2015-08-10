@@ -7,6 +7,7 @@ using Services.Factories;
 using Services.Persistence;
 using Services.Scheduling;
 using SystemWrapper.IO;
+using HardDiskBackup.ViewModel;
 
 namespace HardDiskBackup.Tests
 {

@@ -1,22 +1,21 @@
-﻿using Domain;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Input;
+using Domain;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using HardDiskBackup.Commands;
-using HardDiskBackup.ViewModel;
 using Registrar;
 using Services.Disk;
 using Services.Factories;
 using Services.Persistence;
 using Services.Scheduling;
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Input;
 
-namespace HardDiskBackup
+namespace HardDiskBackup.ViewModel
 {
     [Register(LifeTime.SingleInstance)]
-    public class FirstRunViewModel : ViewModelBase, IDataErrorInfo, INotifyPropertyChanged
+    public class FirstRunViewModel : ViewModelBase, IDataErrorInfo, IFirstRunViewModel
     {
         public ICommand AddPathCommand { get; private set; }
 
@@ -33,10 +32,10 @@ namespace HardDiskBackup
         public IBackupDirectoryModel BackupDirectoryModel { get; set; }
 
         private IDateTimeProvider _dateTimeProvider;
-        private IJsonSerializer _jsonSerializer;
-        private IBackupDirectoryValidator _backupDirectoryValidator;
-        private IDirectoryFactory _directoryFactory;
-        private ISetScheduleModel _setScheduleModel;
+        private readonly IJsonSerializer _jsonSerializer;
+        private readonly IBackupDirectoryValidator _backupDirectoryValidator;
+        private readonly IDirectoryFactory _directoryFactory;
+        private readonly ISetScheduleModel _setScheduleModel;
 
         public FirstRunViewModel( // TODO: Factor out commands.
             IDateTimeProvider dateTimeProvider,
@@ -66,27 +65,21 @@ namespace HardDiskBackup
                     var backupDirectory = _directoryFactory.GetBackupDirectoryFor(DirectoryPath);
                     BackupDirectoryModel.Add(backupDirectory);
                 },
-                () => { return _backupDirectoryValidator.CanAdd(DirectoryPath) == ValidationResult.Success; });
+                () => _backupDirectoryValidator.CanAdd(DirectoryPath) == ValidationResult.Success);
 
             RemovePathCommand = new RelayCommand<BackupDirectory>(
                 (item) => { BackupDirectoryModel.Remove(item); },
-                _ => { return true; });
+                _ => true);
 
-            if (_jsonSerializer.FileExists)
-            {
-                _setScheduleModel.Load(_jsonSerializer.DeserializeSetScheduleModelFromFile());
-                var directories = _jsonSerializer.DeserializeBackupDirectoriesFromFile();
-                directories.ToList().ForEach(x => BackupDirectoryModel.Add(x));
-                ScheduleBackupCommand.Execute(this);
-                
-            }
+            if (!_jsonSerializer.FileExists) return;
+
+            _setScheduleModel.Load(_jsonSerializer.DeserializeSetScheduleModelFromFile());
+            var directories = _jsonSerializer.DeserializeBackupDirectoriesFromFile();
+            directories.ToList().ForEach(x => BackupDirectoryModel.Add(x));
+            ScheduleBackupCommand.Execute(this);
         }
 
-        public string Error
-        {
-            // This isn't supported by WPF but can be invoked externally e.g. by Snoop.
-            get { return string.Empty; }
-        }
+        public string Error => string.Empty;
 
         public string this[string columnName]
         {

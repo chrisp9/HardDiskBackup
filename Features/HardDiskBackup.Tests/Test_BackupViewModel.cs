@@ -210,6 +210,7 @@ namespace HardDiskBackup.Tests
         public void SetupSut()
         {
             _sut = new BackupViewModel(
+                Mock.Of<IFirstRunViewModel>(),
                 _mockDriveNotifier.Object,
                 _mockBackupScheduleService.Object,
                 _mockBackupDirectoryFactory.Object,

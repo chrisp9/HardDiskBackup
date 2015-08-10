@@ -18,15 +18,9 @@ namespace HardDiskBackup.ViewModel
     [Register(LifeTime.SingleInstance)]
     public class BackupViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        public SolidColorBrush LabelColor
-        {
-            get
-            {
-                return HasErrors 
-                    ? new SolidColorBrush(Colors.Red) 
-                    : new SolidColorBrush(Colors.Green);
-            }
-        }
+        public SolidColorBrush LabelColor => HasErrors 
+            ? new SolidColorBrush(Colors.Red) 
+            : new SolidColorBrush(Colors.Green);
 
         public double TotalHeight
         {
@@ -89,7 +83,7 @@ namespace HardDiskBackup.ViewModel
             }
         }
 
-        public FirstRunViewModel FirstRunViewModel { get; private set; }
+        public IFirstRunViewModel FirstRunViewModel { get; private set; }
 
         private string _formattedResult;
         private object _lock = new object();
@@ -99,18 +93,18 @@ namespace HardDiskBackup.ViewModel
         private string _status;
 
         private IDriveNotifier _driveNotifier;
-        private IBackupScheduleService _backupScheduleService;
-        private IBackupFileSystem _backupFileSystem;
-        private IDirectoryFactory _backupDirectoryFactory;
+        private readonly IBackupScheduleService _backupScheduleService;
+        private readonly IBackupFileSystem _backupFileSystem;
+        private readonly IDirectoryFactory _backupDirectoryFactory;
 
         private BackupRootDirectory _backupRootDirectory;
-        private ITimestampedBackupRootProvider _timestampedBackupRootProvider;
-        private IResultFormatter _resultFormatter;
+        private readonly ITimestampedBackupRootProvider _timestampedBackupRootProvider;
+        private readonly IResultFormatter _resultFormatter;
 
         private Result _backupResult;
-
+        
         public BackupViewModel(
-            FirstRunViewModel firstRunViewModel,
+            IFirstRunViewModel firstRunViewModel,
             IDriveNotifier driveNotifier,
             IBackupScheduleService backupScheduleService,
             IDirectoryFactory backupDirectoryFactory,
@@ -203,10 +197,7 @@ namespace HardDiskBackup.ViewModel
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var handler = PropertyChangedHandler;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChangedHandler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
