@@ -14,7 +14,7 @@ namespace Services.Disk.FileSystem
     [Register(LifeTime.Transient)]
     public class DirectoryCreator : IDirectoryCreator
     {
-        private IDirectoryWrap _directoryWrap;
+        private readonly IDirectoryWrap _directoryWrap;
 
         public DirectoryCreator(IDirectoryWrap directoryWrap)
         {

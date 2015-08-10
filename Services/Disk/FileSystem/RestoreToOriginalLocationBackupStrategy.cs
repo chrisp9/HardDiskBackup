@@ -7,8 +7,8 @@ namespace Services.Disk.FileSystem
 {
     public class RestoreToOriginalLocationBackupStrategy : IBackupStrategy
     {
-        private IErrorLogger _errorLogger;
-        private IBackupFileSystem _backupFileSystem;
+        private readonly IErrorLogger _errorLogger;
+        private readonly IBackupFileSystem _backupFileSystem;
 
         public RestoreToOriginalLocationBackupStrategy(
             IErrorLogger errorLogger,
@@ -23,7 +23,7 @@ namespace Services.Disk.FileSystem
             Action<IFileInfoWrap> onFileRestore)
         {
             var directory = existingBackup.BackupDirectory.Directory.FullName;
-            var index = directory.LastIndexOf(Constants.DiskBackupApp);
+            var index = directory.LastIndexOf(Constants.DiskBackupApp, StringComparison.Ordinal);
 
             var targetRestoreLocation = directory.Substring(index);
 

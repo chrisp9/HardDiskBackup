@@ -21,8 +21,8 @@ namespace Services.Disk.FileSystem
     [Register(LifeTime.Transient)]
     public class BackupFileSystem : IBackupFileSystem
     {
-        private IDirectoryCopier _directoryCopier;
-        private IDirectoryDeleter _directoryDeleter;
+        private readonly IDirectoryCopier _directoryCopier;
+        private readonly IDirectoryDeleter _directoryDeleter;
 
         public BackupFileSystem(
             IDirectoryCopier directoryCopier,

@@ -6,10 +6,10 @@ namespace Services
 {
     internal class DiskObserver : IObserver<IDriveInfoWrap>
     {
-        private List<IDriveInfoWrap> _previouslySeenDrives =
+        private readonly List<IDriveInfoWrap> _previouslySeenDrives =
             new List<IDriveInfoWrap>();
 
-        private Action<IDriveInfoWrap> _action;
+        private readonly Action<IDriveInfoWrap> _action;
 
         public DiskObserver(Action<IDriveInfoWrap> action, IEnumerable<IDriveInfoWrap> initialDrives)
         {

@@ -49,12 +49,7 @@ namespace Services.Disk.FileSystem
             if (directoriesResult.IsFail)
                 return Result<long>.Fail(directoriesResult.Errors.ToArray());
 
-            long totalSize = 0;
-
-            foreach (var file in filesResult.Value)
-            {
-                totalSize += file.Length;
-            }
+            long totalSize = filesResult.Value.Sum(file => file.Length);
 
             foreach (var dir in directoriesResult.Value)
             {
@@ -88,9 +83,6 @@ namespace Services.Disk.FileSystem
             string destination, 
             Action<IFileInfoWrap> onFileCopied)
         {
-            var sourcePath = source.FullName;
-            var destinationPath = destination;
-
             var result = _directoryCreator.CreateDirectoryIfNotExist(destination);
             if (result.IsFail) 
                 return result;

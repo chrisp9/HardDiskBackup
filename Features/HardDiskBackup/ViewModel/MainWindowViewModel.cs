@@ -1,24 +1,17 @@
-﻿using Domain;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Domain;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
-using HardDiskBackup.ViewModel;
 using Registrar;
 using Services.Persistence;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
-namespace HardDiskBackup
+namespace HardDiskBackup.ViewModel
 {
     [Register(LifeTime.SingleInstance)]
     public class MainWindowViewModel : ViewModelBase
     {
-        public bool IsFirstStartup
-        {
-            get
-            {
-                return !_persistedOptions.FileExists;
-            }
-        }
+        public bool IsFirstStartup => !_persistedOptions.FileExists;
 
         public bool PerformBackupSelected
         {
@@ -43,8 +36,7 @@ namespace HardDiskBackup
         public BackupViewModel BackupViewModel { get; private set; }
 
         private IDateTimeProvider _dateTimeProvider;
-        private IJsonSerializer _persistedOptions;
-        private IMessenger _messenger;
+        private readonly IJsonSerializer _persistedOptions;
 
         public MainWindowViewModel(
             IDateTimeProvider dateTimeProvider,
@@ -59,9 +51,8 @@ namespace HardDiskBackup
             FirstRunViewModel = firstRunViewModel;
             BackupViewModel = backupViewModel;
             ManageBackupsViewModel = manageBackupsViewModel;
-            _messenger = messenger;
 
-            _messenger.Register<Messages>(this, message =>
+            messenger.Register<Messages>(this, message =>
             {
                 if (message == Messages.PerformBackup)
                     PerformBackupSelected = true;
@@ -70,10 +61,7 @@ namespace HardDiskBackup
         }
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            var handler = PropertyChangedHandler;
-
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChangedHandler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

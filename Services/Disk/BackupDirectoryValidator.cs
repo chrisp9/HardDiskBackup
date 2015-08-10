@@ -19,8 +19,8 @@ namespace Services.Disk
     [Register(LifeTime.Transient)]
     public class BackupDirectoryValidator : IBackupDirectoryValidator
     {
-        private IDirectoryWrap _directoryWrap;
-        private IBackupDirectoryModel _backupDirectoryModel;
+        private readonly IDirectoryWrap _directoryWrap;
+        private readonly IBackupDirectoryModel _backupDirectoryModel;
 
         public BackupDirectoryValidator(IDirectoryWrap directoryWrap, IBackupDirectoryModel model)
         {
@@ -42,10 +42,7 @@ namespace Services.Disk
                 : ValidationResult.Success;
         }
 
-        public string Error
-        {
-            get { return string.Empty; }
-        }
+        public string Error => string.Empty;
 
         public string this[string columnName]
         {

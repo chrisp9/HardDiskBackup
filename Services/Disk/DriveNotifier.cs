@@ -18,8 +18,8 @@ namespace Services.Disk
     public class DriveNotifier : IDriveNotifier
     {
         private IDisposable _subscription;
-        private IScheduler _scheduler;
-        private IDriveInfoService _diskService;
+        private readonly IScheduler _scheduler;
+        private readonly IDriveInfoService _diskService;
         private Func<IDriveInfoWrap, Task> _onNewDisk;
 
         public DriveNotifier(IScheduler scheduler, IDriveInfoService diskService)

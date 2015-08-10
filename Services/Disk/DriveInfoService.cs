@@ -14,7 +14,7 @@ namespace Services.Disk
     [Register(LifeTime.SingleInstance)]
     public class DriveInfoService : IDriveInfoService
     {
-        private IDriveInfoQuery _driveInfoQuery;
+        private readonly IDriveInfoQuery _driveInfoQuery;
 
         public DriveInfoService(IDriveInfoQuery driveInfoQuery)
         {

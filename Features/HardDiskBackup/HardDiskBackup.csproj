@@ -134,6 +134,7 @@
     <Compile Include="DialogService.cs" />
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\FirstRunViewModel.cs" />
+    <Compile Include="ViewModel\IFirstRunViewModel.cs" />
     <Compile Include="ViewModel\ManageBackupsViewModel.cs" />
     <Compile Include="ViewModel\RestoreBackupViewModel.cs" />
     <Compile Include="ViewModel\SetScheduleViewModel.cs" />
