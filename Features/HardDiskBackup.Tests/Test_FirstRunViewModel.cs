@@ -156,8 +156,7 @@ namespace HardDiskBackup.Tests
                 setScheduleModel ?? Mock.Of<ISetScheduleModel>(),
                 scheduleBackupCommand ?? Mock.Of<IScheduleBackupCommand>(),
                 jsonSerializer ?? Mock.Of<IJsonSerializer>(),
-                () => { return null; }
-                );
+                () => null);
         }
     }
 }

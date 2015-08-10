@@ -51,28 +51,24 @@ namespace HardDiskBackup.ViewModel
         public bool IsDaily
         {
             get { return _setScheduleModel.ScheduleType == BackupScheduleType.Daily; }
-            set { _isDaily = value; if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
+            set { if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Daily); }
         }
 
         public bool IsWeekly
         {
             get { return _setScheduleModel.ScheduleType == BackupScheduleType.Weekly; }
-            set { _isWeekly = value; if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
+            set { if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Weekly); }
         }
 
         public bool IsMonthly
         {
             get { return _setScheduleModel.ScheduleType == BackupScheduleType.Monthly; }
-            set { _isMonthly = value; if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
+            set { if (value) _setScheduleModel.SetScheduleType(BackupScheduleType.Monthly); }
         }
-
-        private bool _isDaily;
-        private bool _isWeekly;
-        private bool _isMonthly;
 
         private IDateTimeProvider _dateTimeProvider;
         private IBackupScheduleFactory _backupScheduleFactory;
-        private ISetScheduleModel _setScheduleModel;
+        private readonly ISetScheduleModel _setScheduleModel;
 
         public SetScheduleViewModel(
             IDateTimeProvider dateTimeProvider,
@@ -96,10 +92,7 @@ namespace HardDiskBackup.ViewModel
             return _setScheduleModel.CreateSchedule();
         }
 
-        public string Error
-        {
-            get { return string.Empty; }
-        }
+        public string Error => string.Empty;
 
         public bool IsValid()
         {
